@@ -23,6 +23,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // })
 
 // setup API endpoints
+
+
 app.use("/testAPI", testAPIRouter);
 app.use("/user", UserRouter);
 app.use("/",initialpage);

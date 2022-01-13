@@ -8,9 +8,9 @@
 
 .homepage{
   background-image: linear-gradient(rgba(0, 0, 0, 0.7),
-  rgba(0, 0, 0, 0.0)),url(./img/home.jpg);
+  rgba(0, 0, 0, 0.2)),url(./img/home.jpg);
   width:100%;
   height:600px;
-  background-size: cover;
+  background-size:cover;
   background-position: center;
 }

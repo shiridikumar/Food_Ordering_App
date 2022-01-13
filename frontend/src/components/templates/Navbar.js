@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import {  Tabs,Tab} from "@mui/material";
 import { useState } from "react";
-import "./../css/navbar.css";
+import "./../css/components.css";
 
 
 
