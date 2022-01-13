@@ -7,11 +7,15 @@ import Register from "./components/common/Register";
 import Navbar from "./components/templates/Navbar";
 import Profile from "./components/users/Profile";
 import axios from "axios"
+import Paper from "@mui/material/Paper";
 
 const Layout = () => {
   return (
-    <div>
-      <Navbar />
+    <div className="homepage">
+      
+      <div className="navdiv continer">
+        <Navbar/>
+      </div>
       <div className="container">
         <Outlet />
       </div>
@@ -32,13 +36,13 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home/>}/>
           <Route path="users" element={<UsersList />} />
           <Route path="register" element={<Register />} />
           <Route path="profile" element={<Profile />} />
         </Route>
       </Routes>
     </BrowserRouter>
-    <button onClick={hello.bind("akanksha")}>hwllo click this button</button>
     </>
   );
 }

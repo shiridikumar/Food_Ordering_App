@@ -1,15 +1,35 @@
 import { useNavigate } from "react-router-dom";
-import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
+import {  Tabs,Tab} from "@mui/material";
+import { useState } from "react";
+import "./../css/navbar.css";
+
+
+
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const [value,setValue]=useState(0);
+
+  const linkchange=(event,ne)=>{
+    setValue(ne);
+
+
+  }
+
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    
+    <Box  className="navtab" >
+      <Tabs value={value} onChange={linkchange} aria-label="nav tabs example" TabIndicatorProps={{style:{background:'white',color:'white'}}}>
+        <Tab label="Home" onClick={()=>navigate("/home")} style={{color:"white"}} />
+        <Tab label="Menu" onClick={()=>navigate("/profile")} style={{color:"white"}}  />
+        <Tab label="Combo packs" onClick={()=>navigate("/home")} style={{color:"white"}}/>
+        <Tab label="Sign out" onClick={()=>navigate("/home")} style={{color:"white"}}/>
+      </Tabs>
+    </Box>
+
+    /*<Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
           <Typography
@@ -32,7 +52,7 @@ const Navbar = () => {
           </Button>
         </Toolbar>
       </AppBar>
-    </Box>
+    </Box>*/
   );
 };
 
