@@ -7,6 +7,7 @@ const User = require("../models/Users");
 // GET request 
 // Getting all the users
 router.get("/", function(req, res) {
+    console.log("1234566789");
     User.find(function(err, users) {
 		if (err) {
 			console.log(err);
@@ -21,10 +22,10 @@ router.get("/", function(req, res) {
 // POST request 
 // Add a user to db
 router.post("/register", (req, res) => {
+    console.log(req.body.name);
     const newUser = new User({
         name: req.body.name,
         email: req.body.email,
-        date: req.body.date
     });
 
     newUser.save()
