@@ -8,14 +8,13 @@ const Gallery = (props) => {
     return (
     <>
         <div className="card" >
-            <div className="img-desc" style={{backgroundImage:'url('+require('./../img/pizzas.jpg')+')' ,backgroundPosition:'center',backgroundSize:'250px 250px'}}>
+            <div className="img-desc" style={{backgroundImage:'url('+require('./../img/'+'pizzas'+'.jpg')+')' ,backgroundPosition:'center',backgroundSize:'250px 250px'}}>
             <a  onClick={()=>{navigate("/profile")}}><h1>akanksha</h1></a>
             </div>
             <h2>Pizzas</h2>
         </div>
     </>
     )
-  
 };
 
 export default Gallery;

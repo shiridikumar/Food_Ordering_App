@@ -10,9 +10,9 @@ import axios from "axios"
 import Paper from "@mui/material/Paper";
 
 const Layout = () => {
+
   return (
     <div className="homepage">
-      
       <div className="navdiv continer">
         <Navbar/>
       </div>
@@ -22,14 +22,14 @@ const Layout = () => {
     </div>
   );
 };
-var hello=(a)=>{
+var hello=()=>{
   axios.get("http://localhost:4000",  { crossdomain: true }).then(response => {
       console.log("aaaa");
       console.log(response);
     });
-
 }
 function App() {
+
   return (
     <>
     <BrowserRouter>

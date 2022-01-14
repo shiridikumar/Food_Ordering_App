@@ -5,7 +5,7 @@ from pprint import pprint
 client = MongoClient("mongodb://127.0.0.1:27017/?compressors=disabled&gssapiServiceName=mongodb")
 db=client.foods
 # Issue the serverStatus command and print the results
-objs=[
+"""objs=[
     {
         "name":"panner","price":359,"type":"veg","item":"pizzas","pic":"pizzas.jpg"
     },
@@ -40,7 +40,8 @@ objs=[
      {
         "name":"egg-maggi","price":50,"type":"non-veg","item":"maggi","pic":"maggi.jpg"
     }
-]
-for i in range(len(objs)):
-    db.items.insert_one(objs[i])
+]"""
+
+db.items.update_many({"item":"pizza"},{"$set":{"item":"pizzas"}})
+
 

@@ -1,11 +1,13 @@
 var express = require("express");
 var router = express.Router();
+const items = require("./../models/Users")
 
 // Load User model
 const User = require("../models/Users");
 
 // GET request 
 // Getting all the users
+
 router.get("/", function(req, res) {
     console.log("1234566789");
     User.find(function(err, users) {
@@ -21,11 +23,24 @@ router.get("/", function(req, res) {
 
 // POST request 
 // Add a user to db
+
+router.get("/categories",(req,res)=>{
+    items.distinct("item",(err,result)=>{
+        console.log(result);
+        res.send(result);
+    })
+    
+})
 router.post("/register", (req, res) => {
     console.log(req.body.name);
+    console.log(req.body)
     const newUser = new User({
         name: req.body.name,
-        email: req.body.email,
+        price: req.body.price,
+        item:req.body.item,
+        pic:req.body.pic,
+        type:req.body.type
+
     });
 
     newUser.save()

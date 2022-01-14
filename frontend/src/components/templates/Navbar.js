@@ -7,19 +7,14 @@ import "./../css/components.css";
 
 
 
-const Navbar = () => {
+const Navbar = (props) => {
   const navigate = useNavigate();
   const [value,setValue]=useState(0);
-
   const linkchange=(event,ne)=>{
     setValue(ne);
-
-
   }
 
-
-  return (
-    
+  return (  
     <Box  className="navtab" >
       <Tabs value={value} onChange={linkchange} aria-label="nav tabs example" TabIndicatorProps={{style:{background:'white',color:'white'}}}>
         <Tab label="Home" onClick={()=>navigate("/home")} style={{color:"white"}} />
