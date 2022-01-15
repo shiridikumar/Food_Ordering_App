@@ -8,6 +8,7 @@ import Navbar from "./components/templates/Navbar";
 import Profile from "./components/users/Profile";
 import axios from "axios"
 import Paper from "@mui/material/Paper";
+import Login from "./components/users/Login";
 
 const Layout = () => {
 
@@ -32,14 +33,21 @@ function App() {
 
   return (
     <>
+    <Login/>
+    </>
+    );
+}
+const Logged=()=>{
+  return (
+    <>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home/>}/>
           <Route path="users" element={<UsersList />} />
-          <Route path="register" element={<Register />} />
-          <Route path="profile" element={<Profile />} />
+          <Route path="/register" element={<Login />} />
+          <Route path="/profile" element={<Profile />} />
         </Route>
       </Routes>
     </BrowserRouter>
@@ -48,3 +56,4 @@ function App() {
 }
 
 export default App;
+

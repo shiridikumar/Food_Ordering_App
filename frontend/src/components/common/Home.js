@@ -4,40 +4,33 @@ import "./../css/components.css";
 import { useNavigate } from "react-router-dom";
 import Gallery from "./Gallery";
 import axios, { Axios } from "axios";
+import reportWebVitals from "../../reportWebVitals";
 
 const Home = (props) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [called, setCall] = useState(0);
-  useEffect(() => {
-    setName("Dass TAs");
-  }, []);
+  const [ele,setState]=useState(<Navbar/>)
+  const categories = []
+  const row=[]
 
-  const callmenu2 = 
-    async () => {
-      const row = []
-      const categories = []
+  const callmenu=() => {
+    const loadPost = async () => {
       await axios.get("http://localhost:4000/user/categories", { crossdomain: true }).then(response => {
-        while(response.data.length==0){
         for (var i = 0; i < response.data.length; i++) {
           categories.push(response.data[i])
-          setCall(5)
+          row.push(<Gallery id={i} cate={response.data[i]}/>)
         }
-      }
+
       })
-      return categories;
-  };
-  const callmenu = () => {
-
-    const ans = callmenu2()
-    const row = [];
-
-    for (var i = 0; i < ans.length; i++) {
-      row.push(<Gallery />)
+      console.log(row.length)
+      setCall(1);
+      setState(row)
+      return row;
     }
-    console.log(row.length);
-    console.log(called);
-    return row;
+    if(called==0){
+      var ans=loadPost();
+    }
   }
   //<div style={{ textAlign: "center" }}>Happy Coding - {name}</div>;
   return (
@@ -55,6 +48,7 @@ const Home = (props) => {
       <section className="container gallery">
         <h1>Available items</h1>
         <div className="items">
+          {ele}
           {callmenu()}
         </div>
       </section>

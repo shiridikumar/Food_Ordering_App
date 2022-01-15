@@ -41,7 +41,9 @@ db=client.foods
         "name":"egg-maggi","price":50,"type":"non-veg","item":"maggi","pic":"maggi.jpg"
     }
 ]"""
+ne={"name":"pavbhaji","price":"40","type":"veg","item":"others","pic":"others.jpg"}
+db.items.insert_one(ne)
+db.items.update_many({"item":"samosa"},{"$set":{"item":"samosas"}})
 
-db.items.update_many({"item":"pizza"},{"$set":{"item":"pizzas"}})
 
 

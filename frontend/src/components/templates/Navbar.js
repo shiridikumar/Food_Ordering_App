@@ -20,7 +20,7 @@ const Navbar = (props) => {
         <Tab label="Home" onClick={()=>navigate("/home")} style={{color:"white"}} />
         <Tab label="Menu" onClick={()=>navigate("/profile")} style={{color:"white"}}  />
         <Tab label="Combo packs" onClick={()=>navigate("/home")} style={{color:"white"}}/>
-        <Tab label="Sign out" onClick={()=>navigate("/home")} style={{color:"white"}}/>
+        <Tab label="Profile" onClick={()=>navigate("/profile")} style={{color:"white"}}/>
       </Tabs>
     </Box>
 
