@@ -10,7 +10,7 @@ const Home = (props) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [called, setCall] = useState(0);
-  const [ele,setState]=useState(<Navbar/>)
+  const [ele,setState]=useState()
   const categories = []
   const row=[]
 

@@ -1,3 +1,7 @@
+#root{
+  height:100vh;
+  margin: 0;
+}
 .navdiv{
   display: flex;
   flex-direction: row;
@@ -14,3 +18,4 @@
   background-size:cover;
   background-position: center;
 }
+

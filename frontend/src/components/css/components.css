@@ -97,6 +97,47 @@
     display: block;
     opacity: 1;
 }
+.signin{
+    position: absolute;
+    background-image:linear-gradient(rgba(0, 0, 0, 0.2),
+    rgba(0, 0, 0, 0.1)) ,url(../../img/bg6.jpg) ;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width:100%;
+    color:white;
+    font-weight: bold;
+    align-items: center;
+    justify-content: center;
+
+}
+.login{
+    height:60%;
+    width: 30%;
+    margin-bottom:20vh;
+    background:rgba(40,20,20, 0.7);
+    position: relative;
+    color:white;
+    border-radius: 20px;
+    padding:30px;
+}
+.form-control:focus {
+    
+    border-color: #080808;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(0, 0, 0, 0.6);
+  }
+.login button{
+    width:100%;
+    margin-top:20px;
+}
+.login a{
+    font-size: 12px;
+    font-weight: lighter;
+    cursor: pointer;
+}
+
+
 
 
 

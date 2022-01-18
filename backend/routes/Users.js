@@ -7,7 +7,6 @@ const User = require("../models/Users");
 
 // GET request 
 // Getting all the users
-
 router.get("/", function(req, res) {
     console.log("1234566789");
     User.find(function(err, users) {
