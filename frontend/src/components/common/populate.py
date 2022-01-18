@@ -3,7 +3,7 @@ from pymongo import MongoClient
 from pprint import pprint
 # connect to MongoDB, change the << MONGODB URL >> to reflect your own connection string
 client = MongoClient("mongodb://127.0.0.1:27017/?compressors=disabled&gssapiServiceName=mongodb")
-db=client.foods
+db=client.vnu
 # Issue the serverStatus command and print the results
 """objs=[
     {
@@ -46,30 +46,35 @@ db=client.foods
 
 ne={"name":"pavbhaji","price":"40","type":"veg","item":"others","pic":"others.jpg"}
 vendors=[
-    {"manager_name":"bob","shop_name":"JC","email":"bob@gmail.com","phone":1234567890,"items":
+    {"manager_name":"bob","shop_name":"JC","password":"jc","email":"bob@gmail.com","phone":1234567890,"items":
     [
         {"name":"Aloo Samosa","type":"veg","item":"samosas","pic":"","rating":0,"price":15},{"name":"Egg Maggi","type":"non-veg","item":"maggi","pic":"","rating":0,"price":40},
         {"name":"Veg Burger","type":"veg","item":"burgers","pic":"","rating":0,"price":50}
     ],"time":"","rating":4.8},
 
 
-    {"manager_name":"Ben","shop_name":"BBC","email":"ben@gmail.com","phone":1111111110,"items":[
+    {"manager_name":"Ben","shop_name":"BBC","password":"bbc","email":"ben@gmail.com","phone":1111111110,"items":[
         {"name":"Double cheese pizza","type":"veg","item":"pizzas","pic":"","rating":0,"price":249},
         {"name":"spiced chicken pizza","type":"non-veg","item":"pizzas","pic":"","rating":0,"price":329},{"name":"Mc spicy chicken burger","type":"non-veg","item":"burgers","pic":"","rating":0,"price":156}
         ],"time":"","rating":4.2},
 
 
-    {"manager_name":"john","shop_name":"VC","email":"john@gmail.com","phone":2222222220,"items":[
+    {"manager_name":"john","shop_name":"VC","password":"vc","email":"john@gmail.com","phone":2222222220,"items":[
         {"name":"Cheese maggi","type":"veg","item":"maggi","pic":"","rating":0,"price":50},
         {"name":"Veg burger","type":"veg","item":"burgers","pic":"","rating":0,"price":45},{"name":"Veg sandwich","type":"veg","item":"sandwich","pic":"","rating":0,"price":45}
     ],"time":"","rating":4.7},
 
 
-    {"manager_name":"alice","shop_name":"New canteen","email":"alice@gmail.com","phone":3333333330,"items":[
+    {"manager_name":"alice","shop_name":"New canteen","password":"nc","email":"alice@gmail.com","phone":3333333330,"items":[
         {"name":"Corn Samosa","type":"veg","item":"samosas","pic":"","rating":0,"price":12},
         {"name":"veg maggi","type":"veg","item":"maggi","pic":"","rating":0,"price":30},{"name":"french fries","type":"veg","item":"burgers","pic":"","rating":0,"price":60}
         ],"time":"","rating":3.6}
 ]
+
+for i in vendors:
+    db.vendors.insert_one(i)
+
+
 
 
 
