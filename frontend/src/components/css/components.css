@@ -154,15 +154,46 @@
     display: flex;
     align-items: normal;
     background-color: rgba(0 0 0 / 3%);
+    cursor:auto;
 }
 
 .canteen .container{
     margin-left: 20px;
+    margin-bottom: 20px;
 }
 
 .canteen .card img{
     height:150px;
     width:200px;
+    display: inline;
+}
+
+.canteen .card-body{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+.card .pic{
+    display: inline;
+    width:20%;
+}
+.description{
+    width:60%;
+    margin-left: 40px;
+}
+
+.canteen  h6{
+    text-align: center;
+}
+
+.canteen li{
+    width:60%;
+
+}
+
+.canteen ul{
+    list-style-type: none;
+    padding-left: 0px;
 }
 
 
