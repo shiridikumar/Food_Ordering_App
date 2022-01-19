@@ -26,11 +26,16 @@ router.get("/", function(req, res) {
 
 router.get("/vendors",(req,res)=>{
     console.log("vendors called");
+    var names;
+    var pics;
+    let s={};
     vendors.distinct("pic",(err,result)=>{
-        console.log(result);
-        res.send(result);
-    })
-    
+        s.pics=result;
+        vendors.distinct("shop_name",(err,result)=>{
+            s.names=result;
+            res.send(s);
+        })
+    });
 })
 router.post("/register", (req, res) => {
     console.log(req.body.name);
@@ -72,5 +77,17 @@ router.post("/login", (req, res) => {
 	});
 });
 
-module.exports = router;
+router.post("/canteen",(req,res)=>{
+    console.log(req.body);
+    vendors.findOne({"shop_name":req.body.canteen}).then(result=>{
+        if(!(result)){
+            res.status(404).json({error:"canteen not found"});
+        }
+        else{
+            console.log(result);
+            res.send(result);
+        }
+    })
+})
 
+module.exports = router;

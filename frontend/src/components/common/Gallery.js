@@ -7,14 +7,16 @@ const Gallery = (props) => {
     const navigate = useNavigate();
     return (
     <>
-        <a  onClick={()=>{navigate("/profile")}}>
+        <a  onClick={()=>{navigate('/canteen'+props.names)}}>
         <div className="card" >
-            <div className="img-desc" style={{backgroundImage:'url('+require('./../img/'+props.cate)+')' ,backgroundPosition:'center',backgroundSize:'250px 250px'}}>
+            <div className="img-desc" style={{backgroundImage:'url('+require('./../img/'+props.cate)+')' ,backgroundPosition:'center',backgroundSize:'230px 180px',backgroundRepeat:"no-repeat"}}>
             <h1>View</h1>
             </div>
-            <h2>{props.cate}</h2>
+            <h4>{props.names}</h4>
         </div>
         </a>
+
+        
     </>
     )
 };

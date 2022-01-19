@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Outlet, Navigate, useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Outlet, Navigate, useNavigate, useParams } from "react-router-dom";
 import "./App.css";
 
 import UsersList from "./components/users/UsersList";
@@ -12,6 +12,7 @@ import Login from "./components/users/Login";
 import Gallery from "./components/common/Gallery";
 import { useEffect } from "react";
 import log from "./log";
+import Canteen from "./components/common/Canteen";
 const Layout = (props) => {
   const navigate = useNavigate();
     if (log.logged === 0) {
@@ -35,7 +36,8 @@ const Layout = (props) => {
   }
 
 
-  const App = () => {
+  const App = (props) => {
+    const params=useParams();
     return (
       <>
         <BrowserRouter>
@@ -48,6 +50,7 @@ const Layout = (props) => {
               <Route path="/register" element={<Login />} />
               <Route path="/profile" element={<Profile />} />
             </Route>
+            <Route path="/canteen:params" element ={<Canteen />}/>
           </Routes>
         </BrowserRouter>
       </>

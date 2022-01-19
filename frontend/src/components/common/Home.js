@@ -13,20 +13,18 @@ const Home = (props) => {
   const [ele,setState]=useState()
   const categories = []
   const row=[]
-
   const callmenu=() => {
     const loadPost = async () => {
       await axios.get("http://localhost:4000/user/vendors", { crossdomain: true }).then(response => {
-        for (var i = 0; i < response.data.length; i++) {
-          categories.push(response.data[i])
-          row.push(<Gallery id={i} cate={response.data[i]}/>)
+        for (var i = 0; i < response.data.pics.length; i++) {
+          categories.push(response.data.pics[i])
+          console.log(response.data.pics);
+          row.push(<Gallery id={i} cate={response.data.pics[i]} names={response.data.names[i]}/>)
         }
-
       })
       console.log(row.length)
       setCall(1);
       setState(row)
-      return row;
     }
     if(called==0){
       var ans=loadPost();
@@ -37,7 +35,7 @@ const Home = (props) => {
     <>
       <section id="home" >
         <div className="container">
-          <h1>Basketball canteen<br />online services</h1>
+          <h1>IIIT Hyderabad<br />online Food services</h1>
           <h2>Taste the madness from you door steps now!</h2>
           <div className="search2">
             <input className=" searchbar form-control mr-sm-2 " type="search" placeholder="Search for an item" aria-label="Search" style={{ alignContent: "center" }} />
@@ -46,7 +44,7 @@ const Home = (props) => {
         </div>
       </section>
       <section className="container gallery">
-        <h1>Available items</h1>
+        <h1>Available Stores</h1>
         <div className="items">
           {ele}
           {callmenu()}

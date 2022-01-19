@@ -45,34 +45,45 @@ db=client.vnu
 
 
 ne={"name":"pavbhaji","price":"40","type":"veg","item":"others","pic":"others.jpg"}
-"""vendors=[
+vendors=[
     {"manager_name":"bob","shop_name":"JC","password":"jc","email":"bob@gmail.com","phone":1234567890,"items":
     [
-        {"name":"Aloo Samosa","type":"veg","item":"samosas","pic":"","rating":0,"price":15},{"name":"Egg Maggi","type":"non-veg","item":"maggi","pic":"","rating":0,"price":40},
-        {"name":"Veg Burger","type":"veg","item":"burgers","pic":"","rating":0,"price":50}
-    ],"time":"","rating":4.8},
+        {"name":"Aloo Samosa","type":"veg","item":"samosas","pic":"samosas.jpg","rating":0,"price":15},{"name":"Egg Maggi","type":"non-veg","item":"maggi","pic":"maggi.jpg","rating":0,"price":40},
+        {"name":"Veg Burger","type":"veg","item":"burgers","pic":"burgers.jpg","rating":0,"price":50}
+    ],"time":"","rating":4.8,"pic":"jc.jpg"},
 
 
     {"manager_name":"Ben","shop_name":"BBC","password":"bbc","email":"ben@gmail.com","phone":1111111110,"items":[
-        {"name":"Double cheese pizza","type":"veg","item":"pizzas","pic":"","rating":0,"price":249},
-        {"name":"spiced chicken pizza","type":"non-veg","item":"pizzas","pic":"","rating":0,"price":329},{"name":"Mc spicy chicken burger","type":"non-veg","item":"burgers","pic":"","rating":0,"price":156}
-        ],"time":"","rating":4.2},
+        {"name":"Double cheese pizza","type":"veg","item":"pizzas","pic":"pizzas.jpg","rating":0,"price":249},
+        {"name":"spiced chicken pizza","type":"non-veg","item":"pizzas","pic":"pizzas.jpg","rating":0,"price":329},{"name":"Mc spicy chicken burger","type":"non-veg","item":"burgers","pic":"burgers.jpg","rating":0,"price":156}
+        ],"time":"","rating":4.2,"pic":"bbc.jpg"},
 
 
     {"manager_name":"john","shop_name":"VC","password":"vc","email":"john@gmail.com","phone":2222222220,"items":[
-        {"name":"Cheese maggi","type":"veg","item":"maggi","pic":"","rating":0,"price":50},
-        {"name":"Veg burger","type":"veg","item":"burgers","pic":"","rating":0,"price":45},{"name":"Veg sandwich","type":"veg","item":"sandwich","pic":"","rating":0,"price":45}
-    ],"time":"","rating":4.7},
+        {"name":"Cheese maggi","type":"veg","item":"maggi","pic":"maggi.jpg","rating":0,"price":50},
+        {"name":"Veg burger","type":"veg","item":"burgers","pic":"burgers.jpg","rating":0,"price":45},{"name":"Veg sandwich","type":"veg","item":"sandwich","pic":"no.jpg","rating":0,"price":45}
+    ],"time":"","rating":4.7,"pic":"vc.jpg"},
 
 
     {"manager_name":"alice","shop_name":"New canteen","password":"nc","email":"alice@gmail.com","phone":3333333330,"items":[
-        {"name":"Corn Samosa","type":"veg","item":"samosas","pic":"","rating":0,"price":12},
-        {"name":"veg maggi","type":"veg","item":"maggi","pic":"","rating":0,"price":30},{"name":"french fries","type":"veg","item":"burgers","pic":"","rating":0,"price":60}
-        ],"time":"","rating":3.6}
-]"""
-a=db.vendors.find({"shop_name":"New canteen"})
-for i in a:
-    print(i)
+        {"name":"Corn Samosa","type":"veg","item":"samosas","pic":"samosas.jpg","rating":0,"price":12},
+        {"name":"veg maggi","type":"veg","item":"maggi","pic":"maggi.jpg","rating":0,"price":30},{"name":"french fries","type":"veg","item":"burgers","pic":"no.png","rating":0,"price":60}
+        ],"time":"","rating":3.6,"pic":"nc.jpg"}
+]
+"""
+db.vendors.update_one({"item":"samosas"},{"$set":{"pic":"samosas.jpg"}})
+db.vendors.update_one({"item":"pizzas"},{"$set":{"pic":"pizzas.jpg"}})
+db.vendors.update_one({"item":"burgers"},{"$set":{"pic":"burgers.jpg"}})
+db.vendors.update_one({"item":"maggi"},{"$set":{"pic":"maggi.jpg"}})"""
+
+
+a=db.vendors.find_one({"shop_name":"VC"})
+b=a["items"]
+print(b)
+b[2]["pic"]="no.png"
+db.vendors.update_one({"shop_name":"VC"},{"$set":{"items":b}})
+
+
 
 
 
