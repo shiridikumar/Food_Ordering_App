@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const PORT = 4000;
-const DB_NAME = "foods"
+const DB_NAME = "vnu"
 
 
 

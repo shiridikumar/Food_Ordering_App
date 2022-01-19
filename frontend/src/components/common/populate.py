@@ -45,7 +45,7 @@ db=client.vnu
 
 
 ne={"name":"pavbhaji","price":"40","type":"veg","item":"others","pic":"others.jpg"}
-vendors=[
+"""vendors=[
     {"manager_name":"bob","shop_name":"JC","password":"jc","email":"bob@gmail.com","phone":1234567890,"items":
     [
         {"name":"Aloo Samosa","type":"veg","item":"samosas","pic":"","rating":0,"price":15},{"name":"Egg Maggi","type":"non-veg","item":"maggi","pic":"","rating":0,"price":40},
@@ -69,10 +69,11 @@ vendors=[
         {"name":"Corn Samosa","type":"veg","item":"samosas","pic":"","rating":0,"price":12},
         {"name":"veg maggi","type":"veg","item":"maggi","pic":"","rating":0,"price":30},{"name":"french fries","type":"veg","item":"burgers","pic":"","rating":0,"price":60}
         ],"time":"","rating":3.6}
-]
+]"""
+a=db.vendors.find({"shop_name":"New canteen"})
+for i in a:
+    print(i)
 
-for i in vendors:
-    db.vendors.insert_one(i)
 
 
 

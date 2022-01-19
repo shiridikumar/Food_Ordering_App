@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const items = require("./../models/Users")
+const vendors=require("./../models/Vendors")
 
 // Load User model
 const User = require("../models/Users");
@@ -23,8 +24,9 @@ router.get("/", function(req, res) {
 // POST request 
 // Add a user to db
 
-router.get("/categories",(req,res)=>{
-    items.distinct("item",(err,result)=>{
+router.get("/vendors",(req,res)=>{
+    console.log("vendors called");
+    vendors.distinct("pic",(err,result)=>{
         console.log(result);
         res.send(result);
     })

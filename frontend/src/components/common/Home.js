@@ -16,7 +16,7 @@ const Home = (props) => {
 
   const callmenu=() => {
     const loadPost = async () => {
-      await axios.get("http://localhost:4000/user/categories", { crossdomain: true }).then(response => {
+      await axios.get("http://localhost:4000/user/vendors", { crossdomain: true }).then(response => {
         for (var i = 0; i < response.data.length; i++) {
           categories.push(response.data[i])
           row.push(<Gallery id={i} cate={response.data[i]}/>)
