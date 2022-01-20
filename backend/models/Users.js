@@ -6,22 +6,27 @@ const UserSchema = new Schema({
 		type: String,
 		required: true
 	},
-	price: {
-		type: Number,
-		required: true
+	email: {
+		type: String,
+		required: true,
+
 	},
-	type:{
+	contact_number:{
 		type: String,
 		required: true
 	},
-	item:{
-		type:String,
-		required:false
+	age:{
+		type:Number,
+		required:true
 	},
-	pic:{
+	batch:{
 		type:String,
-		required:false
+		required:true
+	},
+	password:{
+		type:String,
+		required:true
 	}
 });
 
-module.exports = User = mongoose.model("items", UserSchema);
+module.exports = User = mongoose.model("users", UserSchema);

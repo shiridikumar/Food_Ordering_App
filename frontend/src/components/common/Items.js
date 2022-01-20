@@ -2,35 +2,26 @@ import { Chip, Rating } from "@mui/material";
 import { useEffect, useState } from "react";
 import "./../css/components.css"
 const Items = (props) => {
-    const [adds,setadd]=useState();
+    const [adds, setadd] = useState();
     //for(var i=0;i<props.addons.length;i++){
-      //  addons.push(props.addons[i].name);
+    //  addons.push(props.addons[i].name);
     //}
-    const add_price=[];
-    const addons=[];
-   
-
-
-    const loadcont=()=>{
-        for(var i=0;i<props.addons.length;i++){
-            addons.push(props.addons[i].name);
-        }
-        return (
-            addons.map((addons,i) =>{
-                <li class="list-group-item">
-                    <input class="form-check-input me-1" type="checkbox" key={i} value="" aria-label="..."/>
-                    {addons}
+    const add_price = [];
+    const addons = [];
+    useEffect(() => {
+        for (var i = 0; i < props.addons.length; i++) {
+            var li_ids = i + 'addons' + props.canteen;
+            var inp_ids = i + 'price_addons' + props.canteen;
+            addons.push(
+                <li className="list-group-item" id={li_ids} key={li_ids}>
+                    <input className="form-check-input me-1" type="checkbox" key={inp_ids} value="" aria-label="..." id={inp_ids} />
+                    {props.addons[i].name} for Rs {props.addons[i].price}
                 </li>
-            })
-        )
+            );
+        }
+        setadd(addons);
+    }, []);
 
-    }
-    useEffect(()=>{
-
-        const a=loadcont();
-        setadd(a);
-
-    },[]);
 
     return (
         <div className="card">
@@ -50,10 +41,19 @@ const Items = (props) => {
                         </div>
                     </ul>
                 </div>
+                <div className="quantity">
+                    <input type="number" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1"/>
+                    <button className="btn btn-danger">Add to cart</button>
+
+                </div>
+                
                 <div className="addons">
+                    <h6 style={{ "fontWeight": "normal", "fontSize": "14px" }}>Addons</h6>
                     {adds}
                 </div>
+
             </div>
+
         </div>
     )
 }

@@ -178,8 +178,8 @@
     width:20%;
 }
 .description{
-    width:60%;
-    margin-left: 40px;
+    width:30%;
+    margin-left: 10px;
 }
 
 .canteen  h6{
@@ -194,6 +194,29 @@
 .canteen ul{
     list-style-type: none;
     padding-left: 0px;
+}
+
+.canteen .addons li{
+    width:100%;
+    font-size:12px;
+}
+
+.addons h6{
+    display: block;
+}
+
+.addons{
+    justify-content: center;
+    align-items: center;
+}
+.quantity{
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.quantity button{
+    margin-top:5px ;
 }
 
 
