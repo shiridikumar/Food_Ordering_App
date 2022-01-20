@@ -20,11 +20,12 @@ const Canteen = (props) => {
             })
         }
         loadpost();
-    }, [])
+    }, []);
+    const name=params.params+' Canteen'
 
     return (
         <div className="canteen">
-            <Navbar2 canteen={params.params} />
+            <Navbar2 name={name} />
             <div className="container">
                 <h3>Menu</h3>
                 {details}

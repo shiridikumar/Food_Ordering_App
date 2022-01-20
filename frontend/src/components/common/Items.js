@@ -42,11 +42,11 @@ const Items = (props) => {
                     </ul>
                 </div>
                 <div className="quantity">
-                    <input type="number" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1"/>
+                    <input type="number" className="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1"/>
                     <button className="btn btn-danger">Add to cart</button>
 
                 </div>
-                
+
                 <div className="addons">
                     <h6 style={{ "fontWeight": "normal", "fontSize": "14px" }}>Addons</h6>
                     {adds}

@@ -5,7 +5,7 @@ import UsersList from "./components/users/UsersList";
 import Home from "./components/common/Home";
 import Register from "./components/common/Register";
 import Navbar from "./components/templates/Navbar";
-import Profile from "./components/users/Profile";
+import Profile from "./components/common/Profile";
 import axios from "axios"
 import Paper from "@mui/material/Paper";
 import Login from "./components/users/Login";
@@ -48,8 +48,8 @@ const Layout = (props) => {
               <Route path="/home" element={<Home />} />
               <Route path="users" element={<UsersList />} />
               <Route path="/register" element={<Login />} />
-              <Route path="/profile" element={<Profile />} />
             </Route>
+            <Route path="/profile" element={<Profile />} />
             <Route path="/canteen:params" element ={<Canteen />}/>
           </Routes>
         </BrowserRouter>
