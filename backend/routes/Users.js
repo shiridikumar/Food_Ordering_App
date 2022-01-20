@@ -24,6 +24,9 @@ router.get("/", function(req, res) {
 // POST request 
 // Add a user to db
 
+
+
+
 router.get("/vendors",(req,res)=>{
     console.log("vendors called");
     var names;

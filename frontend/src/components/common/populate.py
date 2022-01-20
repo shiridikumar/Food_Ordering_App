@@ -77,11 +77,15 @@ db.vendors.update_one({"item":"burgers"},{"$set":{"pic":"burgers.jpg"}})
 db.vendors.update_one({"item":"maggi"},{"$set":{"pic":"maggi.jpg"}})"""
 
 
-a=db.vendors.find_one({"shop_name":"VC"})
+addons=[{"name":"potato chips","price":40},{"name":"250ml coke","price":50}]
+a=db.vendors.find({"shop_name":"BBC"})[0]
 b=a["items"]
+for i in range(len(b)):
+    b[i].update({"add_ons":addons})
 print(b)
-b[2]["pic"]="no.png"
-db.vendors.update_one({"shop_name":"VC"},{"$set":{"items":b}})
+
+
+db.vendors.update_one({"shop_name":"BBC"},{"$set":{"items":b}})
 
 
 

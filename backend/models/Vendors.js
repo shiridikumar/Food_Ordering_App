@@ -2,6 +2,17 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 // Create Schema
 
+
+const addons=new Schema({
+    name:{
+        type:String,
+        required:true
+    },
+    price:{
+        type:Number,
+        required:true
+    }
+})
 const itemsSchema=new Schema({
     name:{
         type:String,
@@ -9,7 +20,7 @@ const itemsSchema=new Schema({
     },
     price:{
         type:Number,
-        require:true
+        required:true
     },
     type:{
         type:String,
@@ -22,6 +33,9 @@ const itemsSchema=new Schema({
     },
     rating:{
         type:Number
+    },
+    add_ons:{
+        type:[addons]
     }
 })
 const VendorSchema = new Schema({
