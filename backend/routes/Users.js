@@ -19,6 +19,14 @@ router.get("/vendors", (req, res) => {
         })
     });
 })
+
+router.get("/all_vendors",(req,res)=>{
+    console.log("vendors request");
+    vendors.distinct("shop_name",(err,result)=>{
+        res.send(result);
+    });
+})
+
 router.post("/register", (req, res) => {
     console.log(req.body.name);
     console.log(req.body);
