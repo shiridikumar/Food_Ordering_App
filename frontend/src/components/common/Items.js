@@ -5,10 +5,6 @@ import { Navigate, useNavigate } from "react-router-dom";
 import "./../css/components.css"
 const Items = (props) => {
     const [adds, setadd] = useState();
-    //for(var i=0;i<props.addons.length;i++){
-    //  addons.push(props.addons[i].name);
-    //}
-
     const add_price = [];
     const addons = [];
     let item_no;
@@ -51,10 +47,12 @@ const Items = (props) => {
         }
         await axios.post('http://localhost:4000/user/order',order_details).then(response=>{
             console.log(response.data);
+            navigate("/MyOrders",{state:{data:props.data}})
         })
         .catch(err=>{
             console.log(err);
         })
+
     
     }
 
@@ -62,17 +60,19 @@ const Items = (props) => {
 
 
     useEffect(() => {
-        for (var i = 0; i < props.addons.length; i++) {
-            var li_ids = i + '_addons_'+props.id
-            var inp_ids = i + '_inp_addons_' +props.id;
-            addons.push(
-                <li className="list-group-item" id={li_ids} key={li_ids}>
-                    <input className="form-check-input me-1" type="checkbox" key={inp_ids} value="" aria-label="..." id={inp_ids} />
-                    {props.addons[i].name} for Rs {props.addons[i].price}
-                </li>
-            );
+        if(!props.myorders){
+            for (var i = 0; i < props.addons.length; i++) {
+                var li_ids = i + '_addons_'+props.id
+                var inp_ids = i + '_inp_addons_' +props.id;
+                addons.push(
+                    <li className="list-group-item" id={li_ids} key={li_ids}>
+                        <input className="form-check-input me-1" type="checkbox" key={inp_ids} value="" aria-label="..." id={inp_ids} />
+                        {props.addons[i].name} for Rs {props.addons[i].price}
+                    </li>
+                );
+            }
+            setadd(addons);
         }
-        setadd(addons);
     }, []);
 
 
@@ -93,16 +93,19 @@ const Items = (props) => {
                         </div>
                     </ul>
                 </div>
+                {!props.myorders && 
+                <>
                 <div className="quantity">
                     <input type="number" className="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" value={qnt} onChange={(e)=>{(e.target.value<1)?setqnt(1):setqnt(e.target.value)}}/>
                     <button className="btn btn-danger" onClick={()=>order(props.itemid)} >Order now</button>
 
                 </div>
-
                 <div className="addons">
                     <h6 style={{ "fontWeight": "normal", "fontSize": "14px" }}>Addons</h6>
                     {adds}
                 </div>
+                </>
+                }
 
             </div>
 

@@ -277,8 +277,54 @@ li h4{
     width:300px;
 }
 
+.orders .card{
+    border-radius: 0px;
+    box-shadow: 1px 1px grey;
+    width:60%;
+    cursor: auto;
+}
+.myorders h3{
+    text-align: center;
+    padding:10px;
+}
 
+.orders .card-body{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    width:100%;
+    border-radius: 0px;
+}
+.orders img{
+    height:180px;
+    width:200px
+}
 
+.orders ul{
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.orders h6{
+    text-align: center;
+
+}
+
+.orders .pic{
+    display:flex;
+    width:200px;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.orders button{
+    padding:5px;
+    margin-top: 5px;
+    width:100%;
+    cursor: auto;
+}
 
 
 

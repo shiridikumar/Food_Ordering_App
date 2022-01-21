@@ -15,7 +15,7 @@ const Canteen = (props) => {
             await axios.post("http://localhost:4000/user/canteen", { crossdomain: true,canteen:params.params }).then(response=>{
                 for(var i=0;i<response.data.items.length;i++){
                     ids=i+'_'+params.params;
-                    items.push(<Items canteen={params.params} id={ids} name={response.data.items[i].name} pic={response.data.items[i].pic} price={response.data.items[i].price} rating={response.data.items[i].rating} type={response.data.items[i].type} item={response.data.items[i].item}  addons={response.data.items[i].add_ons} itemid={ids} data={location.state.data}/>);
+                    items.push(<Items myorders={0} canteen={params.params} id={ids} name={response.data.items[i].name} pic={response.data.items[i].pic} price={response.data.items[i].price} rating={response.data.items[i].rating} type={response.data.items[i].type} item={response.data.items[i].item}  addons={response.data.items[i].add_ons} itemid={ids} data={location.state.data}/>);
                 };
                 setdetails(items);
             })

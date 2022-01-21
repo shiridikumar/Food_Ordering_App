@@ -123,10 +123,37 @@ router.post("/order",(req,res)=>{
         res.status(404).send("Order not plaaced");
 
     })
-
-
 })
 
 
+router.post("/myorders",(req,res)=>{
+    console.log(req.body);
+    orders.find({email:req.body.email}).then(result=>{
+        res.status(200).send(result);
+    });
+
+})
+
+router.post("/itemdetails",(req,res)=>{
+    console.log(req.body);
+    vendors.findOne({shop_name:req.body.canteen}).then(result=>{
+        const required=result.items;
+        let found=0;
+        for(var i=0;i<required.length;i++){
+            if(required[i].name==req.body.item){
+                console.log(required[i]);
+                found=1;
+                res.status(200).send(required[i]);
+                break;
+            }
+        }
+        if(found==0){
+            res.status(404).send("not found");
+        }})
+
+    .catch(err=>{
+        res.status(404).send("errrror");
+    })
+})
 
 module.exports = router;
