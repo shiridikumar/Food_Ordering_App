@@ -1,17 +1,70 @@
 import { Chip, Rating } from "@mui/material";
+import axios, { Axios } from "axios";
 import { useEffect, useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import "./../css/components.css"
 const Items = (props) => {
     const [adds, setadd] = useState();
     //for(var i=0;i<props.addons.length;i++){
     //  addons.push(props.addons[i].name);
     //}
+
     const add_price = [];
     const addons = [];
+    let item_no;
+    const [qnt,setqnt]=useState(1);
+    let ind =1;
+    let item_str;
+    const navigate=useNavigate();
+    const order=async (item)=>{
+        console.log(item);
+        for(var i=0;i<item.length;i++){
+            if(item[i]==='_'){
+                ind =i;
+            }
+        }
+        item_str=item.substring(0,ind);
+        item_no=parseInt(item_str);
+        var ele=document.getElementById(item);
+        var req=ele.getElementsByTagName('input')[0];
+        var qnt=parseInt(req.value);
+        var price=props.price;
+        console.log(price*qnt)
+        var addonsprice=0;
+        for(var i=0;i<props.addons.length;i++){
+            var add_el=document.getElementById(i+'_inp_addons_'+item)
+            if(add_el.checked){
+                addonsprice+=props.addons[i].price;
+            }
+
+        }
+        const total_amount=(price*qnt)+addonsprice;
+        console.log(total_amount);
+        const order_details={
+            email:props.data.email,
+            shop_name:props.canteen,
+            food_item:props.name,
+            quantity:qnt,
+            status:"Placed",
+            cost:total_amount,
+            order_Time: Date.now()
+        }
+        await axios.post('http://localhost:4000/user/order',order_details).then(response=>{
+            console.log(response.data);
+        })
+        .catch(err=>{
+            console.log(err);
+        })
+    
+    }
+
+
+
+
     useEffect(() => {
         for (var i = 0; i < props.addons.length; i++) {
-            var li_ids = i + 'addons' + props.canteen;
-            var inp_ids = i + 'price_addons' + props.canteen;
+            var li_ids = i + '_addons_'+props.id
+            var inp_ids = i + '_inp_addons_' +props.id;
             addons.push(
                 <li className="list-group-item" id={li_ids} key={li_ids}>
                     <input className="form-check-input me-1" type="checkbox" key={inp_ids} value="" aria-label="..." id={inp_ids} />
@@ -24,12 +77,11 @@ const Items = (props) => {
 
 
     return (
-        <div className="card">
+        <div className="card" id={props.itemid}>
             <div className="card-body">
                 <div className="pic">
                     <img src={require('./../img/' + props.pic)} />
                 </div>
-
                 <div className="description">
                     <h6 style={{ "backgroundColor": "rgba(0 0 0 / 0%)" }}>{props.name}</h6>
                     <ul>
@@ -42,8 +94,8 @@ const Items = (props) => {
                     </ul>
                 </div>
                 <div className="quantity">
-                    <input type="number" className="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1"/>
-                    <button className="btn btn-danger">Add to cart</button>
+                    <input type="number" className="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" value={qnt} onChange={(e)=>{(e.target.value<1)?setqnt(1):setqnt(e.target.value)}}/>
+                    <button className="btn btn-danger" onClick={()=>order(props.itemid)} >Order now</button>
 
                 </div>
 

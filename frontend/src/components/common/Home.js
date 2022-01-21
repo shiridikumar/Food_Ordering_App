@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Navbar from "../templates/Navbar";
 import "./../css/components.css";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Gallery from "./Gallery";
 import axios, { Axios } from "axios";
 import reportWebVitals from "../../reportWebVitals";
@@ -13,13 +13,14 @@ const Home = (props) => {
   const [ele,setState]=useState()
   const categories = []
   const row=[]
+  const location=useLocation()
   const callmenu=() => {
     const loadPost = async () => {
       await axios.get("http://localhost:4000/user/vendors", { crossdomain: true }).then(response => {
         for (var i = 0; i < response.data.pics.length; i++) {
           categories.push(response.data.pics[i])
           console.log(response.data.pics);
-          row.push(<Gallery id={i} cate={response.data.pics[i]} names={response.data.names[i]}/>)
+          row.push(<Gallery id={i} cate={response.data.pics[i]} names={response.data.names[i]} data={location.state.data}/>)
         }
       })
       console.log(row.length)

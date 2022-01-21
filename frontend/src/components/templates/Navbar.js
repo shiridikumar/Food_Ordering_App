@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import {  Tabs,Tab} from "@mui/material";
 import { useState } from "react";
@@ -13,6 +13,7 @@ const Navbar = (props) => {
   const linkchange=(event,ne)=>{
     setValue(ne);
   }
+  const location=useLocation();
 
   return (  
     <Box  className="navtab" >
@@ -20,7 +21,7 @@ const Navbar = (props) => {
         <Tab label="Home" onClick={()=>navigate("/home")} style={{color:"white"}} />
         <Tab label="Menu" onClick={()=>navigate("/profile")} style={{color:"white"}}  />
         <Tab label="Combo packs" onClick={()=>navigate("/home")} style={{color:"white"}}/>
-        <Tab label="Profile" onClick={()=>navigate("/profile")} style={{color:"white"}}/>
+        <Tab label="Profile" onClick={()=>navigate("/profile",{state:{data:location.state.data}})} style={{color:"white"}}/>
       </Tabs>
     </Box>
 

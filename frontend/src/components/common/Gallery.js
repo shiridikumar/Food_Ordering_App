@@ -7,7 +7,7 @@ const Gallery = (props) => {
     const navigate = useNavigate();
     return (
     <>
-        <a  onClick={()=>{navigate('/canteen'+props.names)}}>
+        <a  onClick={()=>{navigate('/canteen',{state:{params:props.names,data:props.data}})}}>
         <div className="card" >
             <div className="img-desc" style={{backgroundImage:'url('+require('./../img/'+props.cate)+')' ,backgroundPosition:'center',backgroundSize:'230px 180px',backgroundRepeat:"no-repeat"}}>
             <h1>View</h1>

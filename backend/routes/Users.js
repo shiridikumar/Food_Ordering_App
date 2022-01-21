@@ -2,12 +2,9 @@ var express = require("express");
 var router = express.Router();
 const items = require("./../models/Users")
 const vendors = require("./../models/Vendors")
-
-// Load User model
+const orders=require("./../models/Orders")
 const User = require("../models/Users");
-
-// GET request 
-// Getting all the users
+const { response } = require("express");
 
 router.get("/vendors", (req, res) => {
     console.log("vendors called");
@@ -91,5 +88,45 @@ router.post("/canteen", (req, res) => {
         }
     })
 })
+
+
+router.post("/update_user",(req,res)=>{
+    console.log(req.body);
+    User.updateOne({email:req.body.email},{$set:req.body}).then(result=>{
+        res.status(200).send("Succesful");
+    })
+    .catch(err=>{
+        res.status(404).send("something went wrong plese try again later");
+    })
+
+
+})
+
+
+router.post("/order",(req,res)=>{
+    console.log(req.body);
+    const new_order=new orders({
+        email:req.body.email,
+        shop_name:req.body.shop_name,
+        food:req.body.food_item,
+        quantity:req.body.quantity,
+        cost:req.body.cost,
+        Time:req.body.order_Time,
+        status:req.body.status
+    })
+    new_order.save().then(response=>{
+        res.status(200).send("Succesfully placed your order");
+    })
+    .catch(err=>{
+        console.log("order not getting placed");
+        console.log(err);
+        res.status(404).send("Order not plaaced");
+
+    })
+
+
+})
+
+
 
 module.exports = router;

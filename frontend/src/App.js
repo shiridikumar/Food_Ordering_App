@@ -13,6 +13,7 @@ import Gallery from "./components/common/Gallery";
 import { useEffect } from "react";
 import log from "./log";
 import Canteen from "./components/common/Canteen";
+import Myorders from "./components/common/Myorders";
 const Layout = (props) => {
   const navigate = useNavigate();
     if (log.logged === 0) {
@@ -50,7 +51,8 @@ const Layout = (props) => {
               <Route path="/register" element={<Login />} />
             </Route>
             <Route path="/profile" element={<Profile />} />
-            <Route path="/canteen:params" element ={<Canteen />}/>
+            <Route path="/canteen" element ={<Canteen />}/>
+            <Route path="/MyOrders" element ={<Myorders />}/>
           </Routes>
         </BrowserRouter>
       </>
