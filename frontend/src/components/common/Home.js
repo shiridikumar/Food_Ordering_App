@@ -46,7 +46,7 @@ const Home = (props) => {
             <input className=" searchbar form-control mr-sm-2 " type="search" placeholder="Search for an item" aria-label="Search" style={{ alignContent: "center" }} />
             <button className="btn btn-danger mx-2 searchbut">Search</button>
           </div>
-          <ModalBox/>
+          <ModalBox data={location.state.data}/>
         </div>
       </section>
       <section className="container gallery">

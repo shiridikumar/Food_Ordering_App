@@ -1,12 +1,14 @@
 import axios, { Axios } from "axios";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const ModalBox = () => {
+const ModalBox = (props) => {
 
     const row = [];
     const [shop_filter, setshop] = useState();
     const tags_row = []
     const [tag_filter, settag] = useState();
+    const navigate=useNavigate();
 
 
     useEffect(() => {
@@ -17,7 +19,12 @@ const ModalBox = () => {
                     var ids = i + '_' + response.data[i] + '_filter';
                     row.push(
                         <li className="list-group-item shops_li">
-                            <input className="form-check-input me-1 shops_filter" type="checkbox" id={ids} value={response.data[i]} aria-label="..." />
+                            <input className="form-check-input me-1 shops_filter" type="checkbox" id={ids} value={response.data[i]} aria-label="..." onChange={(e)=>{
+                                if(!(e.target.checked)){
+                                    var all_ele=document.getElementById('all_shops');
+                                    all_ele.checked=false;
+                                }
+                            }} />
                             {response.data[i]}
                         </li>)
                 }
@@ -28,7 +35,13 @@ const ModalBox = () => {
             for (var i = 0; i < tags.length; i++) {
                 var ids = tags[i] + '_filter'
                 tags_row.push(<li className="list-group-item tags_li">
-                    <input className="form-check-input me-1 tags_filter" type="checkbox" id={ids} value={tags[i]} aria-label="..." />
+                    <input className="form-check-input me-1 tags_filter" type="checkbox" id={ids} value={tags[i]} aria-label="..." onChange={(e)=>{
+                        if(!e.target.checked){
+                            var all_ele=document.getElementById('all_tags');
+                            all_ele.checked=false;
+                        }
+
+                    }}/>
                     {tags[i]}
                 </li>
                 )
@@ -122,11 +135,19 @@ const ModalBox = () => {
             rating_sort:sr,
             vegs:vegs_arr
         }
-
+        var srcbut=document.getElementById('filtersubmit');
+        console.log(srcbut);
+        var filbut=document.getElementById('closefilter');
         await axios.post("http://localhost:4000/user/filter",filter_details).then(response=>{
             console.log(response);
+            filbut.click();
+            navigate("/SearchResults",{state:{data:props.data,results:response.data}});
         })
-        
+        .catch(err=>{
+            alert("Plese enter non empty filters for Tags , veg or non-veg and vendor name");
+        })
+
+
 
 
 
@@ -137,7 +158,7 @@ const ModalBox = () => {
 
     return (
         <div className="modal_box">
-            <button type="button" className="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Apply Filters</button>
+            <button type="button" className="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal" id='filterbutton'>Apply Filters</button>
             <div className="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog modal-xl">
                     <div className="modal-content">
@@ -258,8 +279,8 @@ const ModalBox = () => {
 
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" className="btn btn-primary" onClick={()=>{filtersearch()}}>Search</button>
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" id='closefilter'>Close</button>
+                            <button type="button" className="btn btn-primary" id='filtersubmit' onClick={()=>{filtersearch()}} >Search</button>
                         </div>
                     </div>
                 </div>
