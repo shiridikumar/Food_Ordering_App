@@ -50,7 +50,7 @@ const Home = (props) => {
         </div>
       </section>
       <section className="container gallery">
-        <h1>Available Stores</h1>
+        <h1 style={{"margin":"auto"}}>Available Stores</h1>
         <div className="items">
           {ele}
           {callmenu()}

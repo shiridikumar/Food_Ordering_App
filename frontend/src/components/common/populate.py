@@ -44,7 +44,7 @@ db=client.vnu
 
 
 
-ne={"name":"pavbhaji","price":"40","type":"veg","item":"others","pic":"others.jpg"}
+"""ne={"name":"pavbhaji","price":"40","type":"veg","item":"others","pic":"others.jpg"}
 vendors=[
     {"manager_name":"bob","shop_name":"JC","password":"jc","email":"bob@gmail.com","phone":1234567890,"items":
     [
@@ -70,11 +70,11 @@ vendors=[
         {"name":"veg maggi","type":"veg","item":"maggi","pic":"maggi.jpg","rating":0,"price":30},{"name":"french fries","type":"veg","item":"burgers","pic":"no.png","rating":0,"price":60}
         ],"time":"","rating":3.6,"pic":"nc.jpg"}
 ]
-"""
+
 db.vendors.update_one({"item":"samosas"},{"$set":{"pic":"samosas.jpg"}})
 db.vendors.update_one({"item":"pizzas"},{"$set":{"pic":"pizzas.jpg"}})
 db.vendors.update_one({"item":"burgers"},{"$set":{"pic":"burgers.jpg"}})
-db.vendors.update_one({"item":"maggi"},{"$set":{"pic":"maggi.jpg"}})"""
+db.vendors.update_one({"item":"maggi"},{"$set":{"pic":"maggi.jpg"}})
 
 
 addons=[{"name":"potato chips","price":40},{"name":"250ml coke","price":50}]
@@ -85,7 +85,18 @@ for i in range(len(b)):
 print(b)
 
 
-db.vendors.update_one({"shop_name":"BBC"},{"$set":{"items":b}})
+db.vendors.update_one({"shop_name":"BBC"},{"$set":{"items":b}})"""
+
+nowdb=db.food_items.find()
+for i in nowdb:
+    print(i)
+"""for i in nowdb:
+    item=i["items"]
+    for j in item:
+        req=j;j["shop_name"]=i["shop_name"]
+        db.food_items.insert_one(req)"""
+
+        
 
 
 

@@ -57,6 +57,7 @@
 
 .gallery h1{
     color:black;
+
 }
 
 .items{
@@ -343,10 +344,7 @@ li h4{
     max-height: 200px;
 }
 
-.shop-names ul{
-    max-height: 300px;
-    overflow-y: scroll;
-}
+
 .modal-body{
     display: flex;
     flex-direction: row;

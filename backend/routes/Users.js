@@ -4,10 +4,11 @@ const items = require("./../models/Users")
 const vendors = require("./../models/Vendors")
 const orders=require("./../models/Orders")
 const User = require("../models/Users");
+const foods=require("./../models/food_items");
 const { response } = require("express");
 
 router.get("/vendors", (req, res) => {
-    console.log("vendors called");
+    //console.log("vendors called");
     var names;
     var pics;
     let s = {};
@@ -21,7 +22,7 @@ router.get("/vendors", (req, res) => {
 })
 
 router.get("/all_vendors",(req,res)=>{
-    console.log("vendors request");
+    //console.log("vendors request");
     vendors.distinct("shop_name",(err,result)=>{
         res.send(result);
     });
@@ -85,13 +86,12 @@ router.post("/login", (req, res) => {
 });
 
 router.post("/canteen", (req, res) => {
-    console.log(req.body);
     vendors.findOne({ "shop_name": req.body.canteen }).then(result => {
         if (!(result)) {
             res.status(404).json({ error: "canteen not found" });
         }
         else {
-            console.log(result);
+            //console.log(result);
             res.send(result);
         }
     })
@@ -99,7 +99,6 @@ router.post("/canteen", (req, res) => {
 
 
 router.post("/update_user",(req,res)=>{
-    console.log(req.body);
     User.updateOne({email:req.body.email},{$set:req.body}).then(result=>{
         res.status(200).send("Succesful");
     })
@@ -112,7 +111,6 @@ router.post("/update_user",(req,res)=>{
 
 
 router.post("/order",(req,res)=>{
-    console.log(req.body);
     const new_order=new orders({
         email:req.body.email,
         shop_name:req.body.shop_name,
@@ -126,7 +124,7 @@ router.post("/order",(req,res)=>{
         res.status(200).send("Succesfully placed your order");
     })
     .catch(err=>{
-        console.log("order not getting placed");
+        //console.log("order not getting placed");
         console.log(err);
         res.status(404).send("Order not plaaced");
 
@@ -135,7 +133,6 @@ router.post("/order",(req,res)=>{
 
 
 router.post("/myorders",(req,res)=>{
-    console.log(req.body);
     orders.find({email:req.body.email}).then(result=>{
         res.status(200).send(result);
     });
@@ -143,25 +140,49 @@ router.post("/myorders",(req,res)=>{
 })
 
 router.post("/itemdetails",(req,res)=>{
-    console.log(req.body);
-    vendors.findOne({shop_name:req.body.canteen}).then(result=>{
+    foods.findOne({shop_name:req.body.canteen,name:req.body.item}).then(result=>{
         const required=result.items;
-        let found=0;
-        for(var i=0;i<required.length;i++){
-            if(required[i].name==req.body.item){
-                console.log(required[i]);
-                found=1;
-                res.status(200).send(required[i]);
-                break;
-            }
-        }
-        if(found==0){
-            res.status(404).send("not found");
-        }})
-
+        //console.log(result);
+        //console.log("dddddddddddddddddddddddddddd");
+        res.status(200).send(result);
+    })
     .catch(err=>{
         res.status(404).send("errrror");
     })
+})
+
+router.post("/filter",(req,res)=>{
+    console.log(req.body);
+    const shop_queries=[];
+    for (var i=0;i<req.body.vendors.length;i++){
+        shop_queries.push({shop_name:req.body.vendors[i]});
+    }
+    const tags_queries=[];
+    for(var i=0;i<req.body.tags.length;i++){
+        tags_queries.push({item:req.body.tags[i]});
+    }
+    var max_price=req.body.max_price;
+    const min_price=req.body.min_price;
+    if(!max_price){
+        max_price=Infinity;
+    }
+    const price_sort=req.body.price_sort;
+    const rating_sort=req.body.rating_sort;
+
+    const veg_queries=[];
+    for(var i=0;i<req.body.vegs.length;i++){
+        veg_queries.push({type:req.body.vegs[i]})
+    }
+
+    foods.find({$and:[{$or:shop_queries},{$or:tags_queries},{$or:veg_queries},{price:{$lte:max_price}},{price:{$gte:min_price}}]}).sort({price:price_sort,rating:rating_sort}).then(result=>{
+        res.status(200).send(result)
+
+    })
+    .catch(err=>{
+        res.status(404).send("error")
+    })
+
+    
 })
 
 module.exports = router;
