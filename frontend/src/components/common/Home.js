@@ -13,10 +13,12 @@ const Home = (props) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [called, setCall] = useState(0);
-  const [ele, setState] = useState()
+  const [ele, setState] = useState();
   const categories = []
+  const [searchvalue,setsearch]=useState("");
   const row = []
   const location = useLocation()
+  const navigate=useNavigate();
   const callmenu = () => {
     const loadPost = async () => {
       await axios.get("http://localhost:4000/user/vendors", { crossdomain: true }).then(response => {
@@ -34,7 +36,17 @@ const Home = (props) => {
       var ans = loadPost();
     }
   }
-  //<div style={{ textAlign: "center" }}>Happy Coding - {name}</div>;
+
+  const searchitem= async()=>{
+    await axios.post("http://localhost:4000/user/searchByname",{crossdomain:true,name:searchvalue}).then(result=>{
+      console.log(result.data);
+      navigate("/SearchResults",{state:{data:location.state.data,results:result.data}});
+    })
+    .catch(err=>{
+      console.log(err);
+    })
+    
+  }
 
   return (
     <>
@@ -43,8 +55,8 @@ const Home = (props) => {
           <h1>IIIT Hyderabad<br />online Food services</h1>
           <h2>Taste the madness from you door steps now!</h2>
           <div className="search2">
-            <input className=" searchbar form-control mr-sm-2 " type="search" placeholder="Search for an item" aria-label="Search" style={{ alignContent: "center" }} />
-            <button className="btn btn-danger mx-2 searchbut">Search</button>
+            <input className=" searchbar form-control mr-sm-2 " type="search" placeholder="Search for an item" aria-label="Search" style={{ alignContent: "center" }} value={searchvalue} onChange={(e)=>{setsearch(e.target.value)}}/>
+            <button className="btn btn-danger mx-2 searchbut" onClick={()=>{searchitem()}}>Search</button>
           </div>
           <ModalBox data={location.state.data}/>
         </div>

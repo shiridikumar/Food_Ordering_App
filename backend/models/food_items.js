@@ -46,3 +46,6 @@ const foodsSchema =new Schema({
 })
 
 module.exports=food_items=mongoose.model("food_items",foodsSchema);
+
+
+//db.food.createIndex({'key':1},{collation:{locale:'en',strength:2}})

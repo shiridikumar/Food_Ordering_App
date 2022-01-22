@@ -181,9 +181,18 @@ router.post("/filter",(req,res)=>{
     .catch(err=>{
         console.log(err);
         res.status(404).send("error")
-    })
-
-    
+    }) 
 })
 
+
+router.post("/searchByname",(req,res)=>{
+    console.log(req.body);
+    foods.find({name:req.body.name}).collation( { locale: 'en', strength: 2 } ).then(result=>{
+        console.log(result);
+        res.status(200).send(result);
+    })
+    .catch(err=>{
+        res.status(404).send("error");
+    })
+})
 module.exports = router;
