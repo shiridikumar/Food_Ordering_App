@@ -130,6 +130,9 @@
     color:white;
     border-radius: 20px;
     padding:30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 .form-control:focus {
     
@@ -162,6 +165,7 @@
     display: flex;
     align-items: normal;
     background-color: rgba(0 0 0 / 3%);
+    box-shadow: 1px 1px grey;
     cursor:auto;
 }
 
@@ -287,7 +291,7 @@ li h4{
 
 .orders .card{
     border-radius: 0px;
-    box-shadow: 1px 1px grey;
+    box-shadow: 1px 1px 3px grey;
     width:60%;
     cursor: auto;
 }
@@ -361,6 +365,78 @@ li h4{
     flex-direction: column;
     align-items: center;
 }
+
+.pending-orders{
+    justify-content: flex-start;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+}
+
+.vendor-dashboard h3{
+    text-align: center;
+}
+
+.pending-orders .card-body img{
+    width:300px;
+    height: 250px;
+}
+
+.pending-orders .card-body h6{
+    text-align: center;
+    width: 100%;
+}
+
+.pending-orders .card-body .description{
+    width: 100%;
+    align-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin:0;
+}
+
+.pending-orders .card{
+    display: flex;
+    flex-direction: row;
+    width:30%;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    box-shadow: 1px 1px 3px grey;
+    width: 25%;
+    cursor: auto;
+}
+.pending-orders .pic{
+    display: flex;
+    width: 300px;
+    flex-direction: column;
+    margin: auto;
+}
+
+.pending-orders .pic  button{
+    width: 100%;
+    margin-top: 5px;
+}
+
+.pending-orders ul{
+    list-style: none;
+    padding: 0px;
+}
+
+.pending-orders li{
+    text-align: center;
+}
+
+#movestage{
+    width:250px;
+}
+
+.pending-orders .pic button{
+    cursor: auto;
+}
+
+
 
 
 

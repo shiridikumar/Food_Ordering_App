@@ -31,7 +31,7 @@ const SearchTab=()=>{
             <br/>
         </div>
     )
-
+    
 }
 
 export default SearchTab

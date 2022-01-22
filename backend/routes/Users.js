@@ -195,4 +195,45 @@ router.post("/searchByname",(req,res)=>{
         res.status(404).send("error");
     })
 })
+
+
+router.post("/vendorlogin", (req, res) => {
+    const email = req.body.email;
+    console.log(req.body)
+    vendors.findOne({ email }).then(user => {
+        if (!user) {
+            console.log(user);
+            return res.status(404).send("Invalid credentials")
+        }
+        else {
+            if (user.password === req.body.password) {
+                res.status(200).send(user)
+            }
+            else {
+                console.log(user);
+                console.log(req.body.password,user.password,user.email);
+                res.status(404).send("Invalid Credentials");
+            }
+        }
+    })
+    .catch(err=>{
+        console.log(err);
+    })
+});
+
+
+router.post("/pending-orders",(req,res)=>{
+    console.log(req.body);
+    orders.find({shop_name:req.body.shop_name,status:{$ne:'completed'},status:{$ne:'rejected'}}).then(result=>{
+        console.log(result);
+        res.status(200).send(result);
+
+    })
+    .catch(err=>{
+        console.log(err);
+        res.status(404).send("Error");
+    })
+})
+
+
 module.exports = router;

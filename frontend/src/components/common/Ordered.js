@@ -58,17 +58,26 @@ const Ordered = (props) => {
                 <div className="description">
                     <h6 style={{"fontWeight":"bold"}}>{props.food}</h6>
                     <ul>
-                        <li>Vendor : {props.canteen}</li>
+                        {!props.vendor_view?
+                        <li>Vendor : {props.target}</li>:
+                        <li>Buyer Email : {props.target}</li>
+                        }
                         <li>Tags : <Chip label={type} href="#basic-chip" />  <Chip label={item} href="#basic-chip" /> </li>
+                        {!props.vendor_view &&
                         <div className="rating" style={{ "display": "flex", "marginTop": "5px" }}>
                             <h6 style={{ "display": "inline", "fontWeight": "normal" }}>Rating :</h6><Rating name="read-only" value={4.5} readOnly precision={0.1} />
                         </div>
+                        }
                         <li>Quantity : {props.quantity} </li>
                         <li>Ordered Time : {ntime} </li>
                         <li>Ordered Date : {ndate}</li>
                         <li style={{"fontWeight":"bold"}}>Bill amount : Rs {props.amount} </li>
                     </ul>
+                    {props.vendor_view &&
+                    <button className="btn btn-primary" id='movestage' onClick={()=>{movestage()}}>Move to Next stage</button>
+                    }
                 </div>
+
             </div>
         </div>
 

@@ -47,7 +47,7 @@ const VendorSchema = new Schema({
         type:String,
         required:true
     },
-    pssword:{
+    password:{
         type:String,
         required:true
     },
@@ -75,5 +75,7 @@ const VendorSchema = new Schema({
 		required:false
 	}
 });
+
+
 
 module.exports = Vendor = mongoose.model("vendors", VendorSchema);
