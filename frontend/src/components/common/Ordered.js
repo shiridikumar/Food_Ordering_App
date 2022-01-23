@@ -14,6 +14,7 @@ const Ordered = (props) => {
     const [pic, setpic] = useState('no.png');
     const [item, setitem] = useState();
     const [type, settype] = useState();
+    const [visible,setvis]=useState(1);
     const [rating, setrat] = useState();
     useEffect(() => {
 
@@ -28,6 +29,9 @@ const Ordered = (props) => {
             });
         }
         getitems(props.canteen,props.food);
+        if(props.status==='Rejected' || props.status==='Completed'){
+            setvis(0);
+        }
     },[])
     console.log(pic,type,rating,name,item);
     var dateObj = new Date(props.time);
@@ -38,22 +42,38 @@ const Ordered = (props) => {
     var mins=dateObj.getMinutes();
     const ntime=hrs+':'+mins;
     const ndate = day + "/" + month + "/" + year;
-    const statusarr={
-        "Placed":"btn btn-danger",
-        "Accepted":"btn btn-primary",
-        "Cooking":"btn btn-warning",
-        "Ready for Pickup":"btn btn-info",
-        "Completed":"btn btn-success",
-        "Rejected":"btn btn-dark"
+
+    const colorcodes={
+        "Placed":'#dc3545',
+        "Accepted":'#0d6efd',
+        "Cooking":'#ffc107',
+        "Ready for Pickup":'#0dcaf0',
+        "Completed":"#198754",
+        "Rejected":"#212529"
     }
 
 
+    const [col_code,setcol]=useState(colorcodes[props.status]);
+    const movestage= async()=>{
+        await axios.post("http://localhost:4000/user/movestage",{crossdomain:true,orderid:props.order_id}).then(response=>{
+            console.log(response);
+            var ele=document.getElementById(props.order_id);
+            console.log(ele);
+            //ele.setAttribute('className',response.data);
+            ele.innerHTML=response.data;
+            setcol(colorcodes[response.data]);
+            if(response.data==='Completed' || response.data==='Rejected'){
+                setvis(0);
+            }
+        })
+    }
     return (
         <div className="card" id={props.itemid}>
             <div className="card-body">
                 <div className="pic">
                     <img src={require('./../img/' + pic)} />
-                    <button className={statusarr[props.status]}>{props.status}</button>
+                    <button className='btn' id={props.order_id}  style={{"fontWeight":"normal","color":"white","backgroundColor":col_code}}>{props.status}</button>
+        
                 </div>
                 <div className="description">
                     <h6 style={{"fontWeight":"bold"}}>{props.food}</h6>
@@ -73,8 +93,10 @@ const Ordered = (props) => {
                         <li>Ordered Date : {ndate}</li>
                         <li style={{"fontWeight":"bold"}}>Bill amount : Rs {props.amount} </li>
                     </ul>
-                    {props.vendor_view &&
-                    <button className="btn btn-primary" id='movestage' onClick={()=>{movestage()}}>Move to Next stage</button>
+                    
+                    {(visible && props.vendor_view)? 
+                    <button className="btn btn-primary" id='movestage' onClick={()=>{movestage()}}>Move to Next stage</button>:
+                    <br/>
                     }
                 </div>
 

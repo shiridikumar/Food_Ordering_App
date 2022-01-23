@@ -224,7 +224,7 @@ router.post("/vendorlogin", (req, res) => {
 
 router.post("/pending-orders",(req,res)=>{
     console.log(req.body);
-    orders.find({shop_name:req.body.shop_name,status:{$ne:'completed'},status:{$ne:'rejected'}}).then(result=>{
+    orders.find({shop_name:req.body.shop_name,$and:[{status:{$ne:'Completed'}},{status:{$ne:'Rejected'}}]}).then(result=>{
         console.log(result);
         res.status(200).send(result);
 
@@ -232,6 +232,41 @@ router.post("/pending-orders",(req,res)=>{
     .catch(err=>{
         console.log(err);
         res.status(404).send("Error");
+    })
+})
+
+router.post("/movestage",(req,res)=>{
+    const stages=[
+        "Placed",
+        "Accepted",
+        "Cooking",
+        "Ready for Pickup",
+        "Completed",
+        "Rejected"
+    ]
+    const stage_indices={
+        "Placed":0,
+        "Accepted":1,
+        "Cooking":2,
+        "Ready for Pickup":3,
+        "Completed":4,
+        "Rejected":5
+    }
+    orders.findOne({_id:req.body.orderid}).then(result=>{
+        console.log(result);
+        const req_stage=stages[stage_indices[result.status]+1]
+        orders.updateOne({_id:req.body.orderid},{$set:{status:req_stage}}).then(response=>{
+            console.log(response);
+            res.status(200).send(req_stage);
+        })
+        .catch(err=>{
+            console.log(err);
+            res.status(404).send("error");
+        })
+    })
+    .catch(err=>{
+        console.log(err);
+        res.status(404).send("errroor");
     })
 })
 
