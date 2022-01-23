@@ -16,6 +16,7 @@ import Canteen from "./components/common/Canteen";
 import Myorders from "./components/common/Myorders";
 import SearchTab from "./components/common/SearchTab";
 import VendorsDashboard from "./components/common/VendorsDashboard";
+import VendorMenu from "./components/common/VendorMenu";
 const Layout = (props) => {
   const navigate = useNavigate();
     if (log.logged === 0) {
@@ -57,6 +58,9 @@ const Layout = (props) => {
             <Route path="/MyOrders" element ={<Myorders />}/>
             <Route path="/SearchResults" element ={<SearchTab />}/>
             <Route path="/Vendors" element={<VendorsDashboard />}/>
+            <Route path="/vendormenu" element={<VendorMenu />}/>
+            
+            
           </Routes>
         </BrowserRouter>
       </>

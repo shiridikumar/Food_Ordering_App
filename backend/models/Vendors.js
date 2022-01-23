@@ -62,14 +62,6 @@ const VendorSchema = new Schema({
 	items: {
         type:[itemsSchema]
     },
-	type:{
-		type: String,
-		required: true
-	},
-	item:{
-		type:String,
-		required:false
-	},
 	pic:{
 		type:String,
 		required:false

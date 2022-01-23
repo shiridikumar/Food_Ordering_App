@@ -134,7 +134,7 @@
     flex-direction: column;
     align-items: center;
 }
-.form-control:focus {
+.login .form-control:focus {
     
     border-color: #080808;
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(0, 0, 0, 0.6);
@@ -434,6 +434,47 @@ li h4{
 
 .pending-orders .pic button{
     cursor: auto;
+}
+
+.vendor-menu .card{
+    width: 100%;
+}
+
+.vendor-menu .card-body{
+    display: flex;
+    flex-direction: row;
+}
+
+.vendor-menu .pic-upload{
+    display: flex;
+    width:300px;
+    flex-direction: column;
+}
+.title h5{
+    margin:5px;
+}
+.vendor-menu .title{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.vendor-menu input{
+    text-align: center;
+}
+
+.vendor-menu .tags{
+    display: flex;
+    flex-direction: row;
+
+}
+
+.vendor-menu .type{
+    display: flex;
+}
+
+.vendor-menu .price{
+    display: flex;
 }
 
 

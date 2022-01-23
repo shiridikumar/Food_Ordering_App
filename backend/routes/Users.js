@@ -88,6 +88,7 @@ router.post("/login", (req, res) => {
 router.post("/canteen", (req, res) => {
     vendors.findOne({ "shop_name": req.body.canteen }).then(result => {
         if (!(result)) {
+            
             res.status(404).json({ error: "canteen not found" });
         }
         else {
@@ -272,3 +273,4 @@ router.post("/movestage",(req,res)=>{
 
 
 module.exports = router;
+

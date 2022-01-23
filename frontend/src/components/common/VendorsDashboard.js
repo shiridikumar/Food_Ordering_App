@@ -31,7 +31,7 @@ const VendorsDashboard=()=>{
 
     return (
         <div className="vendor-dashboard">
-            <Navbar2 name={details.shop_name}/>
+            <Navbar2 name={details.shop_name} vendor_view={1} data={location.state.data}/>
             <h3>Pending Orders</h3>
             <div className="container pending-orders">
                 {cont}
