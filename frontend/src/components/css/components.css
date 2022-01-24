@@ -437,12 +437,13 @@ li h4{
 }
 
 .vendor-menu .card{
-    width: 100%;
+    width:30%;
 }
 
 .vendor-menu .card-body{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    align-items: center;
 }
 
 .vendor-menu .pic-upload{
@@ -450,13 +451,12 @@ li h4{
     width:300px;
     flex-direction: column;
 }
-.title h5{
-    margin:5px;
-}
 .vendor-menu .title{
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    align-items: center;
+    justify-content: space-evenly;
+    margin: 5px;
 }
 
 .vendor-menu input{
@@ -465,18 +465,41 @@ li h4{
 
 .vendor-menu .tags{
     display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
     flex-direction: row;
 
 }
 
 .vendor-menu .type{
     display: flex;
+    justify-content: space-evenly;
 }
 
 .vendor-menu .price{
     display: flex;
+    justify-content: space-evenly;
 }
 
+.vendor-menu li{
+    margin: 5px;
+    width: 200px;
+}
+
+.vendor-menu .description{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content:space-evenly;
+}
+
+.vendor-menu input{
+    margin: 5px;
+}
+
+.vendor-menu button{
+    margin: 5px;
+}
 
 
 

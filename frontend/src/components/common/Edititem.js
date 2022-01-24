@@ -11,7 +11,9 @@ const Edititem = (props) => {
     const row = []
     const present_tags=[];
     const [cont, setcont] = useState();
+
     useEffect(() => {
+        console.log(details);
         const calltags = () => {
             for (var i = 0; i < r.length; i++) {
                 row.push(<Chip label={r[i]} href="#basic-chip" />)
@@ -104,12 +106,14 @@ const Edititem = (props) => {
             setcont(del_row);
             var but=document.getElementById("editfoods"+props.itemid);
             but.innerHTML="Save";
+            r=fr;
             setbut(1);
         }
         else{
             console.log("here click");
             var ele = document.getElementById(ids);
             var edit_items = ele.getElementsByTagName('input');
+            r=fr;
             for (var i = 0; i < edit_items.length; i++) {
                 edit_items[i].disabled = true;
             }
@@ -136,23 +140,34 @@ const Edititem = (props) => {
                 </div>
 
                 <div className="description" id={ids}>
+                    <ul>
+                    <li>
                     <div className="title">
                         <h5>Title</h5>
                         <input type="text" value={name} disabled />
                     </div>
+                    </li>
+                    <li>
                     <div className="tags">
                         <h5>Tags</h5>
                         {cont}
-
                     </div>
+                    </li>
+                    <li>
                     <div className="type">
                         <h5>Type</h5><input type="text" value={type} disabled />
                     </div>
+                    </li>
+                    <li>
                     <div className="price">
                         <h5>Price</h5><input type="text" value={price} disabled />
                     </div>
+                    </li>
+                    <li>
                     <button className="btn btn-secondary" id={'editfoods'+props.itemid} onClick={() => { edititems() }}>Edit</button>
                     <button className="btn btn-danger">Delete</button>
+                    </li>
+                    </ul>
 
                 </div>
 
