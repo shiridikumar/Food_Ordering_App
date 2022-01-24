@@ -7,6 +7,9 @@ const User = require("../models/Users");
 const foods=require("./../models/food_items");
 const { response } = require("express");
 const { db } = require("./../models/Users");
+const path = require("path")
+
+const multer=require("multer");
 
 router.get("/vendors", (req, res) => {
     //console.log("vendors called");
@@ -281,8 +284,8 @@ router.post("/edititem",(req,res)=>{
         }
         console.log(obj);
         vendors.updateOne({shop_name:req.body.shop_name},{$set:{items:obj}}).then(result=>{
-            console.log("Succesful");
-            console.log(result);
+        
+           
         })
         .catch(err=>{
             console.log("unsucesful");
@@ -293,7 +296,7 @@ router.post("/edititem",(req,res)=>{
     })
 
     foods.updateOne({name:req.body.original},{$set:{price:req.body.price,name:req.body.name,item:req.body.item,type:req.body.type}}).then(response=>{
-        console.log("foods succesful");
+ 
     })
     .catch(err=>{
         console.log(err);
@@ -311,6 +314,59 @@ router.post("/vendoritems",(req,res)=>{
 })
 
 
+router.post("/deleteitems",(req,res)=>{
+    foods.remove({shop_name:req.body.shop_name,name:req.body.name}).then(response=>{
+        console.log("succesful");
+        res.status(200).send("succesful");
+    })
+    .catch(err=>{
+        console.log(err);
+    })
+
+})
+
+
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+  
+        // Uploads is the Upload_folder_name
+        cb(null, "uploads")
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.fieldname + "-" + Date.now()+".jpg")
+    }
+  })
+  const maxSize = 4 * 1000 * 1000;
+  var upload = multer({ 
+    storage: storage,
+    limits: { fileSize: maxSize },
+    fileFilter: function (req, file, cb){
+        var filetypes = /jpeg|jpg|png/;
+        var mimetype = filetypes.test(file.mimetype);
+  
+        var extname = filetypes.test(path.extname(
+                    file.originalname).toLowerCase());
+        
+        if (mimetype && extname) {
+            return cb(null, true);
+        }
+      
+        cb("Error: File upload only supports the "
+                + "following filetypes - " + filetypes);
+      } 
+}).single("image");  
+
+router.post("/uploadpic",function (req, res, next) {
+    upload(req,res,function(err) {
+  
+        if(err) {
+            res.send(err)
+        }
+        else {
+            res.send("Success, Image uploaded!")
+        }
+    })
+})
 
 
 module.exports = router;

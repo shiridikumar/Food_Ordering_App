@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import Additem from "./Additem";
 import Edititem from "./Edititem";
 import Navbar2 from "./Navbar2";
 
@@ -32,10 +33,15 @@ const VendorMenu=()=>{
         loadpost();
 
     },[])
+
+    const addfooditem=()=>{
+        
+    }
     return (
         <div className="vendor-menu">
             <Navbar2 name={details.shop_name} vendor_view={1} data={details}/>
             <h3>Food-Menu</h3>
+            <Additem details={details}/>
             <div className="container pending-orders">
                 {cont}
             </div>

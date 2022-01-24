@@ -166,6 +166,13 @@ const Edititem = (props) => {
         }
     }
 
+    const deleteitems=async()=>{
+        await axios.post("http://localhost:4000/user/deleteitems",{shop_name:props.shop_name,name:details.name}).then(response=>{
+            console.log("succesful");
+            window.location.href = window.location.href;
+        })
+    }
+
     return (
         <div className="card" id={details.itemid}>
             <div className="card-body">
@@ -205,7 +212,7 @@ const Edititem = (props) => {
                         </li>
                         <li>
                             <button className="btn btn-secondary" id={'editfoods' + props.itemid} onClick={() => { edititems() }}>Edit</button>
-                            <button className="btn btn-danger">Delete</button>
+                            <button className="btn btn-danger" id={'deletefoods' + props.itemid} onClick={()=>{deleteitems()}}>Delete</button>
                         </li>
                     </ul>
 
