@@ -6,6 +6,7 @@ const orders=require("./../models/Orders")
 const User = require("../models/Users");
 const foods=require("./../models/food_items");
 const { response } = require("express");
+const { db } = require("./../models/Users");
 
 router.get("/vendors", (req, res) => {
     //console.log("vendors called");
@@ -141,6 +142,7 @@ router.post("/myorders",(req,res)=>{
 })
 
 router.post("/itemdetails",(req,res)=>{
+    console.log(req.body);
     foods.findOne({shop_name:req.body.canteen,name:req.body.item}).then(result=>{
         const required=result.items;
         //console.log(result);
@@ -149,6 +151,7 @@ router.post("/itemdetails",(req,res)=>{
     })
     .catch(err=>{
         res.status(404).send("errrror");
+        console.log(err);
     })
 })
 
@@ -189,7 +192,6 @@ router.post("/filter",(req,res)=>{
 router.post("/searchByname",(req,res)=>{
     console.log(req.body);
     foods.find({name:req.body.name}).collation( { locale: 'en', strength: 2 } ).then(result=>{
-        console.log(result);
         res.status(200).send(result);
     })
     .catch(err=>{
@@ -203,7 +205,6 @@ router.post("/vendorlogin", (req, res) => {
     console.log(req.body)
     vendors.findOne({ email }).then(user => {
         if (!user) {
-            console.log(user);
             return res.status(404).send("Invalid credentials")
         }
         else {
@@ -211,8 +212,7 @@ router.post("/vendorlogin", (req, res) => {
                 res.status(200).send(user)
             }
             else {
-                console.log(user);
-                console.log(req.body.password,user.password,user.email);
+
                 res.status(404).send("Invalid Credentials");
             }
         }
@@ -226,9 +226,7 @@ router.post("/vendorlogin", (req, res) => {
 router.post("/pending-orders",(req,res)=>{
     console.log(req.body);
     orders.find({shop_name:req.body.shop_name,$and:[{status:{$ne:'Completed'}},{status:{$ne:'Rejected'}}]}).then(result=>{
-        console.log(result);
         res.status(200).send(result);
-
     })
     .catch(err=>{
         console.log(err);
@@ -257,7 +255,6 @@ router.post("/movestage",(req,res)=>{
         console.log(result);
         const req_stage=stages[stage_indices[result.status]+1]
         orders.updateOne({_id:req.body.orderid},{$set:{status:req_stage}}).then(response=>{
-            console.log(response);
             res.status(200).send(req_stage);
         })
         .catch(err=>{
@@ -270,6 +267,50 @@ router.post("/movestage",(req,res)=>{
         res.status(404).send("errroor");
     })
 })
+
+
+router.post("/edititem",(req,res)=>{
+    console.log(req.body);
+    vendors.findOne({shop_name:req.body.shop_name}).then(response=>{
+        var obj=response.items;
+        for(var i=0;i<obj.length;i++){
+            if(obj[i].name==req.body.original){
+                obj[i].name=req.body.name;obj[i].item=req.body.item;obj[i].price=parseInt(req.body.price);obj[i].type=req.body.type;
+                break;
+            }
+        }
+        console.log(obj);
+        vendors.updateOne({shop_name:req.body.shop_name},{$set:{items:obj}}).then(result=>{
+            console.log("Succesful");
+            console.log(result);
+        })
+        .catch(err=>{
+            console.log("unsucesful");
+        })
+    })
+    .catch(err=>{
+        console.log(err);
+    })
+
+    foods.updateOne({name:req.body.original},{$set:{price:req.body.price,name:req.body.name,item:req.body.item,type:req.body.type}}).then(response=>{
+        console.log("foods succesful");
+    })
+    .catch(err=>{
+        console.log(err);
+    })
+})
+
+router.post("/vendoritems",(req,res)=>{
+    console.log(req.body);
+    foods.find({shop_name:req.body.shop_name}).then(response=>{
+        res.status(200).send(response);
+    })
+    .catch(err=>{
+        console.log(err);
+    })
+})
+
+
 
 
 module.exports = router;

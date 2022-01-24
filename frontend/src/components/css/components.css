@@ -455,7 +455,8 @@ li h4{
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: center;
+
     margin: 5px;
 }
 
@@ -465,40 +466,52 @@ li h4{
 
 .vendor-menu .tags{
     display: flex;
-    justify-content: space-evenly;
     flex-wrap: wrap;
     flex-direction: row;
+    justify-content: center;
 
 }
 
 .vendor-menu .type{
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
 }
 
 .vendor-menu .price{
     display: flex;
-    justify-content: space-evenly;
-}
+    justify-content: center;
 
+}
+.vendor-menu ul{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px;
+    width:300px;
+    justify-content: center;
+}
 .vendor-menu li{
-    margin: 5px;
-    width: 200px;
+    width:400px;
+    justify-content: center;
 }
 
 .vendor-menu .description{
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content:space-evenly;
+
 }
 
 .vendor-menu input{
     margin: 5px;
+    width:100px;
 }
 
 .vendor-menu button{
     margin: 5px;
+}
+.vendor-menu .type input{
+    width:10px;
 }
 
 

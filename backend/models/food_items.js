@@ -25,14 +25,14 @@ const foodsSchema =new Schema({
         required:true
     },
     item:{
-        type:String,
+        type:[String],
         required:false
     },
     pic:{
         type:String,
         required:true
     },
-    rate:{
+    rating:{
         type:Number,
         required:true
     },

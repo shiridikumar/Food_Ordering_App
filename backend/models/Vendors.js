@@ -26,7 +26,7 @@ const itemsSchema=new Schema({
         type:String,
     },
     item:{
-        type:String,
+        type:[String],
     },
     pic:{
         type:String,

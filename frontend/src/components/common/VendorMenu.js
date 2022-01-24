@@ -12,13 +12,21 @@ const VendorMenu=()=>{
     const row=[];
     const [cont,setcont]=useState();
     useEffect(()=>{
-        const loadpost=()=>{
-            for(var i=0;i<details.items.length;i++){
-                var ids=i+'_vendormenu_'+details.shop_name
-                row.push(<Edititem details={details.items[i]} itemid={ids}/>)
-            }
-            setcont(row);
+        const loadpost=async()=>{
+            await axios.post("http://localhost:4000/user/vendoritems",{crossdomain:true,shop_name:details.shop_name}).then(response=>{
+                console.log(response.data);
+                for(var i=0;i<response.data.length;i++){
+                    var ids=i+'_vendormenu_'+response.data[i].shop_name
+                    console.log(ids);
+                    row.push(<Edititem details={response.data[i]} itemid={ids} shop_name={response.data[i].shop_name}/>)
+                }
+                setcont(row);
 
+            })
+            .catch(err=>{
+                console.log(err);
+            })
+            
         }
 
         loadpost();
