@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Outlet, Navigate, useNavigate, useParams } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Outlet, Navigate, useNavigate, useParams, useLocation } from "react-router-dom";
 import "./App.css";
 
 import UsersList from "./components/users/UsersList";
@@ -19,7 +19,8 @@ import VendorsDashboard from "./components/common/VendorsDashboard";
 import VendorMenu from "./components/common/VendorMenu";
 const Layout = (props) => {
   const navigate = useNavigate();
-    if (log.logged === 0) {
+  const location=useLocation();
+  if(!location.state){
       console.log("asdaaaa");
       return (
         <Login />
@@ -50,7 +51,6 @@ const Layout = (props) => {
             <Route path="/" element={<Layout/>}>
               <Route path="/" element={<Home/>}/>
               <Route path="/home" element={<Home />} />
-              <Route path="users" element={<UsersList />} />
               <Route path="/register" element={<Login />} />
             </Route>
             <Route path="/profile" element={<Profile />} />

@@ -520,7 +520,28 @@ li h4{
     margin: 15px;
 }
 
+.addtags{
+    display: flex;
+    flex-direction: row;
+}
 
 
+.vendor-menu .addaddons{
+    display: flex;
+    align-items: center;
+}
+
+.itemtags{
+    display: flex;
+    align-items: center;
+}
+
+.additem input{
+    width:200px;
+}
+
+.left buttton{
+    width:200px;
+}
 
 

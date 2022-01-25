@@ -9,6 +9,7 @@ import ModalBox from "./ModalBox";
 
 
 
+
 const Home = (props) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -19,6 +20,9 @@ const Home = (props) => {
   const row = []
   const location = useLocation()
   const navigate=useNavigate();
+  if(!location.state){
+    navigate("/signin");
+  }
   const callmenu = () => {
     const loadPost = async () => {
       await axios.get("http://localhost:4000/user/vendors", { crossdomain: true }).then(response => {

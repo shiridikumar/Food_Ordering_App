@@ -19,12 +19,11 @@ const Navbar = (props) => {
     <Box  className="navtab" >
       <Tabs value={value} onChange={linkchange} aria-label="nav tabs example" TabIndicatorProps={{style:{background:'white',color:'white'}}}>
         <Tab label="Home" onClick={()=>navigate("/home")} style={{color:"white"}} />
-        <Tab label="Menu" onClick={()=>navigate("/profile")} style={{color:"white"}}  />
-        <Tab label="Combo packs" onClick={()=>navigate("/home")} style={{color:"white"}}/>
+        <Tab label="MyOrders" onClick={()=>navigate("/MyOrders",{state:{data:location.state.data}})} style={{color:"white"}}  />
         <Tab label="Profile" onClick={()=>navigate("/profile",{state:{data:location.state.data}})} style={{color:"white"}}/>
+        <Tab label="Sign out" onClick={()=>navigate("/signin")} style={{color:"white"}}/>
       </Tabs>
     </Box>
-
     /*<Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>

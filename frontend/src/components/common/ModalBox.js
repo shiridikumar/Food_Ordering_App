@@ -8,7 +8,7 @@ const ModalBox = (props) => {
     const [shop_filter, setshop] = useState();
     const tags_row = []
     const [tag_filter, settag] = useState();
-    const navigate=useNavigate();
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -19,10 +19,10 @@ const ModalBox = (props) => {
                     var ids = i + '_' + response.data[i] + '_filter';
                     row.push(
                         <li className="list-group-item shops_li">
-                            <input className="form-check-input me-1 shops_filter" type="checkbox" id={ids} value={response.data[i]} aria-label="..." onChange={(e)=>{
-                                if(!(e.target.checked)){
-                                    var all_ele=document.getElementById('all_shops');
-                                    all_ele.checked=false;
+                            <input className="form-check-input me-1 shops_filter" type="checkbox" id={ids} value={response.data[i]} aria-label="..." onChange={(e) => {
+                                if (!(e.target.checked)) {
+                                    var all_ele = document.getElementById('all_shops');
+                                    all_ele.checked = false;
                                 }
                             }} />
                             {response.data[i]}
@@ -31,121 +31,124 @@ const ModalBox = (props) => {
                 console.log(row);
                 setshop(row);
             })
-            const tags = ['pizzas', 'burgers', 'drinks', 'icecream', 'samosas', 'maggi', 'sandwich', 'others'];
-            for (var i = 0; i < tags.length; i++) {
-                var ids = tags[i] + '_filter'
-                tags_row.push(<li className="list-group-item tags_li">
-                    <input className="form-check-input me-1 tags_filter" type="checkbox" id={ids} value={tags[i]} aria-label="..." onChange={(e)=>{
-                        if(!e.target.checked){
-                            var all_ele=document.getElementById('all_tags');
-                            all_ele.checked=false;
-                        }
+            await axios.get("http://localhost:4000/user/alltags").then(response => {
+                console.log(response.data);
+                const tags = response.data;
+                for (var i = 0; i < tags.length; i++) {
+                    var ids = tags[i] + '_filter'
+                    tags_row.push(<li className="list-group-item tags_li">
+                        <input className="form-check-input me-1 tags_filter" type="checkbox" id={ids} value={tags[i]} aria-label="..." onChange={(e) => {
+                            if (!e.target.checked) {
+                                var all_ele = document.getElementById('all_tags');
+                                all_ele.checked = false;
+                            }
 
-                    }}/>
-                    {tags[i]}
-                </li>
-                )
-            }
-            settag(tags_row);
+                        }} />
+                        {tags[i]}
+                    </li>
+                    )
+                }
+                settag(tags_row);
+            })
         }
         loadPost();
 
     }, [])
 
-    const filtersearch= async()=>{
-        const filtered_shops=[]
-        var shop_ele=document.getElementsByClassName('shops_filter');
+    const filtersearch = async () => {
+        const filtered_shops = []
+        var shop_ele = document.getElementsByClassName('shops_filter');
         console.log(shop_ele);
 
-        for(var i=0;i<shop_ele.length;i++){
-            if(shop_ele[i].checked && shop_ele[i].value!=''){
+        for (var i = 0; i < shop_ele.length; i++) {
+            if (shop_ele[i].checked && shop_ele[i].value != '') {
                 filtered_shops.push(shop_ele[i].value);
             }
         }
         console.log(filtered_shops);
-        const filtered_tags=[]
-        var tags_ele=document.getElementsByClassName('tags_filter');
+        const filtered_tags = []
+        var tags_ele = document.getElementsByClassName('tags_filter');
         console.log(tags_ele);
-        for(var i=0;i<tags_ele.length;i++){
-            if(tags_ele[i].checked && tags_ele[i].value!=''){
+        for (var i = 0; i < tags_ele.length; i++) {
+            if (tags_ele[i].checked && tags_ele[i].value != '') {
                 filtered_tags.push(tags_ele[i].value);
             }
         }
         console.log(filtered_tags);
-        var base_price=parseInt(document.getElementById('base_price').value);
+        var base_price = parseInt(document.getElementById('base_price').value);
 
-        var ma_price=parseInt(document.getElementById('max_price').value);
-        if(!ma_price){
-            ma_price=Infinity
+        var ma_price = parseInt(document.getElementById('max_price').value);
+        if (!ma_price) {
+            ma_price = Infinity
         }
-        if(!base_price){
-            base_price=0;
+        if (!base_price) {
+            base_price = 0;
         }
         console.log(base_price);
         console.log(ma_price);
-        var sp=0;
-        var sr=0;
+        var sp = 0;
+        var sr = 0;
 
-        var price_sort1=document.getElementById('price-sort1');
-        if(price_sort1.checked){
-            sp=1;
-        }
-
-        var price_sort2=document.getElementById('price-sort2');
-        if(price_sort2.checked){
-            sp=-1;
-        }
-        var price_sort3=document.getElementById('price-sort3');
-        if(price_sort3.checked){
-            sp=0;
+        var price_sort1 = document.getElementById('price-sort1');
+        if (price_sort1.checked) {
+            sp = 1;
         }
 
-        var rating_sort1=document.getElementById('rating-sort1');
-        if(rating_sort1.checked){
-            sr=1;
+        var price_sort2 = document.getElementById('price-sort2');
+        if (price_sort2.checked) {
+            sp = -1;
+        }
+        var price_sort3 = document.getElementById('price-sort3');
+        if (price_sort3.checked) {
+            sp = 0;
         }
 
-        var rating_sort2=document.getElementById('rating-sort2');
-        if(rating_sort2.checked){
-            sr=-1;
+        var rating_sort1 = document.getElementById('rating-sort1');
+        if (rating_sort1.checked) {
+            sr = 1;
         }
-        var rating_sort3=document.getElementById('rating-sort3');
-        if(rating_sort3.checked){
-            sr=0;
-        }
-        const vegs_arr=[]
 
-        const vegel=document.getElementById('Veg-box');
-        if(vegel.checked){
+        var rating_sort2 = document.getElementById('rating-sort2');
+        if (rating_sort2.checked) {
+            sr = -1;
+        }
+        var rating_sort3 = document.getElementById('rating-sort3');
+        if (rating_sort3.checked) {
+            sr = 0;
+        }
+        const vegs_arr = []
+
+        const vegel = document.getElementById('Veg-box');
+        if (vegel.checked) {
             vegs_arr.push(vegel.value);
         }
 
-        const nvegel=document.getElementById('Non-veg-box');
-        if(nvegel.checked){
+        const nvegel = document.getElementById('Non-veg-box');
+        if (nvegel.checked) {
             vegs_arr.push(nvegel.value);
         }
 
-        
-        const filter_details={
-            vendors:filtered_shops,
-            tags:filtered_tags,
-            min_price:base_price,
-            max_price:ma_price,
-            price_sort:sp,
-            rating_sort:sr,
-            vegs:vegs_arr
+
+        const filter_details = {
+            vendors: filtered_shops,
+            tags: filtered_tags,
+            min_price: base_price,
+            max_price: ma_price,
+            price_sort: sp,
+            rating_sort: sr,
+            vegs: vegs_arr
         }
-        var srcbut=document.getElementById('filtersubmit');
+        var srcbut = document.getElementById('filtersubmit');
         console.log(srcbut);
-        var filbut=document.getElementById('closefilter');
-        await axios.post("http://localhost:4000/user/filter",filter_details).then(response=>{
+        var filbut = document.getElementById('closefilter');
+        await axios.post("http://localhost:4000/user/filter", filter_details).then(response => {
             console.log(response);
             filbut.click();
-            navigate("/SearchResults",{state:{data:props.data,results:response.data}});
+            navigate("/SearchResults", { state: { data: props.data, results: response.data } });
         })
-        .catch(err=>{
-            alert("Plese enter non empty filters for Tags , veg or non-veg and vendor name");
-        })
+            .catch(err => {
+                alert("Plese enter non empty filters for Tags , veg or non-veg and vendor name");
+            })
 
 
 
@@ -214,20 +217,20 @@ const ModalBox = (props) => {
                                     </a>
                                     <ul className="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                         <li className="list-group-item tags_li">
-                                            <input className="form-check-input me-1 tags_filter" type="checkbox" id='all_tags' value="" aria-label="..." onChange={()=>{
-                                                var ele=document.getElementById("all_tags");
-                                                var all_ele=document.getElementsByClassName("tags_filter");
-                                                if(ele.checked){
-                                                    for(var i=0;i<all_ele.length;i++){
-                                                        all_ele[i].checked=true;
+                                            <input className="form-check-input me-1 tags_filter" type="checkbox" id='all_tags' value="" aria-label="..." onChange={() => {
+                                                var ele = document.getElementById("all_tags");
+                                                var all_ele = document.getElementsByClassName("tags_filter");
+                                                if (ele.checked) {
+                                                    for (var i = 0; i < all_ele.length; i++) {
+                                                        all_ele[i].checked = true;
                                                     }
                                                 }
-                                                else{
-                                                    for(var i=0;i<all_ele.length;i++){
-                                                        all_ele[i].checked=false;
+                                                else {
+                                                    for (var i = 0; i < all_ele.length; i++) {
+                                                        all_ele[i].checked = false;
                                                     }
                                                 }
-                                            }}/>
+                                            }} />
                                             Select all
                                         </li>
                                         {tag_filter}
@@ -241,7 +244,7 @@ const ModalBox = (props) => {
                                     <h6>From</h6>
                                     <input type='number' id='base_price' />
                                     <h6>To</h6>
-                                    <input type='number' id='max_price'/>
+                                    <input type='number' id='max_price' />
                                 </div>
                             </div>
                             <div className="sort-price">
@@ -280,7 +283,7 @@ const ModalBox = (props) => {
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" id='closefilter'>Close</button>
-                            <button type="button" className="btn btn-primary" id='filtersubmit' onClick={()=>{filtersearch()}} >Search</button>
+                            <button type="button" className="btn btn-primary" id='filtersubmit' onClick={() => { filtersearch() }} >Search</button>
                         </div>
                     </div>
                 </div>
