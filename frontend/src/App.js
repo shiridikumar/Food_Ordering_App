@@ -1,14 +1,12 @@
 import { BrowserRouter, Routes, Route, Outlet, Navigate, useNavigate, useParams, useLocation } from "react-router-dom";
 import "./App.css";
-
-import UsersList from "./components/users/UsersList";
 import Home from "./components/common/Home";
-import Register from "./components/common/Register";
 import Navbar from "./components/templates/Navbar";
 import Profile from "./components/common/Profile";
 import axios from "axios"
 import Paper from "@mui/material/Paper";
 import Login from "./components/users/Login";
+import Register from "./components/users/Register";
 import Gallery from "./components/common/Gallery";
 import { useEffect } from "react";
 import log from "./log";
@@ -17,6 +15,7 @@ import Myorders from "./components/common/Myorders";
 import SearchTab from "./components/common/SearchTab";
 import VendorsDashboard from "./components/common/VendorsDashboard";
 import VendorMenu from "./components/common/VendorMenu";
+import Vendorprofile from "./components/common/Vendorprofile";
 const Layout = (props) => {
   const navigate = useNavigate();
   const location=useLocation();
@@ -48,6 +47,7 @@ const Layout = (props) => {
         <BrowserRouter>
           <Routes>
             <Route path="/signin" element={<Login logged={0} />} />
+            <Route path="/signup" element={<Register />} />
             <Route path="/" element={<Layout/>}>
               <Route path="/" element={<Home/>}/>
               <Route path="/home" element={<Home />} />
@@ -59,8 +59,7 @@ const Layout = (props) => {
             <Route path="/SearchResults" element ={<SearchTab />}/>
             <Route path="/Vendors" element={<VendorsDashboard />}/>
             <Route path="/vendormenu" element={<VendorMenu />}/>
-            
-            
+            <Route path="/Vendorprofile" element={<Vendorprofile />}/>
           </Routes>
         </BrowserRouter>
       </>

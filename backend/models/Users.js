@@ -25,6 +25,9 @@ const UserSchema = new Schema({
 	password:{
 		type:String,
 		required:true
+	},
+	wallet:{
+		type:Number
 	}
 });
 module.exports = User = mongoose.model("users", UserSchema);

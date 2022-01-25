@@ -33,7 +33,7 @@ const Myorders=()=>{
     },[]);
     return(
         <div className="myorders">
-        <Navbar2 name={location.state.data.name}/>
+        <Navbar2 name={location.state.data.name} data={location.state.data}/>
         <h3>My orders</h3>
         <div className="conatainer orders">
             {content}

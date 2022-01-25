@@ -10,61 +10,154 @@ const { db } = require("./../models/Users");
 const path = require("path")
 const bcrypt = require('bcryptjs');
 const multer = require("multer");
+var hashedPassword = 'das';
 
+/*
+favourites
+pick up
+image upload
+statistics
+timings
+*/
+
+//--------------------------------------------------------Get vendors pics and names ----------------------------------------------------
 router.get("/vendors", (req, res) => {
-    //console.log("vendors called");
-    var names;
-    var pics;
+    ////log("vendors called");
+    var names=[];
+    var pics=[];
     let s = {};
-    vendors.distinct("pic", (err, result) => {
-        s.pics = result;
-        vendors.distinct("shop_name", (err, result) => {
-            s.names = result;
-            res.send(s);
-        })
-    });
+    vendors.find().then(result=>{
+        var obj=result;
+        for(var i=0;i<result.length;i++){
+            names.push(result[i].shop_name);
+            pics.push(result[i].pic);
+        }
+        s.names=names;
+        s.pics=pics;
+        res.status(200).send(s);
+    }) 
 })
 
+
+//-------------------------------------------------Get all vendors names---------------------------------------------------------
 router.get("/all_vendors", (req, res) => {
-    //console.log("vendors request");
+    ////log("vendors request");
     vendors.distinct("shop_name", (err, result) => {
         res.send(result);
     });
 })
 
-router.post("/register", (req, res) => {
-    console.log(req.body.name);
-    console.log(req.body);
+
+//------------------------------------------------Registration of user------------------------------------------------------------------------
+router.post("/userregister", (req, res) => {
+    //log(req.body.name);
+    //log(req.body);
     const email = req.body.email;
+    var password;
+
     User.findOne({ "email": email }).then(user => {
         if (user) {
+            //log("already registered");
             res.status(404).json({ error: "Email id alredy registered" })
         }
         else {
             const newUser = new User({
                 name: req.body.name,
                 email: req.body.email,
-                contact_number: req.body.contact,
+                contact_number: req.body.contact_number,
                 age: req.body.age,
                 batch: req.body.batch,
-                password: req.body.password
+                password: req.body.password,
+                wallet:0
 
             });
-            newUser.save()
-                .then(user => {
-                    res.status(200).json(user);
+            bcrypt.genSalt(10, async function (err, Salt) {
+                bcrypt.hash(req.body.password, Salt, async function (err, hash) {
+                    if (err) {
+                        return //log('Cannot encrypt');
+                    }
+                    vendors.updateOne({ shop_name: req.body.name }, { $set: { password: hash } }).then(response => {
+                        //log("success");
+                    })
+                    newUser.password = hash;
+                    newUser.save().then(user => {
+                        res.status(200).json(user);
+                    })
+                    .catch(err => {
+                        //log(err);
+                        res.status(400).send(err);
+                    });
                 })
-                .catch(err => {
-                    res.status(400).send(err);
-                });
-
+            })
+            //log(password);
         }
     })
+        .catch(err => {
+            //log(err);
+        })
+
+});
+//------------------------------------------------------------------Registration of vendor-------------------------------------------------
+router.post("/vendorregister", (req, res) => {
+    //log(req.body.name);
+    //log(req.body);
+    const email = req.body.email;
+    var password;
+
+    vendors.findOne({ "email": email }).then(user => {
+        if (user) {
+            //log("already registered");
+            res.status(404).json({ error: "Email id alredy registered" })
+        }
+        else {
+            const newvendor = new vendors({
+                shop_name: req.body.shop_name,
+                email: req.body.email,
+                phone: req.body.phone,
+                manager_name: req.body.manager_name,
+                password: req.body.password
+            });
+            newvendor["pic"]="no.png";
+            bcrypt.genSalt(10, async function (err, Salt) {
+                bcrypt.hash(req.body.password, Salt, async function (err, hash) {
+                    if (err) {
+                        return //log('Cannot encrypt');
+                    }
+                    vendors.updateOne({ shop_name: req.body.name }, { $set: { password: hash } }).then(response => {
+                        //log("success");
+                    })
+                    newvendor.password = hash;
+                    newvendor.save().then(user => {
+                        res.status(200).json(user);
+                    })
+                    .catch(err => {
+                        //log(err);
+                        res.status(400).send(err);
+                    });
+                })
+            })
+            //log(password);
+        }
+    })
+        .catch(err => {
+            //log(err);
+        })
 
 });
 
 
 
+
+
+
+
+
+
+
+
+
+
+// --------------------------------------------------Login of user-----------------------------------------------
 router.post("/login", (req, res) => {
     const email = req.body.email;
     // Find user by email
@@ -79,20 +172,42 @@ router.post("/login", (req, res) => {
             bcrypt.compare(req.body.password, user.password, async function (err, isMatch) {
                 if (isMatch) {
                     res.status(200).send(user)
-                    console.log("both are same");
+                    //log("both are same");
                 }
                 else {
-                    console.log("error");
+                    //log("error");
                     res.status(404).send("Invalid Credentials");
                 }
-                if(err){
-                    console.log(err);
+                if (err) {
+                    //log(err);
                 }
             })
         }
     });
 });
 
+//-------------------------------------------------------------get user details------------------------------------------------------------------
+
+router.post("/userdetails",(req,res)=>{
+    User.findOne({"email":req.body.email}).then(result=>{
+        res.status(200).send(result);
+    })
+    .catch(err=>{
+        //log(err);
+    })
+})
+
+router.post("/addwallet",(req,res)=>{
+
+    User.updateOne({"email":req.body.email},{$set:{wallet:req.body.actual+parseInt(req.body.wallet)}}).then(result=>{
+        res.status(200).send(result);
+    })
+    .catch(err=>{
+        console.log(err);
+    })
+})
+
+//--------------------------------------------------------------Get canteen details ---------------------------------------------------------------
 router.post("/canteen", (req, res) => {
     vendors.findOne({ "shop_name": req.body.canteen }).then(result => {
         if (!(result)) {
@@ -106,31 +221,61 @@ router.post("/canteen", (req, res) => {
 })
 
 
+
+//----------------------------------------------------------------------------Update a buyer profile-------------------------------------------------------------
 router.post("/update_user", (req, res) => {
-    var details=req.body;
+    var details = req.body;
     bcrypt.genSalt(10, async function (err, Salt) {
         bcrypt.hash(req.body.password, Salt, async function (err, hash) {
             if (err) {
-                return console.log('Cannot encrypt');
+                return //log('Cannot encrypt');
             }
-            vendors.updateOne({shop_name:req.body.name},{$set:{password:hash}}).then(response=>{
-                console.log("success");
+            vendors.updateOne({ shop_name: req.body.name }, { $set: { password: hash } }).then(response => {
+                //log("success");
             })
             hashedPassword = hash;
-            details.password=hashedPassword;
+            if(req.body.password!=req.body.actual){
+                details.password = hashedPassword;
+            }
             User.updateOne({ email: req.body.email }, { $set: details }).then(result => {
                 res.status(200).send("Succesful");
             })
-            .catch(err => {
+                .catch(err => {
                     res.status(404).send("something went wrong plese try again later");
-            })
+                })
         })
     })
-
-   
-
 })
 
+
+//---------------------------------------------------------------------update a vendor profile----------------------------------------------------------
+router.post("/update_vendor", (req, res) => {
+    var details = req.body;
+    bcrypt.genSalt(10, async function (err, Salt) {
+        bcrypt.hash(req.body.password, Salt, async function (err, hash) {
+            if (err) {
+                return //log('Cannot encrypt');
+            }
+            vendors.updateOne({ shop_name: req.body.name }, { $set: { password: hash } }).then(response => {
+                //log("success");
+            })
+            hashedPassword = hash;
+            if(req.body.password!=req.body.actual){
+                details.password = hashedPassword;
+            }
+            vendors.updateOne({ shop_name: req.body.shop_name }, { $set: details }).then(result => {
+                res.status(200).send("Succesful");
+            })
+                .catch(err => {
+                    res.status(404).send("something went wrong plese try again later");
+                })
+        })
+    })
+})
+
+
+
+// ---------------------------------------------------------------------Order an item---------------------------------------------------------------
 
 router.post("/order", (req, res) => {
     const new_order = new orders({
@@ -142,18 +287,25 @@ router.post("/order", (req, res) => {
         Time: req.body.order_Time,
         status: req.body.status
     })
+
     new_order.save().then(response => {
-        res.status(200).send("Succesfully placed your order");
+        User.updateOne({"email":req.body.email},{$set:{wallet:req.body.wallet-req.body.cost}}).then(result=>{
+            res.status(200).send("Succesfully placed your order")
+        })
+        .catch(err=>{
+            console.log(err);
+        })
     })
         .catch(err => {
-            //console.log("order not getting placed");
+            ////log("order not getting placed");
+            //log(err);
             console.log(err);
             res.status(404).send("Order not plaaced");
 
         })
 })
 
-
+// -----------------------------------------------------------------------------------get details for diplaying in myorders page----------------------------------------------
 router.post("/myorders", (req, res) => {
     orders.find({ email: req.body.email }).then(result => {
         res.status(200).send(result);
@@ -161,22 +313,26 @@ router.post("/myorders", (req, res) => {
 
 })
 
+
+//-------------------------------------------------------------------------------------Deatils of a specific food item----------------------------------------------------------------------
 router.post("/itemdetails", (req, res) => {
-    console.log(req.body);
+    //log(req.body);
     foods.findOne({ shop_name: req.body.canteen, name: req.body.item }).then(result => {
         const required = result.items;
-        //console.log(result);
-        //console.log("dddddddddddddddddddddddddddd");
+        ////log(result);
+        ////log("dddddddddddddddddddddddddddd");
         res.status(200).send(result);
     })
         .catch(err => {
             res.status(404).send("errrror");
-            console.log(err);
+            //log(err);
         })
 })
 
+
+//------------------------------------------------------------------------------Filter food items by search------------------------------------------------------------
 router.post("/filter", (req, res) => {
-    console.log(req.body);
+    //log(req.body);
     const shop_queries = [];
     for (var i = 0; i < req.body.vendors.length; i++) {
         shop_queries.push({ shop_name: req.body.vendors[i] });
@@ -222,14 +378,14 @@ router.post("/filter", (req, res) => {
 
     })
         .catch(err => {
-            console.log(err);
+            //log(err);
             res.status(404).send("error")
         })
 })
 
-
+//------------------------------------------------------------------------------------Search a food item by name------------------------------------------------------
 router.post("/searchByname", (req, res) => {
-    console.log(req.body);
+    //log(req.body);
     foods.find({ name: req.body.name }).collation({ locale: 'en', strength: 2 }).then(result => {
         res.status(200).send(result);
     })
@@ -238,10 +394,10 @@ router.post("/searchByname", (req, res) => {
         })
 })
 
-
+//------------------------------------------------------------------------------------Vendor login ---------------------------------------------------------------------
 router.post("/vendorlogin", (req, res) => {
     const email = req.body.email;
-    console.log(req.body)
+    //log(req.body)
     vendors.findOne({ email }).then(user => {
         if (!user) {
             return res.status(404).send("Invalid credentials")
@@ -250,35 +406,37 @@ router.post("/vendorlogin", (req, res) => {
             bcrypt.compare(req.body.password, user.password, async function (err, isMatch) {
                 if (isMatch) {
                     res.status(200).send(user)
-                    console.log("both are same");
+                    //log("both are same");
                 }
                 else {
-                    console.log("error");
+                    //log("error");
                     res.status(404).send("Invalid Credentials");
                 }
-                if(err){
-                    console.log(err);
+                if (err) {
+                    //log(err);
                 }
             })
         }
     })
         .catch(err => {
-            console.log(err);
+            //log(err);
         })
 });
 
-
+//----------------------------------------------------------------------------------------Display pending orders in vendors-------------------------------------------------------------------
 router.post("/pending-orders", (req, res) => {
-    console.log(req.body);
+    //log(req.body);
     orders.find({ shop_name: req.body.shop_name, $and: [{ status: { $ne: 'Completed' } }, { status: { $ne: 'Rejected' } }] }).then(result => {
         res.status(200).send(result);
     })
         .catch(err => {
-            console.log(err);
+            //log(err);
             res.status(404).send("Error");
         })
 })
 
+
+//------------------------------------------------------------------------------------------Move stage of  pending order-------------------------------------------------------------------------------
 router.post("/movestage", (req, res) => {
     const stages = [
         "Placed",
@@ -297,25 +455,25 @@ router.post("/movestage", (req, res) => {
         "Rejected": 5
     }
     orders.findOne({ _id: req.body.orderid }).then(result => {
-        console.log(result);
+        //log(result);
         const req_stage = stages[stage_indices[result.status] + 1]
         orders.updateOne({ _id: req.body.orderid }, { $set: { status: req_stage } }).then(response => {
             res.status(200).send(req_stage);
         })
             .catch(err => {
-                console.log(err);
+                //log(err);
                 res.status(404).send("error");
             })
     })
         .catch(err => {
-            console.log(err);
+            //log(err);
             res.status(404).send("errroor");
         })
 })
 
-
+//-----------------------------------------------------------------------------------------edit details of an item-----------------------------------------------------
 router.post("/edititem", (req, res) => {
-    console.log(req.body);
+    //log(req.body);
     vendors.findOne({ shop_name: req.body.shop_name }).then(response => {
         var obj = response.items;
         for (var i = 0; i < obj.length; i++) {
@@ -324,56 +482,60 @@ router.post("/edititem", (req, res) => {
                 break;
             }
         }
-        console.log(obj);
+        //log(obj);
         vendors.updateOne({ shop_name: req.body.shop_name }, { $set: { items: obj } }).then(result => {
 
 
         })
             .catch(err => {
-                console.log("unsucesful");
+                //log("unsucesful");
             })
     })
         .catch(err => {
-            console.log(err);
+            //log(err);
         })
 
     foods.updateOne({ name: req.body.original }, { $set: { price: req.body.price, name: req.body.name, item: req.body.item, type: req.body.type } }).then(response => {
 
     })
         .catch(err => {
-            console.log(err);
+            //log(err);
         })
 })
 
+
+//---------------------------------------------------------------------------------Display all items under vendor------------------------------------------------------
 router.post("/vendoritems", (req, res) => {
-    console.log(req.body);
+    //log(req.body);
     foods.find({ shop_name: req.body.shop_name }).then(response => {
         res.status(200).send(response);
     })
         .catch(err => {
-            console.log(err);
+            //log(err);
         })
 })
+
+//-----------------------------------------------------------------------------------------------------Delete an item under a vendor menu-------------------------------------------------
 router.post("/deleteitems", (req, res) => {
     foods.remove({ shop_name: req.body.shop_name, name: req.body.name }).then(response => {
-        console.log("succesful");
+        //log("succesful");
         res.status(200).send("succesful");
     })
-    .catch(err => {
-        console.log(err);
-    })
-    
-    orders.remove({shop_name:req.body.shop_name,food:req.body.name}).then(response=>{
-        console.log("succesfully deleted");
+        .catch(err => {
+            //log(err);
+        })
+
+    orders.remove({ shop_name: req.body.shop_name, food: req.body.name }).then(response => {
+        //log("succesfully deleted");
         res.status(200).send("succesful");
     })
-    .catch(err=>{
-        console.log("error");
-    })
+        .catch(err => {
+            //log("error");
+        })
 
 })
 
-
+//------------------------------------------------------------Image upload-------------------------------------------------------------------
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
 
@@ -416,60 +578,57 @@ router.post("/uploadpic", function (req, res, next) {
     })
 })
 
+
+// ------------------------------------------Add A new item in vendors menu----------------------------------------------------------
 router.post("/newitem", (req, res) => {
-    console.log(req.body);
+    //log(req.body);
     req.body["pic"] = "no.png";
     req.body["rating"] = 0;
-    console.log(req.body);
+    //log(req.body);
     foods.insertMany(req.body);
     res.status(200).send("succesful");
 })
 
+// ------------------------------------------Get ALL tags in user filter------------------------------------------
 router.get("/alltags", (req, res) => {
     const obj = {};
     foods.find().then(response => {
-        console.log(response);
+        //log(response);
         for (var i = 0; i < response.length; i++) {
-            console.log(response[i]);
+            //log(response[i]);
             for (var j = 0; j < response[i].item.length; j++) {
                 obj[response[i].item[j]] = 1;
-                console.log(obj);
+                //log(obj);
             }
         }
-        console.log(Object.keys(obj));
+        //log(Object.keys(obj));
         res.send(Object.keys(obj));
     })
         .catch(err => {
-            console.log(err);
+            //log(err);
         })
 })
-var hashedPassword = 'das';
-const encryt_password = async (password) => {
-
-
-}
-
-
+//----------------------------------------------------------------------encrypt Api for testing--------------------------------------------------------------
 router.post("/encrypt", async (req, res) => {
     bcrypt.genSalt(10, async function (err, Salt) {
         bcrypt.hash(req.body.password, Salt, async function (err, hash) {
             if (err) {
-                return console.log('Cannot encrypt');
+                return //log('Cannot encrypt');
             }
-            vendors.updateOne({shop_name:req.body.name},{$set:{password:hash}}).then(response=>{
-                console.log("success");
+            vendors.updateOne({ shop_name: req.body.name }, { $set: { password: hash } }).then(response => {
+                res.status(200).send(hash);
+            })
+            .catch(err=>{
+                console.log(err);
             })
             hashedPassword = hash;
-            console.log(hashedPassword);
+            //log(hashedPassword);
         })
     })
 })
 
 
 
-const comapre = (password, orig) => {
-   
-}
 
 module.exports = router;
 

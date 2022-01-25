@@ -74,7 +74,7 @@ const Login = (props) => {
                     <label htmlFor="pass">password</label>
                 </div>
                 <button className="btn btn-danger" onClick={click}>submit</button>
-                <a>new user? sign up</a>
+                <a onClick={()=>{navigate("/signup")}}>new user? sign up</a>
                 <div className="btn-group" style={{ "width": "120px" }}>
                     <button type="button" className="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id='usertypebut'>
                         UserType

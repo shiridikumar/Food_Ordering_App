@@ -43,7 +43,7 @@ const VendorSchema = new Schema({
 		type: String,
 		required: true
 	},
-    shop_nme:{
+    shop_name:{
         type:String,
         required:true
     },
@@ -64,7 +64,6 @@ const VendorSchema = new Schema({
     },
 	pic:{
 		type:String,
-		required:false
 	}
 });
 

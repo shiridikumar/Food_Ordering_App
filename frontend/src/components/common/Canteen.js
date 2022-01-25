@@ -26,7 +26,7 @@ const Canteen = (props) => {
 
     return (
         <div className="canteen">
-            <Navbar2 name={name} />
+            <Navbar2 name={name} data={params.data} />
             <div className="container">
                 <h3>Menu</h3>
                 {details}

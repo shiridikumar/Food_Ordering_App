@@ -43,15 +43,21 @@ const Items = (props) => {
             quantity:qnt,
             status:"Placed",
             cost:total_amount,
-            order_Time: Date.now()
+            order_Time: Date.now(),
+            wallet:props.data.wallet
         }
-        await axios.post('http://localhost:4000/user/order',order_details).then(response=>{
-            console.log(response.data);
-            navigate("/MyOrders",{state:{data:props.data}})
-        })
-        .catch(err=>{
-            console.log(err);
-        })
+        if(props.data.wallet<total_amount){
+            alert("Oops u dont have enough money to order!!!");
+        }
+        else{
+            await axios.post('http://localhost:4000/user/order',order_details).then(response=>{
+                console.log(response.data);
+                navigate("/MyOrders",{state:{data:props.data}})
+            })
+            .catch(err=>{
+                console.log(err);
+            })
+        }
 
     
     }

@@ -87,14 +87,13 @@ print(b)
 
 db.vendors.update_one({"shop_name":"BBC"},{"$set":{"items":b}})"""
 
-nowdb=db.food_items.find({"shop_name":"JC"})
+nowdb=db.vendors.find_one({"shop_name":"VC"})
 """for i in nowdb:
     item=i["item"]
     db.food_items.update_one({"name":i["name"],"shop_name":i["shop_name"]},{"$set":{"item":[i["item"]]}})"""
-l=[]
-for i in nowdb:
-    l.append(i)
-db.orders.remove({"shop_name":'JC'})
+l=nowdb["password"]
+db.vendors.update_one({"shop_name":"BBC"},{"$set":{"password":l}})
+#db.orders.remove({"shop_name":'JC'})
 
 
 

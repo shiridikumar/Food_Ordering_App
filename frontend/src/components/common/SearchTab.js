@@ -23,7 +23,7 @@ const SearchTab=()=>{
     
     return (
         <div className="canteen">
-            <Navbar2 name={location.state.data.name} />
+            <Navbar2 name={location.state.data.name} data={location.state.data} />
             <div className="container">
                 <h3>Search Results</h3>
                 {cont}

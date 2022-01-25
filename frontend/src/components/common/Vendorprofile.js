@@ -4,7 +4,7 @@ import "./../css/components.css"
 import { useState } from "react";
 import axios, { Axios } from "axios";
 
-const Profile = () => {
+const Vendorprofile = () => {
     const params = useParams();
     console.log(params);
     const location = useLocation();
@@ -17,12 +17,12 @@ const Profile = () => {
         width: '70px',
         margin:'3px'
     }
-    const [age, setage] = useState(details.age);
+    const [age, setage] = useState();
     const [email, setemail] = useState(details.email);
-    const [name, setname] = useState(details.name);
-    const [phone, setphone] = useState(details.contact_number);
+    const [name, setname] = useState(details.manager_name);
+    const [phone, setphone] = useState(details.phone);
     const [password, setpass] = useState(details.password);
-    const [batch, setbatch] = useState(details.batch);
+    const [batch, setbatch] = useState(details.shop_name);
     const editbut = (item) => {
         var ele = document.getElementById(item);
         ele.disabled = false;
@@ -34,17 +34,15 @@ const Profile = () => {
 
     const submit_data= async()=>{
         const updated={
-            name:name,
+            manager_name:name,
             email:email,
             password:password,
-            contact_number:phone,
-            age:age,
-            batch:batch,
+            phone:phone,
+            shop_name:batch,
             actual:details.password
         }
-        await axios.post("http://localhost:4000/user/update_user",updated).then(response => {
+        await axios.post("http://localhost:4000/user/update_vendor",updated).then(response => {
             alert("Update succesful\nPlease sign out and sign in to see the changes");
-
         })
         .catch(err=>{
             alert("update unsuccesful please try again later!");
@@ -53,14 +51,14 @@ const Profile = () => {
     }
     return (
         <div className="profile">
-            <Navbar2 />
+            <Navbar2 vendor_view={1} data={details}/>
             <div className="header" >
                 <img src={require('./../img/nou.png')} className='prof' />
                 <h2>{details.name}</h2>
             </div>
             <ul className="details">
                 <li className="name">
-                    <h4>Name</h4>
+                    <h4>Manager Name</h4>
                     <div className="edit">
                         <input type="text" id="name" name="name" disabled value={name} onChange={e => setname(e.target.value)} />
                         <div className="sne">
@@ -90,7 +88,7 @@ const Profile = () => {
                     </div>
                 </li>
                 <li className="batch">
-                    <h4>Batch</h4>
+                    <h4>Canteen</h4>
                     <div className="edit">
                         <input type="text" id="batch" name="batch" disabled value={batch} onChange={e => setbatch(e.target.value)} />
                         <div className="sne">
@@ -112,16 +110,7 @@ const Profile = () => {
                     </div>
                 </li>
 
-                <li className="Age">
-                    <h4>Age</h4>
-                    <div className="edit">
-                        <input type="number" id="age" name="age" disabled value={age} onChange={e => setage(e.target.value)} />
-                        <div className="sne">
-                            <buttton className='btn btn-danger' id='dage' onClick={() => editbut('age')} style={btstyle} >edit</buttton>
-                            <buttton className='btn btn-primary' id='nage' onClick={() => savbut('age')} style={btstyle} >save</buttton>
-                        </div>
-                    </div>
-                </li>
+                
             </ul>
             <button className="btn btn-danger submitbut" style={{'margin':'auto'}} onClick={()=>submit_data()}>Save Changes</button>
         </div>
@@ -129,4 +118,4 @@ const Profile = () => {
     )
 }
 
-export default Profile;
+export default Vendorprofile;

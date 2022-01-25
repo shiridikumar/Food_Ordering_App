@@ -20,15 +20,13 @@ const Home = (props) => {
   const row = []
   const location = useLocation()
   const navigate=useNavigate();
-  if(!location.state){
-    navigate("/signin");
-  }
   const callmenu = () => {
     const loadPost = async () => {
       await axios.get("http://localhost:4000/user/vendors", { crossdomain: true }).then(response => {
         for (var i = 0; i < response.data.pics.length; i++) {
           categories.push(response.data.pics[i])
           console.log(response.data.pics);
+          console.log(response.data);
           row.push(<Gallery id={i} cate={response.data.pics[i]} names={response.data.names[i]} data={location.state.data} />)
         }
       })
