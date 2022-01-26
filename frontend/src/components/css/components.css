@@ -415,6 +415,17 @@ li h4{
     margin: 0;
 }
 
+.give-rating{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.give-rating button{
+    margin:0;
+}
+
 .vendor-dashboard h3{
     text-align: center;
 }

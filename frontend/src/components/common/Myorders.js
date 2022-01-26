@@ -17,7 +17,7 @@ const Myorders=()=>{
                 const resp=response.data;
                 for(var i=0;i<response.data.length;i++){
                     var ids=i+'_'+response.data[i].shop_name;
-                    row.push(<Ordered order_id={response.data[i]._id} target={response.data[i].shop_name} canteen={response.data[i].shop_name} food={response.data[i].food} amount={response.data[i].cost} itemid={ids} quantity={response.data[i].quantity} status={response.data[i].status} time={response.data[i].Time}/>)
+                    row.push(<Ordered order_id={response.data[i]._id} target={response.data[i].shop_name} canteen={response.data[i].shop_name} rating={response.data[i].rating} food={response.data[i].food} amount={response.data[i].cost} itemid={ids} quantity={response.data[i].quantity} status={response.data[i].status} time={response.data[i].Time}/>)
                     console.log(row);
                     //getitems(response.data[i].shop_name,response.data[i].food);
                     //row.push(<Items myorders={1} canteen={response.data[i].canteen} itemid={ids} name={response.data[i].food}  price={ans.price} rating={ans.rating} type={ans.type} item={ans.item}  addons={ans.add_ons}  data={location.state.data} pic={ans.pic}/>)

@@ -19,7 +19,6 @@ const Navbar2 = (props) => {
 
                 })
             }
-           
         }
         loadpost();
     }, [])
@@ -48,6 +47,10 @@ const Navbar2 = (props) => {
         navigate("/signin");
     }
 
+    const view_orders=()=>{
+        navigate("/Vendors",{state:{data:details}});
+    }
+
     const back = () => {
         navigate(-1);
     }
@@ -63,6 +66,7 @@ const Navbar2 = (props) => {
                     {props.vendor_view &&
                     <>
                         <button className="btn btn-danger" id='vendorstatistics' onClick={()=>{view_stats()}}>Statictics</button>
+                        <button className="btn btn-danger" id='vendorstatistics' onClick={()=>{view_orders()}}>Orders Dashboard</button>
                         <button className="btn btn-danger" id='vendormenu' onClick={() => { view_inventory() }}>Food menu</button>
                         <button className="btn btn-danger" id='vendorprofile' onClick={()=>{navigate("/Vendorprofile",{state:{data:details}})}} >Profile</button>
                         </>

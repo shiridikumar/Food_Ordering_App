@@ -315,6 +315,29 @@ router.post("/myorders", (req, res) => {
 
 })
 
+//-----------------------------------------------------------------------------------rate flag for an order------------------------------------------------------------
+router.post("/rate",(req,res)=>{
+    console.log(req.body);
+    orders.updateOne({_id:req.body.orderid},{$set:{rating:1}}).then(result=>{
+        const rating=((req.body.rated*req.body.original)+req.body.rating)/(req.body.rated+1);
+        foods.updateOne({shop_name:req.body.shop_name,name:req.body.food},{$set:{rating:rating,rated:req.body.rated+1}}).then(response=>{
+            console.log("succesful");
+            res.status(200).send("succesful");
+
+        })
+        .catch(err=>{
+            console.log(err);
+        })
+
+
+    })
+    .catch(err=>{
+        console.log(err);
+    })
+})
+
+
+
 
 //-------------------------------------------------------------------------------------Deatils of a specific food item----------------------------------------------------------------------
 router.post("/itemdetails", (req, res) => {
@@ -428,7 +451,7 @@ router.post("/vendorlogin", (req, res) => {
 //----------------------------------------------------------------------------------------Display pending orders in vendors-------------------------------------------------------------------
 router.post("/pending-orders", (req, res) => {
     //log(req.body);
-    orders.find({ shop_name: req.body.shop_name, $and: [{ status: { $ne: 'Completed' } }, { status: { $ne: 'Rejected' } }] }).then(result => {
+    orders.find({ shop_name: req.body.shop_name }).then(result => {
         res.status(200).send(result);
     })
         .catch(err => {
@@ -490,6 +513,28 @@ router.post("/movestage", (req, res) => {
             res.status(404).send("errroor");
         })
 })
+//-------------------------------------------------------------------------------------------Pickup order-----------------------------------------------------------------------
+router.post("/pickorder",(req,res)=>{
+    console.log(req.body);
+    orders.updateOne({ _id: req.body.orderid }, { $set: { status: "Completed" } }).then(result=>{
+        res.status(200).send("Completed");
+    }).catch(err=>{
+        console.log(err);
+    })
+
+})
+
+
+
+
+
+
+
+
+
+
+
+
 
 //-----------------------------------------------------------------------------------------edit details of an item-----------------------------------------------------
 router.post("/edititem", (req, res) => {
@@ -605,7 +650,7 @@ router.post("/newitem", (req, res) => {
     req.body["pic"] = "no.png";
     req.body["rating"] = 0;
     //log(req.body);
-    foods.insertMany(req.body);
+    foods.insertOne(req.body);
     res.status(200).send("succesful");
 })
 
@@ -651,7 +696,7 @@ router.post("/encrypt", async (req, res) => {
 
 router.post("/mostsold",(req,res)=>{
     orders.aggregate([
-        {$match:{shop_name:req.body.name}},
+        {$match:{shop_name:req.body.name,status:'Completed'}},
         {$group:{_id:"$food",count:{$sum:1}}},{$sort:{count:-1}},{$limit:5}
     ]).then(result=>{
         console.log(result);

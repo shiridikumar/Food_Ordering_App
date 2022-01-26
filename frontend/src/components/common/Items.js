@@ -158,7 +158,7 @@ const Items = (props) => {
                         <li>Type : {props.type}</li>
                         <li>Tags :  {tags} </li>
                         <div className="rating" style={{ "display": "flex", "marginTop": "5px" }}>
-                            <h6 style={{ "display": "inline", "fontWeight": "normal" }}>Rating :</h6><Rating name="read-only" value={4.5} readOnly precision={0.1} />
+                            <h6 style={{ "display": "inline", "fontWeight": "normal" }}>Rating :</h6><Rating name="read-only" value={props.rating} readOnly precision={0.1} />
                         </div>
                     </ul>
                 </div>

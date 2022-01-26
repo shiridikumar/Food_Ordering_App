@@ -36,6 +36,10 @@ const foodsSchema =new Schema({
         type:Number,
         required:true
     },
+    rated:{
+        type:Number,
+        default:0
+    },
     add_ons:{
         type:[addons]
     },

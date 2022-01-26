@@ -28,6 +28,7 @@ const ordersSchema =new Schema({
     },
     rating:{
         type:Number,
+        default:-1
     },
     Time:{
         type:Date,
