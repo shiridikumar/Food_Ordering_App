@@ -69,7 +69,6 @@ router.post("/userregister", (req, res) => {
                 batch: req.body.batch,
                 password: req.body.password,
                 wallet:0
-
             });
             bcrypt.genSalt(10, async function (err, Salt) {
                 bcrypt.hash(req.body.password, Salt, async function (err, hash) {
@@ -95,7 +94,6 @@ router.post("/userregister", (req, res) => {
         .catch(err => {
             //log(err);
         })
-
 });
 //------------------------------------------------------------------Registration of vendor-------------------------------------------------
 router.post("/vendorregister", (req, res) => {
@@ -146,15 +144,17 @@ router.post("/vendorregister", (req, res) => {
 });
 
 
+router.post("/addfav",(req,res)=>{
+    console.log(req.body);
+    User.updateOne({email:req.body.email},{$set:{"favourites":req.body.fav}}).then(result=>{
+        res.status(200).send("Succesful");
+    
+    })
+    .catch(err=>{
+        console.log(err);
+    })
 
-
-
-
-
-
-
-
-
+})
 
 
 // --------------------------------------------------Login of user-----------------------------------------------
@@ -196,6 +196,8 @@ router.post("/userdetails",(req,res)=>{
         //log(err);
     })
 })
+
+//--------------------------------------------------------------add money to wallet----------------------------------------------------------------------------
 
 router.post("/addwallet",(req,res)=>{
 

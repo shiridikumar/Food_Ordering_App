@@ -1,6 +1,17 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 // Create Schema
+
+const fav=new Schema({
+	shop_name:{
+		type:String,
+		required:true,
+	},
+	food:{
+		type:String,
+		required:true,
+	}
+})
 const UserSchema = new Schema({
 	name: {
 		type: String,
@@ -28,6 +39,9 @@ const UserSchema = new Schema({
 	},
 	wallet:{
 		type:Number
+	},
+	favourites:{
+		type:[fav]
 	}
 });
 module.exports = User = mongoose.model("users", UserSchema);

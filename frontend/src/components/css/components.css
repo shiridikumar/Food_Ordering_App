@@ -253,6 +253,13 @@
 .addons{
     justify-content: center;
     align-items: center;
+    height: 90%;
+}
+
+.right{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
 }
 .quantity{
     margin: auto;
