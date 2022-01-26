@@ -64,9 +64,16 @@ const VendorSchema = new Schema({
     },
 	pic:{
 		type:String,
-	}
+	},
+    starttime:{
+        type:String,
+        required:true
+    },
+    endtime:{
+        type:String,
+        required:true
+    }
+
 });
-
-
 
 module.exports = Vendor = mongoose.model("vendors", VendorSchema);

@@ -6,6 +6,7 @@ import { Alert, Avatar, Button, FormControl, InputLabel, Link, makeStyles, MenuI
 import log from "../../log";
 
 
+
 const Register = (props) => {
     const [rname, setname] = useState("");
     const [remail, setemail] = useState("");
@@ -16,12 +17,37 @@ const Register = (props) => {
     const [usertype, settype] = useState("Buyer");
     const [shop_name,setshop]=useState("");
     const navigate=useNavigate();
+    const [shr,setshr]=useState();
+    const [smin,setsmin]=useState();
+    const [ehr,setehr]=useState();
+    const [emin,setemin]=useState();
+
+    const [shrcont,setshrcont]=useState();
+    const [smincont,setsmincont]=useState();
+    const [ehrcont,setehrcont]=useState();
+    const [emincont,setemincont]=useState();
+
 
     /*const [namefloat, setfname] = useState("Enter name");
     const [emailfloat, setfemail] = useState("Enter email");
     const [agefloat, setfage] = useState();
     const [contact_number_float,setfcontact] = useState();
     const [passwordfloat, setfpass] = useState();*/
+    const shrarr=[],ehrarr=[],sminarr=[],eminarr=[]
+    useEffect(()=>{
+        for(var i=0;i<24;i++){
+            shrarr.push(<li><a className="dropdown-item" id={'sh'+String(i).padStart(2, '0')} onClick={(e) => {setshr(e.target.id.slice(2))}} >{String(i).padStart(2, '0')}</a></li>)
+            ehrarr.push(<li><a className="dropdown-item"  id={'em'+String(i).padStart(2, '0')} onClick={(e) => {setehr(e.target.id.slice(2))}} >{String(i).padStart(2, '0')}</a></li>)
+        }
+        for(var i=0;i<60;i++){
+            sminarr.push(<li><a className="dropdown-item" id={'sm'+String(i).padStart(2, '0')} onClick={(e) => {setsmin(e.target.id.slice(2))}} >{String(i).padStart(2, '0')}</a></li>)
+            eminarr.push(<li><a className="dropdown-item" id={'em'+String(i).padStart(2, '0')} onClick={(e) => {setemin(e.target.id.slice(2))}} >{String(i).padStart(2, '0')}</a></li>)
+        }
+        setshrcont(shrarr);
+        setehrcont(ehrarr);
+        setsmincont(sminarr);
+        setemincont(eminarr);
+    },[])
 
 
     const buyer = () => {
@@ -61,7 +87,9 @@ const Register = (props) => {
                 shop_name:shop_name,
                 email:remail,
                 password:rpassword,
-                phone:contact_number
+                phone:contact_number,
+                starttime:shr+':'+smin+':'+'00',
+                endtime:ehr+':'+emin+':'+'00'
             }
             await axios.post("http://localhost:4000/user/vendorregister",details).then(response=>{
                
@@ -139,6 +167,40 @@ const Register = (props) => {
                             <input type="number" className="form-control" id="phone" value={contact_number} placeholder="name@" style={{ background: "none", color: "white" }} onChange={e => setcontact(e.target.value)} />
                             <label htmlFor="phone">Enter contact number</label>
                     </div>
+                    <div className="start">
+                    <h6>Opening Time</h6>
+                        <button type="button" className="btn btn-outline dropdown-toggle starthrs" data-bs-toggle="dropdown" aria-expanded="false" id='starthrs' style={{ "background": "none" }}>
+                            {shr}
+                        </button>
+                        <ul className="dropdown-menu">
+                            {shrcont}
+                        </ul>
+                        <button type="button" className="btn btn-outline dropdown-toggle startmins" data-bs-toggle="dropdown" aria-expanded="false" id='startmins' style={{ "background": "none" }}>
+                            {smin}
+                        </button>
+                        <ul className="dropdown-menu">
+                            {smincont}
+                        </ul>
+
+                    </div>
+
+                    <div className="end">
+                        <h6>Closing Time</h6>
+                        <button type="button" className="btn btn-outline dropdown-toggle endhrs" data-bs-toggle="dropdown" aria-expanded="false" id='endhrs' style={{ "background": "none" }}>
+                            {ehr}
+                        </button>
+                        <ul className="dropdown-menu">
+                            {ehrcont}
+                        </ul>
+                        <button type="button" className="btn btn-outline dropdown-toggle startmins" data-bs-toggle="dropdown" aria-expanded="false" id='startmins' style={{ "background": "none" }}>
+                            {emin}
+                        </button>
+                        <ul className="dropdown-menu">
+                            {emincont}
+                        </ul>
+
+                    </div>
+
                     <div className="form-floating mb-3" style={{ "width": "100%" }}>
                         <input type="password" className="form-control" id="passcode" value={rpassword} placeholder="name@" name="foo" autoComplete="new-password" style={{ background: "none", color: "white" }} onChange={e => setpass(e.target.value)} />
                         <label htmlFor="passcode">Enter a password</label>

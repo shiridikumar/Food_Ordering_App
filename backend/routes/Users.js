@@ -13,7 +13,6 @@ const multer = require("multer");
 var hashedPassword = 'das';
 
 /*
-pick up,rating
 image upload
 timings,rejection
 */
@@ -111,7 +110,9 @@ router.post("/vendorregister", (req, res) => {
                 email: req.body.email,
                 phone: req.body.phone,
                 manager_name: req.body.manager_name,
-                password: req.body.password
+                password: req.body.password,
+                starttime:req.body.starttime,
+                endtime:req.body.endtime
             });
             newvendor["pic"]="no.png";
             bcrypt.genSalt(10, async function (err, Salt) {

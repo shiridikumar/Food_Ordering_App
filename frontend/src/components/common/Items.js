@@ -60,12 +60,10 @@ const Items = (props) => {
                 console.log(response.data);
                 navigate("/MyOrders", { state: { data: props.data } })
             })
-                .catch(err => {
-                    console.log(err);
-                })
+            .catch(err => {
+                console.log(err);
+            })
         }
-
-
     }
     const tag_row = [];
     const [tags, settags] = useState();
@@ -94,7 +92,6 @@ const Items = (props) => {
                 for (var i = 0; i < response.data.favourites.length; i++) {
                     if (response.data.favourites[i].food == props.name && response.data.favourites[i].shop_name == props.canteen) {
                         setisfav(1);
-
                     }
                 }
                 //console.log(response.data.favourites);
@@ -142,7 +139,6 @@ const Items = (props) => {
         })
 
     }
-
 
     return (
         <div className="card" id={props.itemid}>
