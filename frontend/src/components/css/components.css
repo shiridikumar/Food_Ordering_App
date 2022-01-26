@@ -254,6 +254,8 @@
     justify-content: center;
     align-items: center;
     height: 90%;
+    max-height: 80%;
+    overflow-y: scroll;
 }
 
 .right{
@@ -407,7 +409,7 @@ li h4{
 }
 
 .pending-orders{
-    justify-content: center;
+    justify-content: flex-start;
     display: flex;
     flex-wrap: wrap;
     margin: 0;
@@ -544,7 +546,7 @@ li h4{
 
 .vendor-menu input{
     margin: 5px;
-    width:100px;
+    width:200px;
 }
 
 .vendor-menu button{
@@ -584,4 +586,43 @@ li h4{
     width:200px;
 }
 
+.most-sold .card{
+    width:100%;
+    margin :5px;
+}
+
+.most-sold .positions{
+    width:25%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin:20px;
+}
+
+.most-sold h4{
+    margin: 0;
+}
+
+.stats h3{
+    text-align: center;
+    margin:20px;
+}
+.most-sold{
+    justify-content: center;
+}
+.status-count ul{
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding:20px;
+}
+.status-count li{
+    background-color: black;
+    margin:20px;
+    height: 30px;
+    width:50%;
+    border-radius: 20px;
+    box-shadow: 2px 2px 5px grey;
+}
 

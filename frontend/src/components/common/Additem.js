@@ -67,7 +67,7 @@ const Additem = (props) => {
             name:name,
             price:parseInt(price),
             item:tags,
-            addons:addons,
+            add_ons:addons,
             type:type,
             shop_name:props.details.shop_name
         }

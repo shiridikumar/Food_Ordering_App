@@ -13,11 +13,9 @@ const multer = require("multer");
 var hashedPassword = 'das';
 
 /*
-favourites
-pick up
+pick up,rating
 image upload
-statistics
-timings
+timings,rejection
 */
 
 //--------------------------------------------------------Get vendors pics and names ----------------------------------------------------
@@ -291,8 +289,10 @@ router.post("/order", (req, res) => {
     })
 
     new_order.save().then(response => {
+        console.log(req.body);
         User.updateOne({"email":req.body.email},{$set:{wallet:req.body.wallet-req.body.cost}}).then(result=>{
             res.status(200).send("Succesfully placed your order")
+            console.log(result);
         })
         .catch(err=>{
             console.log(err);
@@ -318,7 +318,7 @@ router.post("/myorders", (req, res) => {
 
 //-------------------------------------------------------------------------------------Deatils of a specific food item----------------------------------------------------------------------
 router.post("/itemdetails", (req, res) => {
-    //log(req.body);
+    console.log(req.body);
     foods.findOne({ shop_name: req.body.canteen, name: req.body.item }).then(result => {
         const required = result.items;
         ////log(result);
@@ -327,7 +327,7 @@ router.post("/itemdetails", (req, res) => {
     })
         .catch(err => {
             res.status(404).send("errrror");
-            //log(err);
+            console.log(err);
         })
 })
 
@@ -436,6 +436,24 @@ router.post("/pending-orders", (req, res) => {
             res.status(404).send("Error");
         })
 })
+
+//-------------------------------------------------------------------------------------------Reject Stage-----------------------------------------------------------------------------------------------------
+router.post("/rejectstage",(req,res)=>{
+
+    orders.updateOne({ _id: req.body.orderid }, { $set: { status: "Rejected" } }).then(result=>{
+        res.status(200).send("Rejected");
+    }).catch(err=>{
+        console.log(err);
+    })
+})
+
+
+
+
+
+
+
+
 
 
 //------------------------------------------------------------------------------------------Move stage of  pending order-------------------------------------------------------------------------------
@@ -626,6 +644,69 @@ router.post("/encrypt", async (req, res) => {
             hashedPassword = hash;
             //log(hashedPassword);
         })
+    })
+})
+
+//---------------------------------------------------------------------------------Most sold 5 products------------------------------------------------
+
+router.post("/mostsold",(req,res)=>{
+    orders.aggregate([
+        {$match:{shop_name:req.body.name}},
+        {$group:{_id:"$food",count:{$sum:1}}},{$sort:{count:-1}},{$limit:5}
+    ]).then(result=>{
+        console.log(result);
+        res.status(200).send(result);
+    })
+    .catch(err=>{
+        console.log(err);
+    })
+})
+
+
+router.post("/statuscount",(req,res)=>{
+    var obj={}
+    orders.aggregate([
+        {$match:{shop_name:req.body.name}},
+        {$group:{_id:0 ,count:{$sum:1}}}
+    ]).then(result=>{
+        if(result.length>0){
+            obj["Placed"]=result[0].count;
+        }
+        else{
+            obj["Placed"]=0;
+        }
+        orders.aggregate([
+            {$match:{shop_name:req.body.name,status:'Completed'}},
+            {$group:{_id:0 ,count:{$sum:1}}}
+        ]).then(response=>{
+            if(response.length>0){
+                obj["Completed"]=response[0].count;
+            }
+            else{
+                obj["Completed"]=0;
+            }
+            orders.aggregate([
+                {$match:{shop_name:req.body.name,$and: [{ status: { $ne: 'Completed' } }, { status: { $ne: 'Rejected' } }]}} ,{$group:{_id:0 ,count:{$sum:1}}}
+            ]).then(resp=>{
+                if(resp.length>0){
+                    obj["Pending"]=resp[0].count;
+                }
+                else{
+                    obj["Pending"]=0;
+                }
+                console.log(obj);
+                res.status(200).send(obj);
+            })
+            .catch(errr=>{
+                console.log(errr);
+            })
+        })
+        .catch(error=>{
+            console.log(error);
+        })
+    })
+    .catch(err=>{
+        console.log(err);
     })
 })
 

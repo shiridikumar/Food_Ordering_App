@@ -161,8 +161,8 @@ const ModalBox = (props) => {
 
     return (
         <div className="modal_box">
-            <button type="button" className="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal" id='filterbutton'>Apply Filters</button>
-            <div className="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <button type="button" className="btn btn-danger" data-bs-toggle="modal" data-bs-target="#filterModal" id='filterbutton'>Apply Filters</button>
+            <div className="modal fade filter" id="filterModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog modal-xl">
                     <div className="modal-content">
                         <div className="modal-header">

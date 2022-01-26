@@ -53,6 +53,7 @@ const Navbar = (props) => {
         <Tab label="Home" onClick={() => navigate("/home")} style={{ color: "white" }} />
         <Tab label="MyOrders" onClick={() => navigate("/MyOrders", { state: { data: location.state.data } })} style={{ color: "white" }} />
         <Tab label="Profile" onClick={() => navigate("/profile", { state: { data: location.state.data } })} style={{ color: "white" }} />
+        <Tab label="Favourites" onClick={() => navigate("/Favourites", { state: { data: location.state.data } })} style={{ color: "white" }} />
         <Tab label="Sign out" onClick={() => navigate("/signin")} style={{ color: "white" }} />
         <button type="button" className="btn" data-bs-toggle="modal" data-bs-target="#exampleModal" style={{ "color": "white" }}>
           <i className="fas fa-money-bill-wave"></i>  Wallet : {wallet}

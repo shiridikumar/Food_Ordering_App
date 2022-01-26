@@ -16,6 +16,7 @@ const Ordered = (props) => {
     const [type, settype] = useState();
     const [visible,setvis]=useState(1);
     const [rating, setrat] = useState();
+    const [reject,setrej]=useState(1);
     useEffect(() => {
 
 
@@ -62,10 +63,30 @@ const Ordered = (props) => {
             //ele.setAttribute('className',response.data);
             ele.innerHTML=response.data;
             setcol(colorcodes[response.data]);
+            if(response.data==='Completed' || response.data==='Rejected' || response.data=='Ready for Pickup'){
+                setvis(0);
+            }
+            if(response.data!='Placed'){
+                setrej(0);
+            }
+        })
+    }
+    const rejectstage=async()=>{
+        await axios.post("http://localhost:4000/user/rejectstage",{crossdomain:true,orderid:props.order_id}).then(response=>{
+            console.log(response);
+            var ele=document.getElementById(props.order_id);
+            console.log(ele);
+            //ele.setAttribute('className',response.data);
+            ele.innerHTML=response.data;
+            setcol(colorcodes[response.data]);
             if(response.data==='Completed' || response.data==='Rejected'){
                 setvis(0);
             }
+            if(response.data!='Placed'){
+                setrej(0);
+            }
         })
+
     }
     return (
         <div className="card" id={props.itemid}>
@@ -73,6 +94,9 @@ const Ordered = (props) => {
                 <div className="pic">
                     <img src={require('./../img/' + pic)} />
                     <button className='btn' id={props.order_id}  style={{"fontWeight":"normal","color":"white","backgroundColor":col_code}}>{props.status}</button>
+                    {(!(props.vendor_view) && props.status=='Ready for Pickup') &&
+                    <button className="btn btn-secondary">Pick your order</button>
+                    }
         
                 </div>
                 <div className="description">
@@ -94,9 +118,15 @@ const Ordered = (props) => {
                         <li style={{"fontWeight":"bold"}}>Bill amount : Rs {props.amount} </li>
                     </ul>
                     
-                    {(visible && props.vendor_view)? 
+                    {(visible && props.vendor_view && props.status!='Completed' && props.status!='Ready for Pickup')? 
+                    
                     <button className="btn btn-primary" id='movestage' onClick={()=>{movestage()}}>Move to Next stage</button>:
+
                     <br/>
+                    }
+                    {((props.status==='Placed') && reject && props.vendor_view)?
+                        <buttton className='btn btn-danger' style={{"width":"250px","marginTop":"5px"}} onClick={()=>{rejectstage()}}>Reject</buttton>:
+                        <br/>
                     }
                 </div>
 

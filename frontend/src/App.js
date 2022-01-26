@@ -16,6 +16,8 @@ import SearchTab from "./components/common/SearchTab";
 import VendorsDashboard from "./components/common/VendorsDashboard";
 import VendorMenu from "./components/common/VendorMenu";
 import Vendorprofile from "./components/common/Vendorprofile";
+import Myfavourites from "./components/common/Myfavourites";
+import Vendorstats from "./components/common/Vendorstats";
 const Layout = (props) => {
   const navigate = useNavigate();
   const location=useLocation();
@@ -60,6 +62,8 @@ const Layout = (props) => {
             <Route path="/Vendors" element={<VendorsDashboard />}/>
             <Route path="/vendormenu" element={<VendorMenu />}/>
             <Route path="/Vendorprofile" element={<Vendorprofile />}/>
+            <Route path="/Favourites" element={<Myfavourites />}/>
+            <Route path="/stats" element={<Vendorstats />}/>
           </Routes>
         </BrowserRouter>
       </>

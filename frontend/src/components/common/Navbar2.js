@@ -51,6 +51,10 @@ const Navbar2 = (props) => {
     const back = () => {
         navigate(-1);
     }
+
+    const view_stats=()=>{
+        navigate("/stats",{state:{data:details}})
+    }
     return (
         <nav className="navbar navbar nav2" style={{ "backgroundColor": "#d84f57" }}>
             <div className="container-fluid">
@@ -58,6 +62,7 @@ const Navbar2 = (props) => {
                 <div className="left" style={{ "display": "flex", "justifyContent": "flex-end" }}>
                     {props.vendor_view &&
                     <>
+                        <button className="btn btn-danger" id='vendorstatistics' onClick={()=>{view_stats()}}>Statictics</button>
                         <button className="btn btn-danger" id='vendormenu' onClick={() => { view_inventory() }}>Food menu</button>
                         <button className="btn btn-danger" id='vendorprofile' onClick={()=>{navigate("/Vendorprofile",{state:{data:details}})}} >Profile</button>
                         </>

@@ -22,7 +22,6 @@ const VendorMenu=()=>{
                     row.push(<Edititem details={response.data[i]} itemid={ids} shop_name={response.data[i].shop_name}/>)
                 }
                 setcont(row);
-
             })
             .catch(err=>{
                 console.log(err);

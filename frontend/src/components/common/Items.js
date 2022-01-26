@@ -11,6 +11,7 @@ const Items = (props) => {
     const [userfav, setfav] = useState();
     const [qnt, setqnt] = useState(1);
     const [isfav, setisfav] = useState(0);
+    const [wallet,setwallet]=useState(props.data.wallet);
     let ind = 1;
     let item_str;
     const navigate = useNavigate();
@@ -48,9 +49,10 @@ const Items = (props) => {
             status: "Placed",
             cost: total_amount,
             order_Time: Date.now(),
-            wallet: props.data.wallet
+            wallet: wallet
         }
-        if (props.data.wallet < total_amount) {
+        console.log(wallet);
+        if (wallet < total_amount) {
             alert("Oops u dont have enough money to order!!!");
         }
         else {
@@ -88,9 +90,11 @@ const Items = (props) => {
         const loadpost = async () => {
             await axios.post("http://localhost:4000/user/userdetails", { email: props.data.email }).then(response => {
                 setfav(response.data.favourites);
+                setwallet(response.data.wallet);
                 for (var i = 0; i < response.data.favourites.length; i++) {
                     if (response.data.favourites[i].food == props.name && response.data.favourites[i].shop_name == props.canteen) {
                         setisfav(1);
+
                     }
                 }
                 //console.log(response.data.favourites);
@@ -151,7 +155,8 @@ const Items = (props) => {
                     <ul>
                         <li>Vendor : {props.canteen}</li>
                         <li>price : Rs {props.price}</li>
-                        <li>Tags : <Chip label={props.type} href="#basic-chip" />  {tags} </li>
+                        <li>Type : {props.type}</li>
+                        <li>Tags :  {tags} </li>
                         <div className="rating" style={{ "display": "flex", "marginTop": "5px" }}>
                             <h6 style={{ "display": "inline", "fontWeight": "normal" }}>Rating :</h6><Rating name="read-only" value={4.5} readOnly precision={0.1} />
                         </div>
