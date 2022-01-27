@@ -13,6 +13,7 @@ const addons=new Schema({
         required:true
     }
 })
+
 const itemsSchema=new Schema({
     name:{
         type:String,
@@ -73,7 +74,6 @@ const VendorSchema = new Schema({
         type:String,
         required:true
     }
-
 });
 
 module.exports = Vendor = mongoose.model("vendors", VendorSchema);

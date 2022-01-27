@@ -89,7 +89,7 @@ const Ordered = (props) => {
         })
     }
     const rejectstage = async () => {
-        await axios.post("http://localhost:4000/user/rejectstage", { crossdomain: true, orderid: props.order_id }).then(response => {
+        await axios.post("http://localhost:4000/user/rejectstage", { crossdomain: true, orderid: props.order_id,email:props.target,cost:props.amount}).then(response => {
             console.log(response);
             var ele = document.getElementById(props.order_id);
             console.log(ele);
@@ -114,7 +114,7 @@ const Ordered = (props) => {
         <div className="card" id={props.itemid}>
             <div className="card-body">
                 <div className="pic">
-                    <img src={require('./../img/' + pic)} />
+                    <img src={require('./../images/' + pic)} />
                     <button className='btn' id={props.order_id} style={{ "fontWeight": "normal", "color": "white", "backgroundColor": col_code }}>{props.status}</button>
                     {(!(props.vendor_view) && props.status == 'Ready for Pickup') &&
                         <button className="btn btn-secondary" onClick={() => { pickuporder() }}>Pick your order</button>

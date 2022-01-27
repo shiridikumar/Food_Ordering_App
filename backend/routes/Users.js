@@ -11,6 +11,7 @@ const path = require("path")
 const bcrypt = require('bcryptjs');
 const multer = require("multer");
 var hashedPassword = 'das';
+var fs =require("fs");
 
 /*
 image upload
@@ -100,6 +101,7 @@ router.post("/vendorregister", (req, res) => {
     var password;
 
     vendors.findOne({ "email": email }).then(user => {
+        console.log(req.body);
         if (user) {
             //log("already registered");
             res.status(404).json({ error: "Email id alredy registered" })
@@ -115,6 +117,10 @@ router.post("/vendorregister", (req, res) => {
                 endtime:req.body.endtime
             });
             newvendor["pic"]="no.png";
+            if (!fs.existsSync(`../frontend/src/components/images/${req.body.shop_name}`)){
+                fs.mkdirSync(`../frontend/src/components/images/${req.body.shop_name}`);
+                console.log("heelllo");
+            }
             bcrypt.genSalt(10, async function (err, Salt) {
                 bcrypt.hash(req.body.password, Salt, async function (err, hash) {
                     if (err) {
@@ -137,20 +143,20 @@ router.post("/vendorregister", (req, res) => {
         }
     })
         .catch(err => {
-            //log(err);
+            console.log(err);
         })
 
 });
 
 
 router.post("/addfav",(req,res)=>{
-    console.log(req.body);
+    //log(req.body);
     User.updateOne({email:req.body.email},{$set:{"favourites":req.body.fav}}).then(result=>{
         res.status(200).send("Succesful");
     
     })
     .catch(err=>{
-        console.log(err);
+        //log(err);
     })
 
 })
@@ -204,20 +210,26 @@ router.post("/addwallet",(req,res)=>{
         res.status(200).send(result);
     })
     .catch(err=>{
-        console.log(err);
+        //log(err);
     })
 })
 
 //--------------------------------------------------------------Get canteen details ---------------------------------------------------------------
 router.post("/canteen", (req, res) => {
+    //log(req.body);
     vendors.findOne({ "shop_name": req.body.canteen }).then(result => {
         if (!(result)) {
+            //log("*************");
 
             res.status(404).json({ error: "canteen not found" });
         }
         else {
+            //log(result);
             res.send(result);
         }
+    })
+    .catch(err=>{
+        //log(err);
     })
 })
 
@@ -290,19 +302,19 @@ router.post("/order", (req, res) => {
     })
 
     new_order.save().then(response => {
-        console.log(req.body);
+        //log(req.body);
         User.updateOne({"email":req.body.email},{$set:{wallet:req.body.wallet-req.body.cost}}).then(result=>{
             res.status(200).send("Succesfully placed your order")
-            console.log(result);
+            //log(result);
         })
         .catch(err=>{
-            console.log(err);
+            //log(err);
         })
     })
         .catch(err => {
             ////log("order not getting placed");
             //log(err);
-            console.log(err);
+            //log(err);
             res.status(404).send("Order not plaaced");
 
         })
@@ -318,22 +330,22 @@ router.post("/myorders", (req, res) => {
 
 //-----------------------------------------------------------------------------------rate flag for an order------------------------------------------------------------
 router.post("/rate",(req,res)=>{
-    console.log(req.body);
+    //log(req.body);
     orders.updateOne({_id:req.body.orderid},{$set:{rating:1}}).then(result=>{
         const rating=((req.body.rated*req.body.original)+req.body.rating)/(req.body.rated+1);
         foods.updateOne({shop_name:req.body.shop_name,name:req.body.food},{$set:{rating:rating,rated:req.body.rated+1}}).then(response=>{
-            console.log("succesful");
+            //log("succesful");
             res.status(200).send("succesful");
 
         })
         .catch(err=>{
-            console.log(err);
+            //log(err);
         })
 
 
     })
     .catch(err=>{
-        console.log(err);
+        //log(err);
     })
 })
 
@@ -342,7 +354,7 @@ router.post("/rate",(req,res)=>{
 
 //-------------------------------------------------------------------------------------Deatils of a specific food item----------------------------------------------------------------------
 router.post("/itemdetails", (req, res) => {
-    console.log(req.body);
+    //log(req.body);
     foods.findOne({ shop_name: req.body.canteen, name: req.body.item }).then(result => {
         const required = result.items;
         ////log(result);
@@ -351,7 +363,7 @@ router.post("/itemdetails", (req, res) => {
     })
         .catch(err => {
             res.status(404).send("errrror");
-            console.log(err);
+            //log(err);
         })
 })
 
@@ -465,9 +477,14 @@ router.post("/pending-orders", (req, res) => {
 router.post("/rejectstage",(req,res)=>{
 
     orders.updateOne({ _id: req.body.orderid }, { $set: { status: "Rejected" } }).then(result=>{
-        res.status(200).send("Rejected");
+        User.findOne({email:req.body.email}).then(response=>{
+            User.updateOne({email:req.body.email},{$set:{wallet:response.wallet+req.body.cost}}).then(result=>{
+                console.log("succesfully refunded amount");
+                res.status(200).send("Rejected");
+            })
+        })
     }).catch(err=>{
-        console.log(err);
+        //log(err);
     })
 })
 
@@ -516,24 +533,14 @@ router.post("/movestage", (req, res) => {
 })
 //-------------------------------------------------------------------------------------------Pickup order-----------------------------------------------------------------------
 router.post("/pickorder",(req,res)=>{
-    console.log(req.body);
+    //log(req.body);
     orders.updateOne({ _id: req.body.orderid }, { $set: { status: "Completed" } }).then(result=>{
         res.status(200).send("Completed");
     }).catch(err=>{
-        console.log(err);
+        //log(err);
     })
 
 })
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -574,7 +581,9 @@ router.post("/edititem", (req, res) => {
 router.post("/vendoritems", (req, res) => {
     //log(req.body);
     foods.find({ shop_name: req.body.shop_name }).then(response => {
+
         res.status(200).send(response);
+
     })
         .catch(err => {
             //log(err);
@@ -603,13 +612,19 @@ router.post("/deleteitems", (req, res) => {
 
 //------------------------------------------------------------Image upload-------------------------------------------------------------------
 var storage = multer.diskStorage({
+    
     destination: function (req, file, cb) {
+        if (!fs.existsSync(`../frontend/src/components/images/${req.query.shop_name}`)){
+            fs.mkdirSync(`../frontend/src/components/images/${req.query.shop_name}`);
+        }
 
         // Uploads is the Upload_folder_name
-        cb(null, "uploads")
+        console.log(req.body);
+        cb(null, `../frontend/src/components/images/${req.query.shop_name}`)
+        
     },
     filename: function (req, file, cb) {
-        cb(null, file.fieldname + "-" + Date.now() + ".jpg")
+        cb(null, `${req.query.item}` + ".jpg")
     }
 })
 const maxSize = 4 * 1000 * 1000;
@@ -619,9 +634,11 @@ var upload = multer({
     fileFilter: function (req, file, cb) {
         var filetypes = /jpeg|jpg|png/;
         var mimetype = filetypes.test(file.mimetype);
+        console.log(file,req.query);
 
         var extname = filetypes.test(path.extname(
             file.originalname).toLowerCase());
+            
 
         if (mimetype && extname) {
             return cb(null, true);
@@ -630,16 +647,23 @@ var upload = multer({
         cb("Error: File upload only supports the "
             + "following filetypes - " + filetypes);
     }
-}).single("image");
+}).single("pic");
 
-router.post("/uploadpic", function (req, res, next) {
+router.post("/uploadpic", (req, res, next) =>{
+    console.log(req.query);
     upload(req, res, function (err) {
-
         if (err) {
             res.send(err)
         }
         else {
-            res.send("Success, Image uploaded!")
+            foods.updateOne({name:req.query.item,shop_name:req.query.shop_name},{$set:{pic:`${req.query.shop_name}/${req.query.item}.jpg`}}).then(response=>{
+                console.log("succesful");
+            })
+            .catch(err=>{
+                console.log(err);
+            })
+            
+            res.send("Uploaded succesfully\nGO back and view the changes");
         }
     })
 })
@@ -685,7 +709,7 @@ router.post("/encrypt", async (req, res) => {
                 res.status(200).send(hash);
             })
             .catch(err=>{
-                console.log(err);
+                //log(err);
             })
             hashedPassword = hash;
             //log(hashedPassword);
@@ -700,11 +724,11 @@ router.post("/mostsold",(req,res)=>{
         {$match:{shop_name:req.body.name,status:'Completed'}},
         {$group:{_id:"$food",count:{$sum:1}}},{$sort:{count:-1}},{$limit:5}
     ]).then(result=>{
-        console.log(result);
+        //log(result);
         res.status(200).send(result);
     })
     .catch(err=>{
-        console.log(err);
+        //log(err);
     })
 })
 
@@ -740,19 +764,19 @@ router.post("/statuscount",(req,res)=>{
                 else{
                     obj["Pending"]=0;
                 }
-                console.log(obj);
+                //log(obj);
                 res.status(200).send(obj);
             })
             .catch(errr=>{
-                console.log(errr);
+                //log(errr);
             })
         })
         .catch(error=>{
-            console.log(error);
+            //log(error);
         })
     })
     .catch(err=>{
-        console.log(err);
+        //log(err);
     })
 })
 

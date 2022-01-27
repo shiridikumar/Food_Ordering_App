@@ -25,13 +25,13 @@ const Edititem = (props) => {
             setfr(r);
         }
         calltags();
-        if(details.type=='veg'){
-            var veg=document.getElementById("veg_"+details.name).checked=true;
+        if (details.type == 'veg') {
+            var veg = document.getElementById("veg_" + details.name).checked = true;
             //.log(veg);
         }
-        else{
-            var nveg=document.getElementById("non-veg_"+details.name).checked=true;
-        
+        else {
+            var nveg = document.getElementById("non-veg_" + details.name).checked = true;
+
         }
 
     }, [])
@@ -136,28 +136,28 @@ const Edititem = (props) => {
             but.innerHTML = "Edit";
             setbut(0);
             var vegn = document.getElementById('veg_' + details.name);
-            var typ=props.type;
+            var typ = props.type;
             if (vegn.checked) {
-                typ="veg";
+                typ = "veg";
             }
-            vegn.disabled=true;
+            vegn.disabled = true;
             var nveg = document.getElementById('non-veg_' + details.name);
             console.log(nveg.checked);
             if (nveg.checked) {
                 console.log("dddddddddddddddd");
-                typ="non-veg";
+                typ = "non-veg";
             }
-            nveg.disabled=true;
+            nveg.disabled = true;
             var edited = {
-                shop_name:props.shop_name,
-                original:details.name,
+                shop_name: props.shop_name,
+                original: details.name,
                 name: name,
                 price: price,
                 item: fr,
                 type: typ
             }
             console.log(edited);
-            await axios.post("http://localhost:4000/user/edititem", edited ).then(reponse => {
+            await axios.post("http://localhost:4000/user/edititem", edited).then(reponse => {
                 //.log(reponse.data);
             })
                 .catch(err => {
@@ -166,8 +166,8 @@ const Edititem = (props) => {
         }
     }
 
-    const deleteitems=async()=>{
-        await axios.post("http://localhost:4000/user/deleteitems",{shop_name:props.shop_name,name:details.name}).then(response=>{
+    const deleteitems = async () => {
+        await axios.post("http://localhost:4000/user/deleteitems", { shop_name: props.shop_name, name: details.name }).then(response => {
             console.log("succesful");
             window.location.href = window.location.href;
         })
@@ -177,17 +177,43 @@ const Edititem = (props) => {
         <div className="card" id={details.itemid}>
             <div className="card-body">
                 <div className="pic-upload">
-                    <img src={require('./../img/' + details.pic)} />
-                    <button className='btn btn-danger'>Update Image</button>
+                    <img src={require('./../images/'+details.pic)} />
+                    <form action={`http://localhost:4000/user/uploadpic?shop_name=${props.shop_name}&item=${name}`} enctype="multipart/form-data" method="POST" style={{"width":"100%"}} id={props.shop_name+'_'+name}  >
+                        <button type="button" className="btn btn-danger" data-bs-toggle="modal" data-bs-target={'#'+props.itemid} style={{"width":"100%"}} >
+                            Update photo
+                        </button>
+                        <div className="modal fade" id={props.itemid} tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div className="modal-dialog">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <h5 className="modal-title" id="exampleModalLabel">{name}</h5>
+                                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div className="modal-body">
+                                        <div class="input-group mb-3">
+                                            <input type="file" class="form-control" id={details.itemid} name="pic" />
+                                        </div>
+                                    </div>
+                                    <div className="modal-footer">
+                                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <input type="submit" className="btn btn-primary" id={details.itemid} value='Upload'  />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
                 </div>
+
+
 
                 <div className="description" id={ids}>
                     <ul>
                         <li>
                             <div className="title">
                                 <h5>Title</h5>
-                                <input type="text" value={name} disabled/>
-                        
+                                <input type="text" value={name} disabled />
+
                             </div>
                         </li>
                         <li>
@@ -198,11 +224,11 @@ const Edititem = (props) => {
                         </li>
                         <li>
                             <div className="type">
-                                <h5>Type</h5> 
-                                <input type="radio" id={"veg_"+details.name} name={"veg_"+details.name} value="veg" disabled />
-                                <label for={"veg_"+details.name}>Veg</label>
-                                <input type="radio" id={"non-veg_"+details.name} name={"veg_"+details.name} value="non-veg" disabled/>
-                                <label for={"non-veg_"+details.name}>Non-Veg</label><br></br>
+                                <h5>Type</h5>
+                                <input type="radio" id={"veg_" + details.name} name={"veg_" + details.name} value="veg" disabled />
+                                <label for={"veg_" + details.name}>Veg</label>
+                                <input type="radio" id={"non-veg_" + details.name} name={"veg_" + details.name} value="non-veg" disabled />
+                                <label for={"non-veg_" + details.name}>Non-Veg</label><br></br>
                             </div>
                         </li>
                         <li>
@@ -212,7 +238,7 @@ const Edititem = (props) => {
                         </li>
                         <li>
                             <button className="btn btn-secondary" id={'editfoods' + props.itemid} onClick={() => { edititems() }}>Edit</button>
-                            <button className="btn btn-danger" id={'deletefoods' + props.itemid} onClick={()=>{deleteitems()}}>Delete</button>
+                            <button className="btn btn-danger" id={'deletefoods' + props.itemid} onClick={() => { deleteitems() }}>Delete</button>
                         </li>
                     </ul>
 

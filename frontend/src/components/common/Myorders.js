@@ -5,7 +5,6 @@ import Items from "./Items";
 import Navbar2 from "./Navbar2";
 import Ordered from "./Ordered";
 
-
 const Myorders=()=>{
     const location=useLocation();
     const details=location.state.data;

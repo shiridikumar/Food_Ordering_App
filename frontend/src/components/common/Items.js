@@ -3,6 +3,7 @@ import axios, { Axios } from "axios";
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import "./../css/components.css"
+
 const Items = (props) => {
     const [adds, setadd] = useState();
     const add_price = [];
@@ -12,12 +13,19 @@ const Items = (props) => {
     const [qnt, setqnt] = useState(1);
     const [isfav, setisfav] = useState(0);
     const [wallet,setwallet]=useState(props.data.wallet);
+    const [starttime,setstart]=useState('');
+    const [endtime,setend]=useState('');
     let ind = 1;
+    const dateObj=new Date(Date.now());
+    var hrs = String(dateObj.getHours()).padStart(2, '0')
+    var mins =  String(dateObj.getMinutes()).padStart(2, '0')
+    const currtime = hrs + ':' + mins+':'+'00';
     let item_str;
+    console.log(currtime);
     const navigate = useNavigate();
 
     const order = async (item) => {
-        console.log(item);
+        //log(item);
         for (var i = 0; i < item.length; i++) {
             if (item[i] === '_') {
                 ind = i;
@@ -29,7 +37,7 @@ const Items = (props) => {
         var req = ele.getElementsByTagName('input')[0];
         var qnt = parseInt(req.value);
         var price = props.price;
-        console.log(price * qnt)
+        //log(price * qnt)
         var addonsprice = 0;
         for (var i = 0; i < props.addons.length; i++) {
             var add_el = document.getElementById(i + '_inp_addons_' + item)
@@ -40,7 +48,7 @@ const Items = (props) => {
 
         }
         const total_amount = (price * qnt) + addonsprice;
-        console.log(total_amount);
+        //log(total_amount);
         const order_details = {
             email: props.data.email,
             shop_name: props.canteen,
@@ -51,24 +59,26 @@ const Items = (props) => {
             order_Time: Date.now(),
             wallet: wallet
         }
-        console.log(wallet);
+        //log(wallet);
         if (wallet < total_amount) {
             alert("Oops u dont have enough money to order!!!");
         }
         else {
             await axios.post('http://localhost:4000/user/order', order_details).then(response => {
-                console.log(response.data);
+                //log(response.data);
                 navigate("/MyOrders", { state: { data: props.data } })
             })
             .catch(err => {
-                console.log(err);
+                //log(err);
             })
         }
     }
+    
     const tag_row = [];
     const [tags, settags] = useState();
     useEffect(() => {
         if (!props.myorders) {
+            
             for (var i = 0; i < props.addons.length; i++) {
                 var li_ids = i + '_addons_' + props.id
                 var inp_ids = i + '_inp_addons_' + props.id;
@@ -94,30 +104,45 @@ const Items = (props) => {
                         setisfav(1);
                     }
                 }
-                //console.log(response.data.favourites);
+                ////log(response.data.favourites);
             })
         }
         loadpost();
+       
     }, []);
+
+    useEffect(()=>{
+        const loadtime=async()=>{
+            await axios.post("http://localhost:4000/user/canteen",{canteen:props.canteen}).then(response=>{
+                setstart(response.data.starttime);
+                setend(response.data.endtime);
+                //log(starttime);
+                //log(endtime);  
+            })
+        }
+        loadtime();
+        console.log(starttime<currtime,currtime<endtime);
+
+    },[starttime,endtime])
 
     const addfav = async () => {
         var obj = userfav;
-        console.log(userfav);
+        //log(userfav);
         if (obj) {
             obj.push({ food: props.name, shop_name: props.canteen });
-            //console.log(obj);
+            ////log(obj);
         }
         else {
-            // console.log(obj);
+            // //log(obj);
             obj = [{ food: props.name, shop_name: props.canteen }]
         }
 
         await axios.post("http://localhost:4000/user/addfav", { crossdomain: true, email: props.data.email, fav: obj }).then(response => {
-            //console.log(response);
+            ////log(response);
             window.location.reload();
         })
             .catch(err => {
-                console.log(err);
+                //log(err);
             })
     }
 
@@ -129,13 +154,13 @@ const Items = (props) => {
                 newob.push(obj[i]);
             }
         }
-        console.log(newob);
+        //log(newob);
         await axios.post("http://localhost:4000/user/addfav", { crossdomain: true, email: props.data.email, fav: newob }).then(response => {
-            //console.log(response);
+            ////log(response);
             window.location.reload();
         })
         .catch(err => {
-            console.log(err);
+            //log(err);
         })
 
     }
@@ -144,7 +169,7 @@ const Items = (props) => {
         <div className="card" id={props.itemid}>
             <div className="card-body">
                 <div className="pic">
-                    <img src={require('./../img/' + props.pic)} />
+                    <img src={require('./../images/'+props.pic)} />
                 </div>
                 <div className="description">
                     <h6 style={{ "backgroundColor": "rgba(0 0 0 / 0%)" }}>{props.name}</h6>
@@ -153,6 +178,13 @@ const Items = (props) => {
                         <li>price : Rs {props.price}</li>
                         <li>Type : {props.type}</li>
                         <li>Tags :  {tags} </li>
+                        {((starttime>endtime && currtime>endtime) || (starttime<endtime && currtime<endtime && currtime>starttime ) )?
+                        <li style={{"color":"green"}}>Store is open now</li>:
+                        <li style={{"color":"red"}}>Store is Closed now</li>
+
+                        }
+
+
                         <div className="rating" style={{ "display": "flex", "marginTop": "5px" }}>
                             <h6 style={{ "display": "inline", "fontWeight": "normal" }}>Rating :</h6><Rating name="read-only" value={props.rating} readOnly precision={0.1} />
                         </div>
@@ -160,10 +192,18 @@ const Items = (props) => {
                 </div>
                 {!props.myorders &&
                     <>
-                        <div className="quantity">
+                     <div className="quantity">
+                     {((starttime>endtime && currtime>endtime) || (starttime<endtime && currtime<endtime && currtime>starttime ) ) ?
+                        <>
                             <input type="number" className="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" value={qnt} onChange={(e) => { (e.target.value < 1) ? setqnt(1) : setqnt(e.target.value) }} />
                             <button className="btn btn-danger" onClick={() => order(props.itemid)} >Order now</button>
-                        </div>
+                        </>
+                        :
+                        <h6 style={{"color":"red","fontWeight":"bold"}}>Store is closed</h6>
+
+                        
+                    }
+                    </div>
                         <div className="right">
                             <div className="addons">
                                 <h6 style={{ "fontWeight": "normal", "fontSize": "14px" }}>Addons</h6>

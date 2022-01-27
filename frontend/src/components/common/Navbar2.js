@@ -22,11 +22,7 @@ const Navbar2 = (props) => {
         }
         loadpost();
     }, [])
-
-
-
-
-
+    
     const addwallet = async () => {
         if (addamount <= 0) {
             alert("please enter a valid amount(>0)");
@@ -38,8 +34,6 @@ const Navbar2 = (props) => {
         }
 
     }
-
-
     const view_inventory = () => {
         navigate("/vendormenu", { state: { data:details } })
     }
@@ -54,7 +48,6 @@ const Navbar2 = (props) => {
     const back = () => {
         navigate(-1);
     }
-
     const view_stats=()=>{
         navigate("/stats",{state:{data:details}})
     }

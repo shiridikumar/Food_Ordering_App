@@ -77,6 +77,7 @@ const Register = (props) => {
             }
             console.log(details);
             await axios.post("http://localhost:4000/user/userregister",details).then(response=>{
+                navigate("/signin");
                
             })
 
@@ -91,7 +92,11 @@ const Register = (props) => {
                 starttime:shr+':'+smin+':'+'00',
                 endtime:ehr+':'+emin+':'+'00'
             }
+            console.log(details);
             await axios.post("http://localhost:4000/user/vendorregister",details).then(response=>{
+                navigate("/signin");
+                console.log(response.data);
+
                
             })
         }
