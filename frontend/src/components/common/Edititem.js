@@ -51,7 +51,7 @@ const Edititem = (props) => {
 
 
     }, [])
-    const ids = details.itemid + 'edit-details';
+    const ids = props.itemid + 'edit-details';
     const [button_click, setbut] = useState(0);
     var del_row = [];
     const [new_tag, settag] = useState();
@@ -203,6 +203,19 @@ const Edititem = (props) => {
         })
     }
 
+    const enableaddons=()=>{
+        var ele=document.getElementById(props.id+'addonname')
+        ele.disabled=false;
+        var ele1=document.getElementById(props.id+'addonprice')
+        ele1.disabled=false;
+        var allele=document.getElementById('ul_addons'+props.itemid);
+        var elements=allele.getElementsByTagName('input');
+        for(var i=0;i<elements.length;i++){
+            elements[i].disabled=false;
+        }
+
+    }
+
     const addonssaved=async()=>{
         var ele=document.getElementById('ul_addons'+props.itemid);
         const addon_array=[]
@@ -282,7 +295,7 @@ const Edititem = (props) => {
                         </li>
                         <li>
                             <div className="price">
-                                <h5>Price</h5><input type="number" value={price} disabled onChange={(e) => { setprice(e.target.value) }} />
+                                <h5>Price</h5><input type="number" value={price} disabled onChange={(e) => { if(e.target.value<=0){setprice(0) }else{setprice(e.target.value)}}} />
                             </div>
                         </li>
                         <li>
@@ -290,7 +303,7 @@ const Edititem = (props) => {
                             <button className="btn btn-danger" id={'deletefoods' + props.itemid} onClick={() => { deleteitems() }}>Delete</button>
                         </li>
                         <li>
-                        <button type="button" className="btn btn-danger" data-bs-toggle="modal" data-bs-target={'#addons'+props.itemid} style={{"width":"50%"}} >
+                        <button type="button" className="btn btn-danger" data-bs-toggle="modal" data-bs-target={'#addons'+props.itemid} style={{"width":"50%"}} onClick={()=>{enableaddons()}} >
                             Add or delete Addons
                         </button>
                         <div className="modal fade" id={'addons'+props.itemid} tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -307,8 +320,8 @@ const Edititem = (props) => {
                                         </ul>
                                         <hr/>
                                         <h6>Add new addon</h6>
-                                        <input type="text" placeholder="addon name" value={newadd} onChange={(e)=>{setnewadd(e.target.value)}}/>
-                                        <input type="number" placeholder="price" value={newaddp} onChange={(e)=>{setnewaddp(e.target.value)}}/>
+                                        <input type="text" placeholder="addon name" value={newadd} id={props.id+'addonname'} onChange={(e)=>{setnewadd(e.target.value)}} disabled={false}/>
+                                        <input type="number" placeholder="price" value={newaddp} id={props.id+'addonprice'} onChange={(e)=>{if(e.target.value>0){setnewaddp(e.target.value)}else{setnewaddp(0)}}} disabled={false}/>
                                         <button className="btn btn-danger" style={{"width":"200px"}} onClick={()=>{addon()}}>Add addon</button>
 
                                     </div>
