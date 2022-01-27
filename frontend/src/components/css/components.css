@@ -225,8 +225,6 @@
       margin-top: 100px;
   }
 
-
-
 .login button{
     width:100%;
     margin-top:20px;
@@ -692,3 +690,26 @@ li h4{
     box-shadow: 2px 2px 5px grey;
 }
 
+
+.vendor-dashboard .pending-orders{
+    margin:auto;
+}
+
+.profile .start button{
+    border:1px solid black;
+
+}
+
+
+.profile .start{
+    margin:20px;
+}
+
+.profile .end{
+    margin:20px;
+}
+
+.profile .end button{
+    border:1px solid black;
+
+}

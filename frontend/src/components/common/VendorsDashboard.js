@@ -17,7 +17,7 @@ const VendorsDashboard=()=>{
             await axios.post("http://localhost:4000/user/pending-orders",{crossdomain:true,shop_name:details.shop_name}).then(response=>{
                 for(var i=0;i<response.data.length;i++){
                     var ids=i+'_'+response.data[i].shop_name;
-                    row.push(<Ordered order_id={response.data[i]._id} target={response.data[i].email} canteen={response.data[i].shop_name} food={response.data[i].food} amount={response.data[i].cost} itemid={ids} quantity={response.data[i].quantity} status={response.data[i].status} time={response.data[i].Time} vendor_view={1}/>)
+                    row.push(<Ordered order_id={response.data[i]._id} target={response.data[i].email} canteen={response.data[i].shop_name} food={response.data[i].food} amount={response.data[i].cost} itemid={ids} quantity={response.data[i].quantity} status={response.data[i].status} time={response.data[i].Time} vendor_view={1} shop_name={details.shop_name}/>)
                 }
                 setcont(row);
             })

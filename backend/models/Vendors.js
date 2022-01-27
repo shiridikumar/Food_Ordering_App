@@ -73,6 +73,10 @@ const VendorSchema = new Schema({
     endtime:{
         type:String,
         required:true
+    },
+    cook_count:{
+        type:Number,
+        default:0
     }
 });
 

@@ -73,7 +73,7 @@ const Ordered = (props) => {
 
     const [col_code, setcol] = useState(colorcodes[props.status]);
     const movestage = async () => {
-        await axios.post("http://localhost:4000/user/movestage", { crossdomain: true, orderid: props.order_id }).then(response => {
+        await axios.post("http://localhost:4000/user/movestage", { crossdomain: true, orderid: props.order_id ,shop_name:props.shop_name}).then(response => {
             console.log(response);
             var ele = document.getElementById(props.order_id);
             console.log(ele);
@@ -86,6 +86,9 @@ const Ordered = (props) => {
             if (response.data != 'Placed') {
                 setrej(0);
             }
+        })
+        .catch(err=>{
+            alert("You cannot place more than 10 items in Accepted and Cooking stage combined");
         })
     }
     const rejectstage = async () => {
@@ -166,7 +169,6 @@ const Ordered = (props) => {
                         <button className="btn btn-primary" style={{"width":"100px"}} onClick={()=>{userrated()}}>Submit</button>
                     </div>
                 }
-
             </div>
         </div>
 

@@ -1,4 +1,4 @@
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Navbar2 from "./Navbar2"
 import "./../css/components.css"
 import { useState } from "react";
@@ -23,6 +23,7 @@ const Profile = () => {
     const [phone, setphone] = useState(details.contact_number);
     const [password, setpass] = useState(details.password);
     const [batch, setbatch] = useState(details.batch);
+    const navigate=useNavigate();
     const editbut = (item) => {
         var ele = document.getElementById(item);
         ele.disabled = false;
@@ -44,6 +45,7 @@ const Profile = () => {
         }
         await axios.post("http://localhost:4000/user/update_user",updated).then(response => {
             alert("Update succesful\nPlease sign out and sign in to see the changes");
+            navigate("/signin");
 
         })
         .catch(err=>{

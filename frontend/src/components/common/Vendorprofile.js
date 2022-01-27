@@ -1,7 +1,7 @@
-import { useLocation, useParams } from "react-router-dom";
+import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
 import Navbar2 from "./Navbar2"
 import "./../css/components.css"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios, { Axios } from "axios";
 
 const Vendorprofile = () => {
@@ -9,13 +9,13 @@ const Vendorprofile = () => {
     console.log(params);
     const location = useLocation();
     console.log(location);
-    
+
     const details = location.state.data;
     const btstyle = {
         height: '30px',
         padding: '0px',
         width: '70px',
-        margin:'3px'
+        margin: '3px'
     }
     const [age, setage] = useState();
     const [email, setemail] = useState(details.email);
@@ -23,38 +23,96 @@ const Vendorprofile = () => {
     const [phone, setphone] = useState(details.phone);
     const [password, setpass] = useState(details.password);
     const [batch, setbatch] = useState(details.shop_name);
+
+    const [shr, setshr] = useState(details.starttime.slice(0, 2));
+    const [smin, setsmin] = useState(details.starttime.slice(3, 5));
+    const [ehr, setehr] = useState(details.endtime.slice(0, 2));
+    const [emin, setemin] = useState(details.endtime.slice(3, 5));
+
+    const [shrcont, setshrcont] = useState();
+    const [smincont, setsmincont] = useState();
+    const [ehrcont, setehrcont] = useState();
+    const [emincont, setemincont] = useState();
+    const [pic,setpic]=useState(details.pic);
+    const [cont, setcont] = useState();
+
     const editbut = (item) => {
         var ele = document.getElementById(item);
         ele.disabled = false;
     }
-    const savbut=(item)=>{
-        var ele=document.getElementById(item);
-        ele.disabled=true;
+    const savbut = (item) => {
+        var ele = document.getElementById(item);
+        ele.disabled = true;
     }
 
-    const submit_data= async()=>{
-        const updated={
-            manager_name:name,
-            email:email,
-            password:password,
-            phone:phone,
-            shop_name:batch,
-            actual:details.password
+    const shrarr = [], ehrarr = [], sminarr = [], eminarr = []
+    const [updatebar, setupdatebar] = useState();
+    const navigate=useNavigate();
+    const [vis, setvis] = useState(0);
+    const upd = []
+    useEffect(() => {
+        const loadpost=()=>{
+        axios.post("http://localhost:4000/user/canteen",{canteen:details.shop_name}).then(response=>{
+            setpic(response.data.pic);
+        })
+    }
+    loadpost();
+        for (var i = 0; i < 24; i++) {
+            shrarr.push(<li><a className="dropdown-item" id={'sh' + String(i).padStart(2, '0')} onClick={(e) => { setshr(e.target.id.slice(2)) }} >{String(i).padStart(2, '0')}</a></li>)
+            ehrarr.push(<li><a className="dropdown-item" id={'em' + String(i).padStart(2, '0')} onClick={(e) => { setehr(e.target.id.slice(2)) }} >{String(i).padStart(2, '0')}</a></li>)
         }
-        await axios.post("http://localhost:4000/user/update_vendor",updated).then(response => {
+        for (var i = 0; i < 60; i++) {
+            sminarr.push(<li><a className="dropdown-item" id={'sm' + String(i).padStart(2, '0')} onClick={(e) => { setsmin(e.target.id.slice(2)) }} >{String(i).padStart(2, '0')}</a></li>)
+            eminarr.push(<li><a className="dropdown-item" id={'em' + String(i).padStart(2, '0')} onClick={(e) => { setemin(e.target.id.slice(2)) }} >{String(i).padStart(2, '0')}</a></li>)
+        }
+        setshrcont(shrarr);
+        setehrcont(ehrarr);
+        setsmincont(sminarr);
+        setemincont(eminarr);
+
+        upd.push(<div className="input-group mb-3">
+            <form action={`http://localhost:4000/user/uploadpic?shop_name=${details.shop_name}&item=${details.shop_name}`} enctype="multipart/form-data" method="POST" style={{"display":"inline-flex"}}   >
+                <input type="file" className="form-control" id="vendorprofile" name="pic" style={{"display":"inline"}} />
+                <input type="submit" value="Upload" className="btn btn-secondary" style={{"display":"inline"}}/>
+            </form>
+        </div>)
+        setupdatebar(upd)
+    }, [])
+
+
+
+    const submit_data = async () => {
+        const starttime = shr + ':' + smin + ':00';
+        const endtime = ehr + ':' + emin + ':' + '00';
+
+        const updated = {
+            manager_name: name,
+            email: email,
+            password: password,
+            phone: phone,
+            shop_name: batch,
+            actual: details.password,
+            starttime: starttime,
+            endtime: endtime
+
+        }
+        await axios.post("http://localhost:4000/user/update_vendor", updated).then(response => {
             alert("Update succesful\nPlease sign out and sign in to see the changes");
+            navigate("/signin");
         })
-        .catch(err=>{
-            alert("update unsuccesful please try again later!");
-        })
+            .catch(err => {
+                alert("update unsuccesful please try again later!");
+            })
 
     }
     return (
         <div className="profile">
-            <Navbar2 vendor_view={1} data={details}/>
+            <Navbar2 vendor_view={1} data={details} />
             <div className="header" >
-                <img src={require('./../img/nou.png')} className='prof' />
-                <h2>{details.name}</h2>
+                <img src={require('./../images/' +pic)} className='prof' />
+                <button className="btn btn-danger" onClick={() => setcont(updatebar)} id='updatepicvendor'>Update photo</button>
+                {cont}
+                <h2>{details.shop_name}</h2>
             </div>
             <ul className="details">
                 <li className="name">
@@ -72,7 +130,7 @@ const Vendorprofile = () => {
                     <div className="edit">
                         <input type="text" id="email" name="email" disabled value={email} onChange={e => setemail(e.target.value)} />
                         <div className="sne">
-                            
+
                         </div>
                     </div>
                 </li>
@@ -92,8 +150,6 @@ const Vendorprofile = () => {
                     <div className="edit">
                         <input type="text" id="batch" name="batch" disabled value={batch} onChange={e => setbatch(e.target.value)} />
                         <div className="sne">
-                            <buttton className='btn btn-danger' id='dbatch' onClick={() => editbut('batch')} style={btstyle} >edit</buttton>
-                            <buttton className='btn btn-primary' id='nbatch' onClick={() => savbut('batch')} style={btstyle} >save</buttton>
 
                         </div>
                     </div>
@@ -110,9 +166,44 @@ const Vendorprofile = () => {
                     </div>
                 </li>
 
-                
+                <div className="start">
+                    <h6>Opening Time</h6>
+                    <button type="button" className="btn btn-outline dropdown-toggle starthrs" data-bs-toggle="dropdown" aria-expanded="false" id='starthrs' >
+                        {shr}
+                    </button>
+                    <ul className="dropdown-menu" style={{ "height": "100px", "overflowY": "scroll", "background": "white", "padding": "0px" }}>
+                        {shrcont}
+                    </ul>
+                    <button type="button" className="btn btn-outline dropdown-toggle startmins" data-bs-toggle="dropdown" aria-expanded="false" id='startmins' >
+                        {smin}
+                    </button>
+                    <ul className="dropdown-menu" style={{ "height": "100px", "overflowY": "scroll", "background": "white", "padding": "0px" }}>
+                        {smincont}
+                    </ul>
+                </div>
+
+
+                <div className="end">
+                    <h6>Closing Time</h6>
+                    <button type="button" className="btn btn-outline dropdown-toggle endhrs" data-bs-toggle="dropdown" aria-expanded="false" id='endhrs' style={{ "background": "none" }}>
+                        {ehr}
+                    </button>
+                    <ul className="dropdown-menu" style={{ "height": "100px", "overflowY": "scroll", "background": "white", "padding": "0px" }}>
+                        {ehrcont}
+                    </ul>
+                    <button type="button" className="btn btn-outline dropdown-toggle startmins" data-bs-toggle="dropdown" aria-expanded="false" id='startmins' style={{ "background": "none" }}>
+                        {emin}
+                    </button>
+                    <ul className="dropdown-menu" style={{ "height": "100px", "overflowY": "scroll", "background": "white", "padding": "0px" }}>
+                        {emincont}
+                    </ul>
+
+                </div>
+
+
+
             </ul>
-            <button className="btn btn-danger submitbut" style={{'margin':'auto'}} onClick={()=>submit_data()}>Save Changes</button>
+            <button className="btn btn-danger submitbut" style={{ 'margin': 'auto' }} onClick={() => submit_data()}>Save Changes</button>
         </div>
 
     )

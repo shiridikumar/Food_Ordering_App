@@ -11,7 +11,7 @@ const path = require("path")
 const bcrypt = require('bcryptjs');
 const multer = require("multer");
 var hashedPassword = 'das';
-var fs =require("fs");
+var fs = require("fs");
 
 /*
 image upload
@@ -21,20 +21,21 @@ timings,rejection
 //--------------------------------------------------------Get vendors pics and names ----------------------------------------------------
 router.get("/vendors", (req, res) => {
     ////log("vendors called");
-    var names=[];
-    var pics=[];
+    var names = [];
+    var pics = [];
     let s = {};
-    vendors.find().then(result=>{
-        var obj=result;
-        for(var i=0;i<result.length;i++){
+    vendors.find().then(result => {
+        var obj = result;
+        for (var i = 0; i < result.length; i++) {
             names.push(result[i].shop_name);
             pics.push(result[i].pic);
         }
-        s.names=names;
-        s.pics=pics;
+        s.names = names;
+        s.pics = pics;
         res.status(200).send(s);
-    }) 
+    })
 })
+
 
 
 //-------------------------------------------------Get all vendors names---------------------------------------------------------
@@ -66,7 +67,7 @@ router.post("/userregister", (req, res) => {
                 age: req.body.age,
                 batch: req.body.batch,
                 password: req.body.password,
-                wallet:0
+                wallet: 0
             });
             bcrypt.genSalt(10, async function (err, Salt) {
                 bcrypt.hash(req.body.password, Salt, async function (err, hash) {
@@ -80,10 +81,10 @@ router.post("/userregister", (req, res) => {
                     newUser.save().then(user => {
                         res.status(200).json(user);
                     })
-                    .catch(err => {
-                        //log(err);
-                        res.status(400).send(err);
-                    });
+                        .catch(err => {
+                            //log(err);
+                            res.status(400).send(err);
+                        });
                 })
             })
             //log(password);
@@ -101,7 +102,7 @@ router.post("/vendorregister", (req, res) => {
     var password;
 
     vendors.findOne({ "email": email }).then(user => {
-        console.log(req.body);
+        //log(req.body);
         if (user) {
             //log("already registered");
             res.status(404).json({ error: "Email id alredy registered" })
@@ -113,13 +114,13 @@ router.post("/vendorregister", (req, res) => {
                 phone: req.body.phone,
                 manager_name: req.body.manager_name,
                 password: req.body.password,
-                starttime:req.body.starttime,
-                endtime:req.body.endtime
+                starttime: req.body.starttime,
+                endtime: req.body.endtime
             });
-            newvendor["pic"]="no.png";
-            if (!fs.existsSync(`../frontend/src/components/images/${req.body.shop_name}`)){
+            newvendor["pic"] = "no.png";
+            if (!fs.existsSync(`../frontend/src/components/images/${req.body.shop_name}`)) {
                 fs.mkdirSync(`../frontend/src/components/images/${req.body.shop_name}`);
-                console.log("heelllo");
+                //log("heelllo");
             }
             bcrypt.genSalt(10, async function (err, Salt) {
                 bcrypt.hash(req.body.password, Salt, async function (err, hash) {
@@ -133,31 +134,31 @@ router.post("/vendorregister", (req, res) => {
                     newvendor.save().then(user => {
                         res.status(200).json(user);
                     })
-                    .catch(err => {
-                        //log(err);
-                        res.status(400).send(err);
-                    });
+                        .catch(err => {
+                            //log(err);
+                            res.status(400).send(err);
+                        });
                 })
             })
             //log(password);
         }
     })
         .catch(err => {
-            console.log(err);
+            //log(err);
         })
 
 });
 
 
-router.post("/addfav",(req,res)=>{
+router.post("/addfav", (req, res) => {
     //log(req.body);
-    User.updateOne({email:req.body.email},{$set:{"favourites":req.body.fav}}).then(result=>{
+    User.updateOne({ email: req.body.email }, { $set: { "favourites": req.body.fav } }).then(result => {
         res.status(200).send("Succesful");
-    
+
     })
-    .catch(err=>{
-        //log(err);
-    })
+        .catch(err => {
+            //log(err);
+        })
 
 })
 
@@ -193,25 +194,25 @@ router.post("/login", (req, res) => {
 
 //-------------------------------------------------------------get user details------------------------------------------------------------------
 
-router.post("/userdetails",(req,res)=>{
-    User.findOne({"email":req.body.email}).then(result=>{
+router.post("/userdetails", (req, res) => {
+    User.findOne({ "email": req.body.email }).then(result => {
         res.status(200).send(result);
     })
-    .catch(err=>{
-        //log(err);
-    })
+        .catch(err => {
+            //log(err);
+        })
 })
 
 //--------------------------------------------------------------add money to wallet----------------------------------------------------------------------------
 
-router.post("/addwallet",(req,res)=>{
+router.post("/addwallet", (req, res) => {
 
-    User.updateOne({"email":req.body.email},{$set:{wallet:req.body.actual+parseInt(req.body.wallet)}}).then(result=>{
+    User.updateOne({ "email": req.body.email }, { $set: { wallet: req.body.actual + parseInt(req.body.wallet) } }).then(result => {
         res.status(200).send(result);
     })
-    .catch(err=>{
-        //log(err);
-    })
+        .catch(err => {
+            //log(err);
+        })
 })
 
 //--------------------------------------------------------------Get canteen details ---------------------------------------------------------------
@@ -228,9 +229,9 @@ router.post("/canteen", (req, res) => {
             res.send(result);
         }
     })
-    .catch(err=>{
-        //log(err);
-    })
+        .catch(err => {
+            //log(err);
+        })
 })
 
 
@@ -247,7 +248,7 @@ router.post("/update_user", (req, res) => {
                 //log("success");
             })
             hashedPassword = hash;
-            if(req.body.password!=req.body.actual){
+            if (req.body.password != req.body.actual) {
                 details.password = hashedPassword;
             }
             User.updateOne({ email: req.body.email }, { $set: details }).then(result => {
@@ -273,7 +274,7 @@ router.post("/update_vendor", (req, res) => {
                 //log("success");
             })
             hashedPassword = hash;
-            if(req.body.password!=req.body.actual){
+            if (req.body.password != req.body.actual) {
                 details.password = hashedPassword;
             }
             vendors.updateOne({ shop_name: req.body.shop_name }, { $set: details }).then(result => {
@@ -303,13 +304,13 @@ router.post("/order", (req, res) => {
 
     new_order.save().then(response => {
         //log(req.body);
-        User.updateOne({"email":req.body.email},{$set:{wallet:req.body.wallet-req.body.cost}}).then(result=>{
+        User.updateOne({ "email": req.body.email }, { $set: { wallet: req.body.wallet - req.body.cost } }).then(result => {
             res.status(200).send("Succesfully placed your order")
             //log(result);
         })
-        .catch(err=>{
-            //log(err);
-        })
+            .catch(err => {
+                //log(err);
+            })
     })
         .catch(err => {
             ////log("order not getting placed");
@@ -329,24 +330,24 @@ router.post("/myorders", (req, res) => {
 })
 
 //-----------------------------------------------------------------------------------rate flag for an order------------------------------------------------------------
-router.post("/rate",(req,res)=>{
+router.post("/rate", (req, res) => {
     //log(req.body);
-    orders.updateOne({_id:req.body.orderid},{$set:{rating:1}}).then(result=>{
-        const rating=((req.body.rated*req.body.original)+req.body.rating)/(req.body.rated+1);
-        foods.updateOne({shop_name:req.body.shop_name,name:req.body.food},{$set:{rating:rating,rated:req.body.rated+1}}).then(response=>{
+    orders.updateOne({ _id: req.body.orderid }, { $set: { rating: 1 } }).then(result => {
+        const rating = ((req.body.rated * req.body.original) + req.body.rating) / (req.body.rated + 1);
+        foods.updateOne({ shop_name: req.body.shop_name, name: req.body.food }, { $set: { rating: rating, rated: req.body.rated + 1 } }).then(response => {
             //log("succesful");
             res.status(200).send("succesful");
 
         })
-        .catch(err=>{
+            .catch(err => {
+                //log(err);
+            })
+
+
+    })
+        .catch(err => {
             //log(err);
         })
-
-
-    })
-    .catch(err=>{
-        //log(err);
-    })
 })
 
 
@@ -474,16 +475,16 @@ router.post("/pending-orders", (req, res) => {
 })
 
 //-------------------------------------------------------------------------------------------Reject Stage-----------------------------------------------------------------------------------------------------
-router.post("/rejectstage",(req,res)=>{
+router.post("/rejectstage", (req, res) => {
 
-    orders.updateOne({ _id: req.body.orderid }, { $set: { status: "Rejected" } }).then(result=>{
-        User.findOne({email:req.body.email}).then(response=>{
-            User.updateOne({email:req.body.email},{$set:{wallet:response.wallet+req.body.cost}}).then(result=>{
-                console.log("succesfully refunded amount");
+    orders.updateOne({ _id: req.body.orderid }, { $set: { status: "Rejected" } }).then(result => {
+        User.findOne({ email: req.body.email }).then(response => {
+            User.updateOne({ email: req.body.email }, { $set: { wallet: response.wallet + req.body.cost } }).then(result => {
+                //log("succesfully refunded amount");
                 res.status(200).send("Rejected");
             })
         })
-    }).catch(err=>{
+    }).catch(err => {
         //log(err);
     })
 })
@@ -518,25 +519,47 @@ router.post("/movestage", (req, res) => {
     orders.findOne({ _id: req.body.orderid }).then(result => {
         //log(result);
         const req_stage = stages[stage_indices[result.status] + 1]
-        orders.updateOne({ _id: req.body.orderid }, { $set: { status: req_stage } }).then(response => {
-            res.status(200).send(req_stage);
-        })
-            .catch(err => {
-                //log(err);
-                res.status(404).send("error");
+        if (req_stage == "Accepted") {
+            orders.aggregate([
+                { $match: { shop_name: req.body.shop_name, $or: [{ status: 'Cooking' }, { status: 'Accepted' }] } },
+                { $group: { _id: 0, count: { $sum: 1 } } }
+            ]).then(aggr => {
+                if (aggr[0].count>= 10) {
+                    console.log(aggr[0].count);
+                    res.status(404).send("More than 10 items in cooing and acpted stage");
+                    return;
+                }
+                else {
+                    orders.updateOne({ _id: req.body.orderid }, { $set: { status: req_stage } }).then(response => {
+                        res.status(200).send(req_stage);
+                    })
+                        .catch(err => {
+                            //log(err);
+                            res.status(404).send("error");
+                        })
+                }
             })
+        } else {
+            orders.updateOne({ _id: req.body.orderid }, { $set: { status: req_stage } }).then(response => {
+                res.status(200).send(req_stage);
+            })
+                .catch(err => {
+                    //log(err);
+                    res.status(404).send("error");
+                })
+        }
     })
-        .catch(err => {
-            //log(err);
-            res.status(404).send("errroor");
-        })
+    .catch(err => {
+        //log(err);
+        res.status(404).send("errroor");
+    })
 })
 //-------------------------------------------------------------------------------------------Pickup order-----------------------------------------------------------------------
-router.post("/pickorder",(req,res)=>{
+router.post("/pickorder", (req, res) => {
     //log(req.body);
-    orders.updateOne({ _id: req.body.orderid }, { $set: { status: "Completed" } }).then(result=>{
+    orders.updateOne({ _id: req.body.orderid }, { $set: { status: "Completed" } }).then(result => {
         res.status(200).send("Completed");
-    }).catch(err=>{
+    }).catch(err => {
         //log(err);
     })
 
@@ -612,16 +635,16 @@ router.post("/deleteitems", (req, res) => {
 
 //------------------------------------------------------------Image upload-------------------------------------------------------------------
 var storage = multer.diskStorage({
-    
+
     destination: function (req, file, cb) {
-        if (!fs.existsSync(`../frontend/src/components/images/${req.query.shop_name}`)){
+        if (!fs.existsSync(`../frontend/src/components/images/${req.query.shop_name}`)) {
             fs.mkdirSync(`../frontend/src/components/images/${req.query.shop_name}`);
         }
 
         // Uploads is the Upload_folder_name
-        console.log(req.body);
+        //log(req.body);
         cb(null, `../frontend/src/components/images/${req.query.shop_name}`)
-        
+
     },
     filename: function (req, file, cb) {
         cb(null, `${req.query.item}` + ".jpg")
@@ -634,11 +657,11 @@ var upload = multer({
     fileFilter: function (req, file, cb) {
         var filetypes = /jpeg|jpg|png/;
         var mimetype = filetypes.test(file.mimetype);
-        console.log(file,req.query);
+        //log(file, req.query);
 
         var extname = filetypes.test(path.extname(
             file.originalname).toLowerCase());
-            
+
 
         if (mimetype && extname) {
             return cb(null, true);
@@ -649,20 +672,28 @@ var upload = multer({
     }
 }).single("pic");
 
-router.post("/uploadpic", (req, res, next) =>{
-    console.log(req.query);
+router.post("/uploadpic", (req, res, next) => {
+    //log(req.query);
     upload(req, res, function (err) {
         if (err) {
             res.send(err)
         }
         else {
-            foods.updateOne({name:req.query.item,shop_name:req.query.shop_name},{$set:{pic:`${req.query.shop_name}/${req.query.item}.jpg`}}).then(response=>{
-                console.log("succesful");
+            foods.updateOne({ name: req.query.item, shop_name: req.query.shop_name }, { $set: { pic: `${req.query.shop_name}/${req.query.item}.jpg` } }).then(response => {
+                //log("succesful");
             })
-            .catch(err=>{
-                console.log(err);
+            .catch(err => {
+                //log(err);
             })
-            
+
+            vendors.updateOne({ shop_name: req.query.item}, { $set: { pic: `${req.query.shop_name}/${req.query.item}.jpg` } }).then(response => {
+                //log("succesful");
+            })
+            .catch(err => {
+                //log(err);
+            })
+
+
             res.send("Uploaded succesfully\nGO back and view the changes");
         }
     })
@@ -675,7 +706,7 @@ router.post("/newitem", (req, res) => {
     req.body["pic"] = "no.png";
     req.body["rating"] = 0;
     //log(req.body);
-    foods.insertOne(req.body);
+    foods.insertMany(req.body);
     res.status(200).send("succesful");
 })
 
@@ -708,9 +739,9 @@ router.post("/encrypt", async (req, res) => {
             vendors.updateOne({ shop_name: req.body.name }, { $set: { password: hash } }).then(response => {
                 res.status(200).send(hash);
             })
-            .catch(err=>{
-                //log(err);
-            })
+                .catch(err => {
+                    //log(err);
+                })
             hashedPassword = hash;
             //log(hashedPassword);
         })
@@ -719,65 +750,65 @@ router.post("/encrypt", async (req, res) => {
 
 //---------------------------------------------------------------------------------Most sold 5 products------------------------------------------------
 
-router.post("/mostsold",(req,res)=>{
+router.post("/mostsold", (req, res) => {
     orders.aggregate([
-        {$match:{shop_name:req.body.name,status:'Completed'}},
-        {$group:{_id:"$food",count:{$sum:1}}},{$sort:{count:-1}},{$limit:5}
-    ]).then(result=>{
+        { $match: { shop_name: req.body.name, status: 'Completed' } },
+        { $group: { _id: "$food", count: { $sum: 1 } } }, { $sort: { count: -1 } }, { $limit: 5 }
+    ]).then(result => {
         //log(result);
         res.status(200).send(result);
     })
-    .catch(err=>{
-        //log(err);
-    })
+        .catch(err => {
+            //log(err);
+        })
 })
 
 
-router.post("/statuscount",(req,res)=>{
-    var obj={}
+router.post("/statuscount", (req, res) => {
+    var obj = {}
     orders.aggregate([
-        {$match:{shop_name:req.body.name}},
-        {$group:{_id:0 ,count:{$sum:1}}}
-    ]).then(result=>{
-        if(result.length>0){
-            obj["Placed"]=result[0].count;
+        { $match: { shop_name: req.body.name } },
+        { $group: { _id: 0, count: { $sum: 1 } } }
+    ]).then(result => {
+        if (result.length > 0) {
+            obj["Placed"] = result[0].count;
         }
-        else{
-            obj["Placed"]=0;
+        else {
+            obj["Placed"] = 0;
         }
         orders.aggregate([
-            {$match:{shop_name:req.body.name,status:'Completed'}},
-            {$group:{_id:0 ,count:{$sum:1}}}
-        ]).then(response=>{
-            if(response.length>0){
-                obj["Completed"]=response[0].count;
+            { $match: { shop_name: req.body.name, status: 'Completed' } },
+            { $group: { _id: 0, count: { $sum: 1 } } }
+        ]).then(response => {
+            if (response.length > 0) {
+                obj["Completed"] = response[0].count;
             }
-            else{
-                obj["Completed"]=0;
+            else {
+                obj["Completed"] = 0;
             }
             orders.aggregate([
-                {$match:{shop_name:req.body.name,$and: [{ status: { $ne: 'Completed' } }, { status: { $ne: 'Rejected' } }]}} ,{$group:{_id:0 ,count:{$sum:1}}}
-            ]).then(resp=>{
-                if(resp.length>0){
-                    obj["Pending"]=resp[0].count;
+                { $match: { shop_name: req.body.name, $and: [{ status: { $ne: 'Completed' } }, { status: { $ne: 'Rejected' } }] } }, { $group: { _id: 0, count: { $sum: 1 } } }
+            ]).then(resp => {
+                if (resp.length > 0) {
+                    obj["Pending"] = resp[0].count;
                 }
-                else{
-                    obj["Pending"]=0;
+                else {
+                    obj["Pending"] = 0;
                 }
                 //log(obj);
                 res.status(200).send(obj);
             })
-            .catch(errr=>{
-                //log(errr);
+                .catch(errr => {
+                    //log(errr);
+                })
+        })
+            .catch(error => {
+                //log(error);
             })
-        })
-        .catch(error=>{
-            //log(error);
-        })
     })
-    .catch(err=>{
-        //log(err);
-    })
+        .catch(err => {
+            //log(err);
+        })
 })
 
 

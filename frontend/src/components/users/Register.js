@@ -17,10 +17,10 @@ const Register = (props) => {
     const [usertype, settype] = useState("Buyer");
     const [shop_name,setshop]=useState("");
     const navigate=useNavigate();
-    const [shr,setshr]=useState();
-    const [smin,setsmin]=useState();
-    const [ehr,setehr]=useState();
-    const [emin,setemin]=useState();
+    const [shr,setshr]=useState('08');
+    const [smin,setsmin]=useState('00');
+    const [ehr,setehr]=useState('24');
+    const [emin,setemin]=useState('00');
 
     const [shrcont,setshrcont]=useState();
     const [smincont,setsmincont]=useState();
