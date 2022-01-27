@@ -178,7 +178,7 @@ const Items = (props) => {
                         <li>price : Rs {props.price}</li>
                         <li>Type : {props.type}</li>
                         <li>Tags :  {tags} </li>
-                        {((starttime>endtime && currtime>endtime) || (starttime<endtime && currtime<endtime && currtime>starttime ) )?
+                        {((starttime>endtime && (currtime<endtime|| currtime>starttime)) || (starttime<endtime && currtime<endtime && currtime>starttime ) )?
                         <li style={{"color":"green"}}>Store is open now</li>:
                         <li style={{"color":"red"}}>Store is Closed now</li>
 
@@ -193,7 +193,7 @@ const Items = (props) => {
                 {!props.myorders &&
                     <>
                      <div className="quantity">
-                     {((starttime>endtime && currtime>endtime) || (starttime<endtime && currtime<endtime && currtime>starttime ) ) ?
+                     {((starttime>endtime && (currtime<endtime|| currtime>starttime)) || (starttime<endtime && currtime<endtime && currtime>starttime ) ) ?
                         <>
                             <input type="number" className="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" value={qnt} onChange={(e) => { (e.target.value < 1) ? setqnt(1) : setqnt(e.target.value) }} />
                             <button className="btn btn-danger" onClick={() => order(props.itemid)} >Order now</button>

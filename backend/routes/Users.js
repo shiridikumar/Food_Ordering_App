@@ -323,7 +323,7 @@ router.post("/order", (req, res) => {
 
 // -----------------------------------------------------------------------------------get details for diplaying in myorders page----------------------------------------------
 router.post("/myorders", (req, res) => {
-    orders.find({ email: req.body.email }).then(result => {
+    orders.find({ email: req.body.email }).sort({Time:-1}).then(result => {
         res.status(200).send(result);
     });
 
@@ -811,6 +811,14 @@ router.post("/statuscount", (req, res) => {
         })
 })
 
+router.post("/updateaddons",(req,res)=>{
+    foods.updateOne({name:req.body.name,shop_name:req.body.shop_name},{$set:{add_ons:req.body.add_ons}}).then(result=>{
+        res.status(200).send("succesful");
+    })
+    .catch(err=>{
+        console.log(err);
+    })
+})
 
 
 

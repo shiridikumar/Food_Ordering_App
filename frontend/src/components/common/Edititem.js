@@ -8,11 +8,16 @@ const Edititem = (props) => {
     const [name, setname] = useState(details.name);
     const [price, setprice] = useState(details.price);
     const [type, settype] = useState();
+    const [addons,setaddons]=useState();
+    const [addcont,setaddcont]=useState();
+    const [newadd,setnewadd]=useState();
+    const [newaddp,setnewaddp]=useState();
     var r = details.item;
     //.log(r);
     const row = []
     const present_tags = [];
     const [cont, setcont] = useState();
+    const addrow=[];
 
     useEffect(() => {
         //.log(details);
@@ -31,8 +36,19 @@ const Edititem = (props) => {
         }
         else {
             var nveg = document.getElementById("non-veg_" + details.name).checked = true;
-
         }
+
+        for(var i=0;i<details.add_ons.length;i++){
+            var ids='addon'+i+details.name;
+            addrow.push(
+                <li className="list-group-item" id={ids} style={{"width":"250px"}}>
+                    <input className="form-check-input me-1" type="checkbox" value={details.add_ons[i].name+'_'+details.add_ons[i].price} aria-label="..."  id={'inp'+ids} style={{"width":"15px"}} />
+                    {details.add_ons[i].name} for Rs {details.add_ons[i].price}
+                </li>
+            );
+        }
+        setaddcont(addrow);
+
 
     }, [])
     const ids = details.itemid + 'edit-details';
@@ -98,6 +114,20 @@ const Edititem = (props) => {
         setcont(ne);
     }
 
+    const addon=()=>{
+        const row=[];
+        for(var i=0;i<addcont.length;i++){
+            row.push(addcont[i]);
+        }
+        row.push(<li className="list-group-item" id={'addon'+addcont.length+details.name} style={{"width":"250px"}} >
+        <input className="form-check-input me-1" type="checkbox" value={newadd+'_'+newaddp} aria-label="..."  id={'inp'+'addon'+addcont.length+details.name} style={{"width":"15px"}}/>
+        {newadd} for Rs {newaddp}
+        </li>)
+        setaddcont(row);
+        setnewadd('');
+        setnewaddp('');
+
+    }
     const edititems = async () => {
         if (button_click == 0) {
             var ele = document.getElementById(ids);
@@ -173,6 +203,29 @@ const Edititem = (props) => {
         })
     }
 
+    const addonssaved=async()=>{
+        var ele=document.getElementById('ul_addons'+props.itemid);
+        const addon_array=[]
+        var elements=ele.getElementsByTagName('input');
+        for(var i=0;i<elements.length;i++){
+            console.log(i);
+            if(elements[i].checked){
+                for(var j=0;j<elements[i].value.length;j++){
+                    if(elements[i].value[j]=='_'){
+                        addon_array.push({name:elements[i].value.slice(0,j),price:elements[i].value.slice(j+1)})
+                        break;
+                    }
+                }
+            }
+        }
+        setaddons(addon_array);
+        await axios.post("http://localhost:4000/user/updateaddons",{name:details.name,shop_name:props.shop_name,add_ons:addon_array}).then(response=>{
+            console.log(response);
+            window.location.reload();
+        })
+
+    }
+
     return (
         <div className="card" id={details.itemid}>
             <div className="card-body">
@@ -202,11 +255,7 @@ const Edititem = (props) => {
                             </div>
                         </div>
                     </form>
-
                 </div>
-
-
-
                 <div className="description" id={ids}>
                     <ul>
                         <li>
@@ -240,15 +289,42 @@ const Edititem = (props) => {
                             <button className="btn btn-secondary" id={'editfoods' + props.itemid} onClick={() => { edititems() }}>Edit</button>
                             <button className="btn btn-danger" id={'deletefoods' + props.itemid} onClick={() => { deleteitems() }}>Delete</button>
                         </li>
+                        <li>
+                        <button type="button" className="btn btn-danger" data-bs-toggle="modal" data-bs-target={'#addons'+props.itemid} style={{"width":"50%"}} >
+                            Add or delete Addons
+                        </button>
+                        <div className="modal fade" id={'addons'+props.itemid} tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div className="modal-dialog">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <h5 className="modal-title" id="exampleModalLabel">Add or delete Addons</h5>
+                                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div className="modal-body" style={{"display":"flex","flexDirection":"column","alignItems":"center"}}>
+                                        <h6>Select or deselect existing addons</h6>
+                                        <ul style={{"maxHeight":"500px","overflowY":"scroll","height":"300px"}} id={'ul_addons'+props.itemid}>
+                                        {addcont}
+                                        </ul>
+                                        <hr/>
+                                        <h6>Add new addon</h6>
+                                        <input type="text" placeholder="addon name" value={newadd} onChange={(e)=>{setnewadd(e.target.value)}}/>
+                                        <input type="number" placeholder="price" value={newaddp} onChange={(e)=>{setnewaddp(e.target.value)}}/>
+                                        <button className="btn btn-danger" style={{"width":"200px"}} onClick={()=>{addon()}}>Add addon</button>
+
+                                    </div>
+                                    <div className="modal-footer">
+                                        <button className="btn btn-primary" onClick={()=>{addonssaved()}}>Save</button>
+                                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </li>
                     </ul>
-
                 </div>
-
-
             </div>
 
         </div>
-
 
     )
 
