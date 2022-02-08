@@ -524,11 +524,23 @@ router.post("/movestage", (req, res) => {
                 { $match: { shop_name: req.body.shop_name, $or: [{ status: 'Cooking' }, { status: 'Accepted' }] } },
                 { $group: { _id: 0, count: { $sum: 1 } } }
             ]).then(aggr => {
-                if (aggr[0].count>= 10) {
-                    console.log(aggr[0].count);
-                    res.status(404).send("More than 10 items in cooing and acpted stage");
-                    return;
+                if(aggr[0]!=null){
+                    if (aggr[0].count>= 10) {
+                        console.log(aggr[0].count);
+                        res.status(404).send("More than 10 items in cooing and acpted stage");
+                        return;
+                    }
+                    else {
+                        orders.updateOne({ _id: req.body.orderid }, { $set: { status: req_stage } }).then(response => {
+                            res.status(200).send(req_stage);
+                        })
+                            .catch(err => {
+                                //log(err);
+                                res.status(404).send("error");
+                            })
+                    }
                 }
+
                 else {
                     orders.updateOne({ _id: req.body.orderid }, { $set: { status: req_stage } }).then(response => {
                         res.status(200).send(req_stage);

@@ -274,7 +274,7 @@ const Edititem = (props) => {
                         <li>
                             <div className="title">
                                 <h5>Title</h5>
-                                <input type="text" value={name} disabled />
+                                <input type="text" value={name} disabled onChange={(e)=>{setname(e.target.value)}} />
 
                             </div>
                         </li>
