@@ -1,0 +1,11 @@
+FROM node:16
+
+WORKDIR /home/shirdi/Food_Ordering_App/frontend
+
+COPY . .
+
+RUN npm install
+
+EXPOSE 8000
+
+CMD ["npm","start"]
