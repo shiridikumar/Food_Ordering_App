@@ -1,0 +1,15 @@
+version: "3"
+services:
+  frontend:
+    container_name: client
+    image: shiridikumar/frontend
+    ports:
+      - 3000:8000
+
+  backend:
+    container_name: server
+    image: shiridikumar/backend
+    ports:
+      - 4000:8000
+    
+

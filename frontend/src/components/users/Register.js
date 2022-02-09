@@ -80,6 +80,10 @@ const Register = (props) => {
                 navigate("/signin");
                
             })
+            .catch(err=>{
+                console.log("errrrro");
+                alert("Email already registered");
+            })
 
         }
         if(usertype=='Vendor'){
@@ -98,6 +102,10 @@ const Register = (props) => {
                 console.log(response.data);
 
                
+            })
+            .catch(err=>{
+                console.log("errrro");
+                alert("Email already registered");
             })
         }
         

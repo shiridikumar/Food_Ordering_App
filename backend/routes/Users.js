@@ -128,8 +128,12 @@ router.post("/vendorregister", (req, res) => {
                         return //log('Cannot encrypt');
                     }
                     vendors.updateOne({ shop_name: req.body.name }, { $set: { password: hash } }).then(response => {
-                        //log("success");
+
+                        console.log("success");
                     })
+                        .catch(err => {
+                            res.status(400).send(err);
+                        })
                     newvendor.password = hash;
                     newvendor.save().then(user => {
                         res.status(200).json(user);
@@ -323,7 +327,7 @@ router.post("/order", (req, res) => {
 
 // -----------------------------------------------------------------------------------get details for diplaying in myorders page----------------------------------------------
 router.post("/myorders", (req, res) => {
-    orders.find({ email: req.body.email }).sort({Time:-1}).then(result => {
+    orders.find({ email: req.body.email }).sort({ Time: -1 }).then(result => {
         res.status(200).send(result);
     });
 
@@ -524,8 +528,8 @@ router.post("/movestage", (req, res) => {
                 { $match: { shop_name: req.body.shop_name, $or: [{ status: 'Cooking' }, { status: 'Accepted' }] } },
                 { $group: { _id: 0, count: { $sum: 1 } } }
             ]).then(aggr => {
-                if(aggr[0]!=null){
-                    if (aggr[0].count>= 10) {
+                if (aggr[0] != null) {
+                    if (aggr[0].count >= 10) {
                         console.log(aggr[0].count);
                         res.status(404).send("More than 10 items in cooing and acpted stage");
                         return;
@@ -561,10 +565,10 @@ router.post("/movestage", (req, res) => {
                 })
         }
     })
-    .catch(err => {
-        //log(err);
-        res.status(404).send("errroor");
-    })
+        .catch(err => {
+            //log(err);
+            res.status(404).send("errroor");
+        })
 })
 //-------------------------------------------------------------------------------------------Pickup order-----------------------------------------------------------------------
 router.post("/pickorder", (req, res) => {
@@ -694,16 +698,16 @@ router.post("/uploadpic", (req, res, next) => {
             foods.updateOne({ name: req.query.item, shop_name: req.query.shop_name }, { $set: { pic: `${req.query.shop_name}/${req.query.item}.jpg` } }).then(response => {
                 //log("succesful");
             })
-            .catch(err => {
-                //log(err);
-            })
+                .catch(err => {
+                    //log(err);
+                })
 
-            vendors.updateOne({ shop_name: req.query.item}, { $set: { pic: `${req.query.shop_name}/${req.query.item}.jpg` } }).then(response => {
+            vendors.updateOne({ shop_name: req.query.item }, { $set: { pic: `${req.query.shop_name}/${req.query.item}.jpg` } }).then(response => {
                 //log("succesful");
             })
-            .catch(err => {
-                //log(err);
-            })
+                .catch(err => {
+                    //log(err);
+                })
 
 
             res.send("Uploaded succesfully\nGO back and view the changes");
@@ -823,13 +827,13 @@ router.post("/statuscount", (req, res) => {
         })
 })
 
-router.post("/updateaddons",(req,res)=>{
-    foods.updateOne({name:req.body.name,shop_name:req.body.shop_name},{$set:{add_ons:req.body.add_ons}}).then(result=>{
+router.post("/updateaddons", (req, res) => {
+    foods.updateOne({ name: req.body.name, shop_name: req.body.shop_name }, { $set: { add_ons: req.body.add_ons } }).then(result => {
         res.status(200).send("succesful");
     })
-    .catch(err=>{
-        console.log(err);
-    })
+        .catch(err => {
+            console.log(err);
+        })
 })
 
 

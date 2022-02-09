@@ -3,7 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const PORT = 4000;
+const PORT = 8000;
 const DB_NAME = "vnu"
 var UserRouter = require("./routes/Users");
 var initialpage=require("./initialpage");
@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Connection to MongoDB
-mongoose.connect('mongodb://127.0.0.1:27017/' + DB_NAME, { useNewUrlParser: true });
+mongoose.connect('mongodb://shiridikumar:2002meshiridi@cluster0-shard-00-00.qozki.mongodb.net:27017,cluster0-shard-00-01.qozki.mongodb.net:27017,cluster0-shard-00-02.qozki.mongodb.net:27017/vnu?ssl=true&replicaSet=atlas-z43jla-shard-0&authSource=admin&retryWrites=true&w=majority', { useNewUrlParser: true });
 const connection = mongoose.connection;
 connection.once('open', function() {
     console.log("MongoDB database connection established successfully !");
