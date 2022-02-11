@@ -33,7 +33,9 @@ const SearchTab = () => {
 
             for (var i = 0; i < item_details.length; i++) {
                 var ids = i + '_' + item_details[i].shop_name;
-                await axios.post("http://localhost:4000/user/canteen", { canteen:item_details[i].shop_name }).then(response => {
+                await axios.post("/user/canteen", { headers:{
+                    "accepts":"application/json"
+                }, canteen:item_details[i].shop_name }).then(response => {
                     setstart(response.data.starttime);
                     setend(response.data.endtime);
                     console.log("hellllllo");

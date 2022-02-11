@@ -1,0 +1,6 @@
+FROM nginx
+
+WORKDIR /home/shirdi/Food_Ordering_App/nginx
+
+COPY ./default.conf  /etc/nginx/conf.d/default.conf
+

@@ -51,7 +51,8 @@ router.get("/all_vendors", (req, res) => {
 router.post("/userregister", (req, res) => {
     //log(req.body.name);
     //log(req.body);
-    const email = req.body.email;
+    const email = req.body.details.email;
+    console.log(req.body.details);
     var password;
 
     User.findOne({ "email": email }).then(user => {
@@ -61,21 +62,21 @@ router.post("/userregister", (req, res) => {
         }
         else {
             const newUser = new User({
-                name: req.body.name,
-                email: req.body.email,
-                contact_number: req.body.contact_number,
-                age: req.body.age,
-                batch: req.body.batch,
-                password: req.body.password,
+                name: req.body.details.name,
+                email: req.body.details.email,
+                contact_number: req.body.details.contact_number,
+                age: req.body.details.age,
+                batch: req.body.details.batch,
+                password: req.body.details.password,
                 wallet: 0
             });
             bcrypt.genSalt(10, async function (err, Salt) {
-                bcrypt.hash(req.body.password, Salt, async function (err, hash) {
+                bcrypt.hash(req.body.details.password, Salt, async function (err, hash) {
                     if (err) {
                         return //log('Cannot encrypt');
                     }
-                    vendors.updateOne({ shop_name: req.body.name }, { $set: { password: hash } }).then(response => {
-                        //log("success");
+                    vendors.updateOne({ shop_name: req.body.details.name }, { $set: { password: hash } }).then(response => {
+                        console.log("success");
                     })
                     newUser.password = hash;
                     newUser.save().then(user => {
@@ -87,18 +88,17 @@ router.post("/userregister", (req, res) => {
                         });
                 })
             })
-            //log(password);
         }
     })
         .catch(err => {
-            //log(err);
+            console.log(err);
         })
 });
 //------------------------------------------------------------------Registration of vendor-------------------------------------------------
 router.post("/vendorregister", (req, res) => {
     //log(req.body.name);
     //log(req.body);
-    const email = req.body.email;
+    const email = req.body.details.email;
     var password;
 
     vendors.findOne({ "email": email }).then(user => {
@@ -109,25 +109,25 @@ router.post("/vendorregister", (req, res) => {
         }
         else {
             const newvendor = new vendors({
-                shop_name: req.body.shop_name,
-                email: req.body.email,
-                phone: req.body.phone,
-                manager_name: req.body.manager_name,
-                password: req.body.password,
-                starttime: req.body.starttime,
-                endtime: req.body.endtime
+                shop_name: req.body.details.shop_name,
+                email: req.body.details.email,
+                phone: req.body.details.phone,
+                manager_name: req.body.details.manager_name,
+                password: req.body.details.password,
+                starttime: req.body.details.starttime,
+                endtime: req.body.details.endtime
             });
             newvendor["pic"] = "no.png";
-            if (!fs.existsSync(`../frontend/src/components/images/${req.body.shop_name}`)) {
-                fs.mkdirSync(`../frontend/src/components/images/${req.body.shop_name}`);
+            if (!fs.existsSync(`../frontend/src/components/images/${req.body.details.shop_name}`)) {
+                fs.mkdirSync(`../frontend/src/components/images/${req.body.details.shop_name}`);
                 //log("heelllo");
             }
             bcrypt.genSalt(10, async function (err, Salt) {
-                bcrypt.hash(req.body.password, Salt, async function (err, hash) {
+                bcrypt.hash(req.body.details.password, Salt, async function (err, hash) {
                     if (err) {
                         return //log('Cannot encrypt');
                     }
-                    vendors.updateOne({ shop_name: req.body.name }, { $set: { password: hash } }).then(response => {
+                    vendors.updateOne({ shop_name: req.body.details.name }, { $set: { password: hash } }).then(response => {
 
                         console.log("success");
                     })

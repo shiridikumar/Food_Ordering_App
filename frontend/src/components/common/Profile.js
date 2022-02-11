@@ -41,9 +41,12 @@ const Profile = () => {
             contact_number:phone,
             age:age,
             batch:batch,
-            actual:details.password
+            actual:details.password,
+            headers:{
+                "accepts":"application/json"
+            }
         }
-        await axios.post("http://localhost:4000/user/update_user",updated).then(response => {
+        await axios.post("/user/update_user",updated).then(response => {
             alert("Update succesful\nPlease sign out and sign in to see the changes");
             navigate("/signin");
 

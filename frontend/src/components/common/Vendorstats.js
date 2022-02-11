@@ -16,14 +16,18 @@ const Vendorstats = (props) => {
     const statrow=[]
     useEffect(()=>{
         const loadpost=async()=>{
-            await axios.post("http://localhost:4000/user/mostsold",{name:details.shop_name}).then(response=>{
+            await axios.post("/user/mostsold",{ headers:{
+                "accepts":"application/json"
+            },name:details.shop_name}).then(response=>{
                 console.log(response);
                 loaditems(response.data);
             })
             .catch(err=>{
                 console.log(err);
             })
-            await axios.post("http://localhost:4000/user/statuscount",{name:details.shop_name}).then(response=>{
+            await axios.post("/user/statuscount",{ headers:{
+                "accepts":"application/json"
+            },name:details.shop_name}).then(response=>{
                 console.log(response.data);
                 const placedpercent=parseInt((response.data.Placed/response.data.Placed)*100);
                 const pendingpercent=parseInt((response.data.Pending/response.data.Placed)*100);
@@ -62,7 +66,9 @@ const Vendorstats = (props) => {
 
         const loaditems=async(items)=>{
             for(var i=0;i<items.length;i++){
-                await axios.post("http://localhost:4000/user/itemdetails",{canteen:details.shop_name,item:items[i]._id}).then(response=>{
+                await axios.post("/user/itemdetails",{ headers:{
+                    "accepts":"application/json"
+                },canteen:details.shop_name,item:items[i]._id}).then(response=>{
                     console.log(response);
                     var ids=i+'_'+details.shop_name+'_'+items[i]._id;
                     row.push(

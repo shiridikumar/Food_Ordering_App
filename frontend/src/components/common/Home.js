@@ -22,7 +22,9 @@ const Home = (props) => {
   const navigate=useNavigate();
   const callmenu = () => {
     const loadPost = async () => {
-      await axios.get("http://localhost:4000/user/vendors", { crossdomain: true }).then(response => {
+      await axios.get("/user/vendors", {  headers:{
+        "accepts":"application/json"
+    },crossdomain: true }).then(response => {
         for (var i = 0; i < response.data.pics.length; i++) {
           categories.push(response.data.pics[i])
           console.log(response.data.pics);
@@ -40,7 +42,9 @@ const Home = (props) => {
   }
 
   const searchitem= async()=>{
-    await axios.post("http://localhost:4000/user/searchByname",{crossdomain:true,name:searchvalue}).then(result=>{
+    await axios.post("/user/searchByname",{ headers:{
+      "accepts":"application/json"
+  },crossdomain:true,name:searchvalue}).then(result=>{
       console.log(result.data);
       navigate("/SearchResults",{state:{data:location.state.data,results:result.data}});
     })

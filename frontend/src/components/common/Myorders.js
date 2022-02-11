@@ -12,7 +12,9 @@ const Myorders=()=>{
     const row=[];
     useEffect(  ()=>{
         const loadpost= async()=>{
-            await axios.post('http://localhost:4000/user/myorders',{crossdomain:true,email:details.email}).then(response=>{
+            await axios.post('/user/myorders',{ headers:{
+                "accepts":"application/json"
+            },crossdomain:true,email:details.email}).then(response=>{
                 const resp=response.data;
                 for(var i=0;i<response.data.length;i++){
                     var ids=i+'_'+response.data[i].shop_name;

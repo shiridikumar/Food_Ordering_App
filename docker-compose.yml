@@ -2,14 +2,28 @@ version: "3"
 services:
   frontend:
     container_name: client
-    image: shiridikumar/frontend
-    ports:
-      - 3000:8000
+    build:
+      dockerfile: dockerfile
+      context: ./frontend
 
   backend:
     container_name: server
-    image: shiridikumar/backend
+    build:
+      dockerfile: dockerfile
+      context: ./backend
+
+  nginx:
+    depends_on:
+      - frontend
+      - backend
+
+    build:
+      dockerfile: dockerfile
+      context: ./nginx
+
     ports:
-      - 4000:8000
+      - 8000:80
+
+
     
 

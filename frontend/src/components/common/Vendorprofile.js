@@ -52,7 +52,9 @@ const Vendorprofile = () => {
     const upd = []
     useEffect(() => {
         const loadpost=()=>{
-        axios.post("http://localhost:4000/user/canteen",{canteen:details.shop_name}).then(response=>{
+        axios.post("/user/canteen",{ headers:{
+            "accepts":"application/json"
+        },canteen:details.shop_name}).then(response=>{
             setpic(response.data.pic);
         })
     }
@@ -71,7 +73,7 @@ const Vendorprofile = () => {
         setemincont(eminarr);
 
         upd.push(<div className="input-group mb-3">
-            <form action={`http://localhost:4000/user/uploadpic?shop_name=${details.shop_name}&item=${details.shop_name}`} enctype="multipart/form-data" method="POST" style={{"display":"inline-flex"}}   >
+            <form action={`/user/uploadpic?shop_name=${details.shop_name}&item=${details.shop_name}`} enctype="multipart/form-data" method="POST" style={{"display":"inline-flex"}}   >
                 <input type="file" className="form-control" id="vendorprofile" name="pic" style={{"display":"inline"}} />
                 <input type="submit" value="Upload" className="btn btn-secondary" style={{"display":"inline"}}/>
             </form>
@@ -93,10 +95,13 @@ const Vendorprofile = () => {
             shop_name: batch,
             actual: details.password,
             starttime: starttime,
-            endtime: endtime
+            endtime: endtime,
+            headers:{
+                "accepts":"application/json"
+            },
 
         }
-        await axios.post("http://localhost:4000/user/update_vendor", updated).then(response => {
+        await axios.post("/user/update_vendor", updated).then(response => {
             alert("Update succesful\nPlease sign out and sign in to see the changes");
             navigate("/signin");
         })

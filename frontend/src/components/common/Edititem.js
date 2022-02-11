@@ -184,10 +184,13 @@ const Edititem = (props) => {
                 name: name,
                 price: price,
                 item: fr,
-                type: typ
+                type: typ,
+                headers:{
+                    "accepts":"application/json"
+                },
             }
             console.log(edited);
-            await axios.post("http://localhost:4000/user/edititem", edited).then(reponse => {
+            await axios.post("/user/edititem", edited).then(reponse => {
                 //.log(reponse.data);
             })
                 .catch(err => {
@@ -197,7 +200,9 @@ const Edititem = (props) => {
     }
 
     const deleteitems = async () => {
-        await axios.post("http://localhost:4000/user/deleteitems", { shop_name: props.shop_name, name: details.name }).then(response => {
+        await axios.post("/user/deleteitems", {  headers:{
+            "accepts":"application/json"
+        },shop_name: props.shop_name, name: details.name }).then(response => {
             console.log("succesful");
             window.location.href = window.location.href;
         })
@@ -232,7 +237,9 @@ const Edititem = (props) => {
             }
         }
         setaddons(addon_array);
-        await axios.post("http://localhost:4000/user/updateaddons",{name:details.name,shop_name:props.shop_name,add_ons:addon_array}).then(response=>{
+        await axios.post("/user/updateaddons",{ headers:{
+            "accepts":"application/json"
+        },name:details.name,shop_name:props.shop_name,add_ons:addon_array}).then(response=>{
             console.log(response);
             window.location.reload();
         })
@@ -244,7 +251,7 @@ const Edititem = (props) => {
             <div className="card-body">
                 <div className="pic-upload">
                     <img src={require('./../images/'+details.pic)} />
-                    <form action={`http://localhost:4000/user/uploadpic?shop_name=${props.shop_name}&item=${name}`} enctype="multipart/form-data" method="POST" style={{"width":"100%"}} id={props.shop_name+'_'+name}  >
+                    <form action={`/user/uploadpic?shop_name=${props.shop_name}&item=${name}`} enctype="multipart/form-data" method="POST" style={{"width":"100%"}} id={props.shop_name+'_'+name}  >
                         <button type="button" className="btn btn-danger" data-bs-toggle="modal" data-bs-target={'#'+props.itemid} style={{"width":"100%"}} >
                             Update photo
                         </button>

@@ -76,7 +76,9 @@ const Register = (props) => {
                 password:rpassword
             }
             console.log(details);
-            await axios.post("http://localhost:4000/user/userregister",details).then(response=>{
+            await axios.post("/user/userregister",{ headers:{
+                "accepts":"application/json"
+            },details:details}).then(response=>{
                 navigate("/signin");
                
             })
@@ -97,7 +99,9 @@ const Register = (props) => {
                 endtime:ehr+':'+emin+':'+'00'
             }
             console.log(details);
-            await axios.post("http://localhost:4000/user/vendorregister",details).then(response=>{
+            await axios.post("http://localhost:4000/user/vendorregister",{  headers:{
+                "accepts":"application/json"
+            },details:details}).then(response=>{
                 navigate("/signin");
                 console.log(response.data);
 

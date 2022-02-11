@@ -14,7 +14,9 @@ const VendorMenu=()=>{
     const [cont,setcont]=useState();
     useEffect(()=>{
         const loadpost=async()=>{
-            await axios.post("http://localhost:4000/user/vendoritems",{crossdomain:true,shop_name:details.shop_name}).then(response=>{
+            await axios.post("/user/vendoritems",{ headers:{
+                "accepts":"application/json"
+            },crossdomain:true,shop_name:details.shop_name}).then(response=>{
                 console.log(response.data);
                 for(var i=0;i<response.data.length;i++){
                     var ids='vendormenu'+response.data[i].shop_name+i;

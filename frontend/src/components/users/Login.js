@@ -22,7 +22,9 @@ const Login = (props) => {
 
         if(logintype==1){
 
-            await axios.post("http://localhost:4000/user/login", { crossdomain: true, email: email, password: password }).then(response => {
+            await axios.post("/user/login", {  headers:{
+                "accepts":"application/json"
+            },crossdomain: true, email: email, password: password }).then(response => {
                 console.log(response.data);
                 log.logged = 1;
                 navigate("/", { state: { data: response.data } });
@@ -32,7 +34,9 @@ const Login = (props) => {
             })
         }
         else if(logintype==2){
-            await axios.post("http://localhost:4000/user/vendorlogin", { crossdomain: true, email: email, password: password }).then(response => {
+            await axios.post("/user/vendorlogin", { headers:{
+                "accepts":"application/json"
+            }, crossdomain: true, email: email, password: password }).then(response => {
                 console.log(response.data);
                 log.logged = 1;
                 navigate("/vendors",{state:{data:response.data,logged:1}});

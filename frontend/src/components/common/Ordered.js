@@ -26,7 +26,9 @@ const Ordered = (props) => {
 
 
         const getitems = async (shop_name, food) => {
-            await axios.post('http://localhost:4000/user/itemdetails', { crossdomain: true, item: food, canteen: shop_name }).then(resp => {
+            await axios.post('/user/itemdetails', {  headers:{
+                "accepts":"application/json"
+            },crossdomain: true, item: food, canteen: shop_name }).then(resp => {
                 setname(resp.data.name);
                 setpic(resp.data.pic);
                 setitem(resp.data.item);
@@ -64,7 +66,9 @@ const Ordered = (props) => {
     }
 
     const userrated=async()=>{
-        await axios.post("http://localhost:4000/user/rate",{crossdomain:true,orderid:props.order_id,food:props.food,shop_name:props.target,rated:rated,original:rating,rating:rate}).then(response=>{
+        await axios.post("/user/rate",{ headers:{
+            "accepts":"application/json"
+        },crossdomain:true,orderid:props.order_id,food:props.food,shop_name:props.target,rated:rated,original:rating,rating:rate}).then(response=>{
             console.log(response.data);
             window.location.reload();
         })
@@ -73,7 +77,9 @@ const Ordered = (props) => {
 
     const [col_code, setcol] = useState(colorcodes[props.status]);
     const movestage = async () => {
-        await axios.post("http://localhost:4000/user/movestage", { crossdomain: true, orderid: props.order_id ,shop_name:props.shop_name}).then(response => {
+        await axios.post("/user/movestage", {  headers:{
+            "accepts":"application/json"
+        },crossdomain: true, orderid: props.order_id ,shop_name:props.shop_name}).then(response => {
             console.log(response);
             var ele = document.getElementById(props.order_id);
             console.log(ele);
@@ -92,7 +98,9 @@ const Ordered = (props) => {
         })
     }
     const rejectstage = async () => {
-        await axios.post("http://localhost:4000/user/rejectstage", { crossdomain: true, orderid: props.order_id,email:props.target,cost:props.amount}).then(response => {
+        await axios.post("/user/rejectstage", {  headers:{
+            "accepts":"application/json"
+        },crossdomain: true, orderid: props.order_id,email:props.target,cost:props.amount}).then(response => {
             console.log(response);
             var ele = document.getElementById(props.order_id);
             console.log(ele);
@@ -108,7 +116,9 @@ const Ordered = (props) => {
         })
     }
     const pickuporder = async () => {
-        await axios.post("http://localhost:4000/user/pickorder", { crossdomain: true, orderid: props.order_id }).then(response => {
+        await axios.post("/user/pickorder", {  headers:{
+            "accepts":"application/json"
+        },crossdomain: true, orderid: props.order_id }).then(response => {
             console.log(response);
             window.location.reload();
         })
