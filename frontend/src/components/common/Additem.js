@@ -69,9 +69,12 @@ const Additem = (props) => {
             item:tags,
             add_ons:addons,
             type:type,
-            shop_name:props.details.shop_name
+            shop_name:props.details.shop_name,
+            headers:{
+                "accepts":"application/json"
+            }
         }
-        await axios.post("http://localhost:4000/user/newitem",details).then(response=>{
+        await axios.post("/user/newitem",details).then(response=>{
             console.log(response);
         })
         window.location.reload();
@@ -91,7 +94,7 @@ const Additem = (props) => {
                         </div>
                         <div className="modal-body additem">
                             <div className="fooddetails">
-                                <form action="http://localhost:4000/user/uploadpic" enctype="multipart/form-data" method="POST">
+                                <form action="/user/uploadpic" enctype="multipart/form-data" method="POST">
                                     <div className="form-floating mb-3 itemname">
                                         <input type="text" className="form-control foodname" id="new_fooditem" name="name" placeholder="double cheese pizza" onChange={(e)=>setname(e.target.value)}/>
                                         <label for="new_fooditem">Enter Item name</label>

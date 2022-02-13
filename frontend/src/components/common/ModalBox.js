@@ -14,7 +14,10 @@ const ModalBox = (props) => {
     useEffect(() => {
         const loadPost = async () => {
 
-            await axios.get("http://localhost:4000/user/all_vendors").then(response => {
+            await axios.get("/user/all_vendors",
+            {headers:{
+                "accepts":"application/json"
+            }}).then(response => {
                 for (var i = 0; i < response.data.length; i++) {
                     var ids = i + '_' + response.data[i] + '_filter';
                     row.push(
@@ -31,7 +34,10 @@ const ModalBox = (props) => {
                 console.log(row);
                 setshop(row);
             })
-            await axios.get("http://localhost:4000/user/alltags").then(response => {
+            await axios.get("/user/alltags",
+            {headers:{
+                "accepts":"application/json"
+            }}).then(response => {
                 console.log(response.data);
                 const tags = response.data;
                 for (var i = 0; i < tags.length; i++) {
@@ -137,11 +143,15 @@ const ModalBox = (props) => {
             price_sort: sp,
             rating_sort: sr,
             vegs: vegs_arr
+            ,
+            headers:{
+                "accepts":"application/json"
+            }
         }
         var srcbut = document.getElementById('filtersubmit');
         console.log(srcbut);
         var filbut = document.getElementById('closefilter');
-        await axios.post("http://localhost:4000/user/filter", filter_details).then(response => {
+        await axios.post("/user/filter", filter_details).then(response => {
             console.log(response);
             filbut.click();
             navigate("/SearchResults", { state: { data: props.data, results: response.data } });

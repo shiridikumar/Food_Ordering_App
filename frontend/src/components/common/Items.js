@@ -99,7 +99,10 @@ const Items = (props) => {
         }
         settags(tag_row);
         const loadpost = async () => {
-            await axios.post("http://localhost:4000/user/userdetails", { email: props.data.email }).then(response => {
+            await axios.post("/user/userdetails", { email: props.data.email ,
+                headers:{
+                    "accepts":"application/json"
+                }}).then(response => {
                 setfav(response.data.favourites);
                 setwallet(response.data.wallet);
                 for (var i = 0; i < response.data.favourites.length; i++) {
@@ -116,7 +119,10 @@ const Items = (props) => {
 
     useEffect(()=>{
         const loadtime=async()=>{
-            await axios.post("http://localhost:4000/user/canteen",{canteen:props.canteen}).then(response=>{
+            await axios.post("/user/canteen",{canteen:props.canteen,
+                headers:{
+                    "accepts":"application/json"
+                }}).then(response=>{
                 setstart(response.data.starttime);
                 setend(response.data.endtime);
                 //log(starttime);
@@ -140,7 +146,10 @@ const Items = (props) => {
             obj = [{ food: props.name, shop_name: props.canteen }]
         }
 
-        await axios.post("http://localhost:4000/user/addfav", { crossdomain: true, email: props.data.email, fav: obj }).then(response => {
+        await axios.post("/user/addfav", { crossdomain: true, email: props.data.email, fav: obj ,
+            headers:{
+                "accepts":"application/json"
+            }}).then(response => {
             ////log(response);
             window.location.reload();
         })
@@ -158,7 +167,10 @@ const Items = (props) => {
             }
         }
         //log(newob);
-        await axios.post("http://localhost:4000/user/addfav", { crossdomain: true, email: props.data.email, fav: newob }).then(response => {
+        await axios.post("/user/addfav", { crossdomain: true, email: props.data.email, fav: newob,
+            headers:{
+                "accepts":"application/json"
+            } }).then(response => {
             ////log(response);
             window.location.reload();
         })

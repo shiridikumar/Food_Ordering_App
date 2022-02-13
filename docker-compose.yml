@@ -1,10 +1,14 @@
 version: "3"
 services:
+
   frontend:
     container_name: client
     build:
       dockerfile: dockerfile
       context: ./frontend
+    
+    volumes:
+      - ./:/app
 
   backend:
     container_name: server
@@ -13,13 +17,12 @@ services:
       context: ./backend
 
   nginx:
+    image: nginx
     depends_on:
       - frontend
       - backend
-
-    build:
-      dockerfile: dockerfile
-      context: ./nginx
+    volumes: 
+      - ./nginx/local.conf:/etc/nginx/conf.d/default.conf
 
     ports:
       - 8000:80

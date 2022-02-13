@@ -21,7 +21,9 @@ const Navbar = (props) => {
 
   useEffect(() => {
     const loadpost = async () => {
-      await axios.post("http://localhost:4000/user/userdetails", { email: location.state.data.email }).then(response => {
+      await axios.post("user/userdetails", { email: location.state.data.email, headers:{
+        "accepts":"application/json"
+    }}).then(response => {
         location.state.data = response.data;
         console.log("helllllo");
         setwallet(response.data.wallet);
@@ -36,7 +38,9 @@ const Navbar = (props) => {
       alert("please enter a valid amount(>0)");
     }
     else {
-      await axios.post("http://localhost:4000/user/addwallet", { crossdomain: true, wallet: addamount, actual: wallet, email: location.state.data.email }).then(response => {
+      await axios.post("/user/addwallet", { crossdomain: true, wallet: addamount, actual: wallet, email: location.state.data.email ,headers:{
+        "accepts":"application/json"
+    }}).then(response => {
         window.location.reload();
 
 

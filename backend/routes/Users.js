@@ -653,14 +653,12 @@ router.post("/deleteitems", (req, res) => {
 var storage = multer.diskStorage({
 
     destination: function (req, file, cb) {
-        if (!fs.existsSync(`../frontend/src/components/images/${req.query.shop_name}`)) {
-            fs.mkdirSync(`../frontend/src/components/images/${req.query.shop_name}`);
+        if (!fs.existsSync(`/app/images/${req.query.shop_name}`)) {
+            fs.mkdirSync(`/app/images/${req.query.shop_name}`);
         }
-
         // Uploads is the Upload_folder_name
         //log(req.body);
-        cb(null, `../frontend/src/components/images/${req.query.shop_name}`)
-
+        cb(null, `/app/images/${req.query.shop_name}`)
     },
     filename: function (req, file, cb) {
         cb(null, `${req.query.item}` + ".jpg")

@@ -15,7 +15,10 @@ const Canteen = (props) => {
     useEffect(() => {
         const loadtime = async () => {
 
-            await axios.post("http://localhost:4000/user/canteen", { canteen: params.params }).then(response => {
+            await axios.post("/user/canteen", { canteen: params.params,
+                headers:{
+                    "accepts":"application/json"
+                } }).then(response => {
                 setstart(response.data.starttime);
                 setend(response.data.endtime);
                 //log(starttime);
@@ -32,7 +35,10 @@ const Canteen = (props) => {
             var hrs = String(dateObj.getHours()).padStart(2, '0')
             var mins = String(dateObj.getMinutes()).padStart(2, '0')
             const currtime = hrs + ':' + mins + ':' + '00';
-            await axios.post("http://localhost:4000/user/vendoritems", { crossdomain: true, shop_name: params.params }).then(response => {
+            await axios.post("/user/vendoritems", { crossdomain: true, shop_name: params.params ,
+                headers:{
+                    "accepts":"application/json"
+                }}).then(response => {
                 console.log(starttime,endtime);
                 console.log(response.data);
                 for (var i = 0; i < response.data.length; i++) {
