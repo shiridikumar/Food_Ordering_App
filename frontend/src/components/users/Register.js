@@ -99,7 +99,7 @@ const Register = (props) => {
                 endtime:ehr+':'+emin+':'+'00'
             }
             console.log(details);
-            await axios.post("http://localhost:4000/user/vendorregister",{  headers:{
+            await axios.post("/user/vendorregister",{  headers:{
                 "accepts":"application/json"
             },details:details}).then(response=>{
                 navigate("/signin");

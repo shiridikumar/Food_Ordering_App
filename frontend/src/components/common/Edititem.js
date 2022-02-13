@@ -250,7 +250,7 @@ const Edititem = (props) => {
         <div className="card" id={details.itemid}>
             <div className="card-body">
                 <div className="pic-upload">
-                    <img src={require('../../../app/src/components/images/'+details.pic)} />
+                    <img src={require('./../images/'+details.pic)} />
                     <form action={`/user/uploadpic?shop_name=${props.shop_name}&item=${name}`} enctype="multipart/form-data" method="POST" style={{"width":"100%"}} id={props.shop_name+'_'+name}  >
                         <button type="button" className="btn btn-danger" data-bs-toggle="modal" data-bs-target={'#'+props.itemid} style={{"width":"100%"}} >
                             Update photo

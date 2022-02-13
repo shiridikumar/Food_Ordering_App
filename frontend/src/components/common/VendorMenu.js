@@ -21,7 +21,7 @@ const VendorMenu=()=>{
                 for(var i=0;i<response.data.length;i++){
                     var ids='vendormenu'+response.data[i].shop_name+i;
                     console.log(ids);
-                    row.push(<Edititem details={response.data[i]} itemid={ids} shop_name={response.data[i].shop_name}/>)
+                    row.push(<Edititem details={response.data[i]} itemid={ids} shop_name={response.data[i].shop_name} imgsrc={response.data[i].img}/>)
                 }
                 setcont(row);
             })

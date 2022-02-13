@@ -118,8 +118,8 @@ router.post("/vendorregister", (req, res) => {
                 endtime: req.body.details.endtime
             });
             newvendor["pic"] = "no.png";
-            if (!fs.existsSync(`../frontend/src/components/images/${req.body.details.shop_name}`)) {
-                fs.mkdirSync(`../frontend/src/components/images/${req.body.details.shop_name}`);
+            if (!fs.existsSync(`/frontend/src/components/images/${req.body.details.shop_name}`)) {
+                fs.mkdirSync(`/frontend/src/components/images/${req.body.details.shop_name}`);
                 //log("heelllo");
             }
             bcrypt.genSalt(10, async function (err, Salt) {
@@ -620,7 +620,8 @@ router.post("/edititem", (req, res) => {
 router.post("/vendoritems", (req, res) => {
     //log(req.body);
     foods.find({ shop_name: req.body.shop_name }).then(response => {
-
+    
+        
         res.status(200).send(response);
 
     })
@@ -653,12 +654,12 @@ router.post("/deleteitems", (req, res) => {
 var storage = multer.diskStorage({
 
     destination: function (req, file, cb) {
-        if (!fs.existsSync(`/app/images/${req.query.shop_name}`)) {
-            fs.mkdirSync(`/app/images/${req.query.shop_name}`);
+        if (!fs.existsSync(`/frontend/src/components/images/${req.query.shop_name}`)) {
+            fs.mkdirSync(`/frontend/src/components/images/${req.query.shop_name}`);
         }
         // Uploads is the Upload_folder_name
         //log(req.body);
-        cb(null, `/app/images/${req.query.shop_name}`)
+        cb(null, `/frontend/src/components/images/${req.query.shop_name}`)
     },
     filename: function (req, file, cb) {
         cb(null, `${req.query.item}` + ".jpg")

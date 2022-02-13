@@ -6,15 +6,16 @@ services:
     build:
       dockerfile: dockerfile
       context: ./frontend
-    
     volumes:
-      - ./:/app
+      - ./frontend/src/components/images:/frontend/src/components/images
 
   backend:
     container_name: server
     build:
       dockerfile: dockerfile
       context: ./backend
+    volumes_from: 
+      - frontend:rw
 
   nginx:
     image: nginx
