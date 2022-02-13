@@ -2,15 +2,21 @@
 ## Design and analysis of software systems
 ***
 - How to run the code?
-    - Firstly go to the backend directory and then run npm start in terminal
-        - cd backend
-        - npm install (to install the nod emodules)
-        - npm start
+- cd to the directory where docker-compose file is located,then run:
+- >docker-compose up
+- To stop the containers :
+- >docker-compose down
 
-    - cd into the frontend directory and then run npm start
-        - cd frontend 
-        - npm install (to install node modules)
-        - npm start
+- Docker containers
+    - Seperate containers are made for backend and frontend
+    - nginx is used to route/proxy the server i.e, route between the frontend and backend
+    - volumes are mounted in backend and frontend containers for accesing and files like images.
+    - A docker compose file is made to compose and combine all the containers
+- PORTS used:
+    - nginx 80
+    - docker-compose 8000
+    - frontend (by default) 3000
+    - backend 4000
 
 -  Modules used:
     - bcryptjs
